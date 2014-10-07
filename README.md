@@ -11,7 +11,7 @@ Client: AngularJS
 Server: Node.js
 - WS Profile CRUD
 - WS Profile Search
-- Mongo 
+- Mongo
 
 
 data structure
@@ -21,3 +21,6 @@ data structure
 	email: 'String'
 }]
 
+
+Server
+	- start server: $ nodemon server/app.coffee
