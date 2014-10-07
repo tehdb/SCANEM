@@ -6,9 +6,9 @@ angular.module('jsworkshop', [
 		( $rp, $lp ) ->
 
 			$rp
-				.when '/index',
-					template: 'public/index.html'
-					controller: 'ProfileCtrl'
+				# .when '/profile',
+				# 	template: '/partials/profile.html'
+				# 	controller: 'ProfileCtrl'
 
 				.otherwise
 					redirectTo: '/index'

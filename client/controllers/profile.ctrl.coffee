@@ -4,7 +4,7 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	( $scope, $routeParams ) ->
 
 		$scope.vm =
-			name : 'test'
+			name : 'test test'
 
 		console.log 'profile controller init'
 ])
