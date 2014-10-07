@@ -6,12 +6,17 @@ angular.module('jsworkshop', ['ngRoute']).config([
   }
 ]);
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
-  '$scope', '$routeParams', function($scope, $routeParams) {
+  '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
     $scope.vm = {
-      name: 'test test'
+      name: 'test',
+      results: ['']
     };
     $scope.search = function(param) {
-      return console.log(param);
+      console.log(param);
+      return profileService.search(param).then(function(data) {
+        console.log(data);
+        return $scope.wm.results = JSON.stringify(data);
+      });
     };
     return console.log('profile controller init');
   }
@@ -24,7 +29,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
       deferred = $q.defer();
       $http({
         url: "/api/users",
-        method: "post",
+        method: "get",
         headers: {
           'Accept': "application/json",
           'Content-Type': "application/json;charset=UTF-8"
@@ -33,10 +38,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
       }).success(function(data, status, headers, config) {
         return deferred.resolve(data);
       }).error(function(err, status, headers, config) {
-        if (typeof err.error === 'object' && err.error.code === 11000) {
-          return deferred.reject(label);
-        }
-        return deferred.reject(label);
+        return deferred.reject(err);
       });
       return deferred.promise;
     };

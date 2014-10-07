@@ -8,7 +8,7 @@ angular.module('jsworkshop').service( 'ProfileService', [
 			deferred = $q.defer()
 			$http
 				url: "/api/users"
-				method: "post"
+				method: "get"
 				headers:
 					'Accept': "application/json"
 					'Content-Type': "application/json;charset=UTF-8"
@@ -18,10 +18,7 @@ angular.module('jsworkshop').service( 'ProfileService', [
 				deferred.resolve( data )
 
 			.error ( err, status, headers, config) ->
-				if typeof err.error is 'object' and err.error.code is 11000
-					return deferred.reject( label )
-
-				deferred.reject( label );
+				deferred.reject( err );
 
 			return deferred.promise
 		return
