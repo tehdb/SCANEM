@@ -11,7 +11,7 @@ angular.module('jsworkshop', [
 					controller: 'ProfileCtrl'
 
 				.otherwise
-					redirectTo: '/index'
+					redirectTo: '/'
 
 			return
 ])

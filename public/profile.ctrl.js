@@ -5,6 +5,9 @@
       $scope.vm = {
         name: 'test'
       };
+      $scope.search = function(param) {
+        return console.log(param);
+      };
       return console.log('profile controller init');
     }
   ]);

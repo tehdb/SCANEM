@@ -6,7 +6,7 @@
         template: 'public/index.html',
         controller: 'ProfileCtrl'
       }).otherwise({
-        redirectTo: '/index'
+        redirectTo: '/'
       });
     }
   ]);
