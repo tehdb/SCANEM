@@ -4,7 +4,7 @@ angular.module('jsworkshop').service( 'ProfileService', [
 	( $q, $http, $translate, restangular ) ->
 
 		@search = ( data )->
-			console.log "ProfileService saving..." + JSON.stringify( data )
+			console.log "ProfileService searching..." + JSON.stringify( data )
 			deferred = $q.defer()
 			$http
 				url: "/api/users"
