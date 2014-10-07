@@ -2,8 +2,6 @@ express 		= require("express")
 bodyParser 		= require('body-parser')
 methodOverride 	= require('method-override')
 multer 			= require('multer')
-fs 				= require('fs')
-path 			= require('path')
 logger 			= require('morgan')
 errorHandler 	= require('errorhandler')
 
@@ -18,6 +16,10 @@ app.use 	express.static( "./public" )
 
 app.use 	logger('dev')
 app.use 	errorHandler()
+
+
+require( './routes')(app)
+
 
 app.listen app.get('port'), ->
 	console.log "Listening on port #{app.get('port')}..."
