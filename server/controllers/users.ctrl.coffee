@@ -3,6 +3,7 @@ fs = require('fs')
 
 _cachedData = fs.readFileSync('./server/database/users.json', {encoding:'utf-8'})
 _cachedData = JSON.parse(_cachedData)
+_entryProperties = _.keys(_cachedData[0])
 
 
 _loadData = (cb) ->
@@ -53,7 +54,7 @@ module.exports =
 			# filter if query passed
 			if query
 				# by property
-				if prop
+				if prop or _.contains( _entryProperties, prop )
 					out = _.filter _cachedData, (e) ->
 						return _.contains( e[prop].toLowerCase(), query )
 
