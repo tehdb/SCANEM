@@ -37,7 +37,7 @@ module.exports =
 
 			out = out.slice(0, max) if max != -1
 
-			console.log max
+			#console.log max
 
 			res.json( out )
 
