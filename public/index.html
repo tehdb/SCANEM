@@ -24,11 +24,17 @@
 		<div>
 			<h3>Results</h3>
 
-			<div>
+			<div class="table-responsive">
 				<table class="table">
+					<tr>
+						<th>Firstname</th>
+						<th>Lastname</th>
+						<th>Email</th>
+					</tr>
 					<tr ng-repeat="r in data.results">
 							<td>{{r.firstname}}</td>
 							<td>{{r.lastname}}</td>
+							<td>{{r.email}}</td>
 					</tr>
 				</table>
 			</div>
