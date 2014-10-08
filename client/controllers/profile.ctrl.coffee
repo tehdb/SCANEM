@@ -5,14 +5,14 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	( $scope, $routeParams, profileService ) ->
 
 		$scope.data =
-			maxitems: [ {key:'10', value:'10 results'}, {key:'50', value:'50 results'}, {key:'all', value:'All'} ]
-			sort: [ {key:'name', value:'Name'}, {key:'surname', value:'Surname'}, {key:'email', value:'Email'} ]
+			maxitems: [ {key:'10', value:'10 results'}, {key:'50', value:'50 results'}, {key:'-1', value:'All'} ]
+			properties: [ {key:'name', value:'Name'}, {key:'surname', value:'Surname'}, {key:'email', value:'Email'}, {key:'-1', value:'Alle entries'}  ]
 			results : {}
 
 		$scope.searchdata =
 			q : undefined
 			m : undefined
-			s : undefined
+			p : undefined
 
 		#console.log $scope.data.maxitems
 

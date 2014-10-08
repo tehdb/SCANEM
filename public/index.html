@@ -26,8 +26,8 @@
 					<option>{{max.value}}</option>
 				</select>
 
-				<select id="sort" class="form-control" ng-options="s.value for s in data.sort" ng-model="searchdata.s">
-					<option>{{s.value}}</option>
+				<select id="properties" class="form-control" ng-options="p.value for p in data.properties" ng-model="searchdata.p">
+					<option>{{p.value}}</option>
 				</select>
 			</div>
 			<button type="submit" class="btn btn-success" ng-click="search()">Search</button>
