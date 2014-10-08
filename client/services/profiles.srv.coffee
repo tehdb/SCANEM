@@ -8,8 +8,8 @@ angular.module('jsworkshop').service( 'ProfileService', [
 			deferred = $q.defer()
 
 			q = if searchs.q then searchs.q else ''
-			m = if searchs.m?.key? then searchs.m.key else ''
-			p = if searchs.p?.key? then searchs.p.key else ''
+			m = if searchs.m?.key? then searchs.m.key else '-1'
+			p = if searchs.p?.key? then searchs.p.key else '-1'
 
 			console.log('q: ' + q)
 			console.log('m: ' + m)

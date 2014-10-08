@@ -58,8 +58,8 @@ angular.module('jsworkshop', ['ngRoute']).config([
       var deferred, m, p, q, _ref, _ref1;
       deferred = $q.defer();
       q = searchs.q ? searchs.q : '';
-      m = ((_ref = searchs.m) != null ? _ref.key : void 0) != null ? searchs.m.key : '';
-      p = ((_ref1 = searchs.p) != null ? _ref1.key : void 0) != null ? searchs.p.key : '';
+      m = ((_ref = searchs.m) != null ? _ref.key : void 0) != null ? searchs.m.key : '-1';
+      p = ((_ref1 = searchs.p) != null ? _ref1.key : void 0) != null ? searchs.p.key : '-1';
       console.log('q: ' + q);
       console.log('m: ' + m);
       console.log('p: ' + p);
