@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Funktionen</title>
+    <meta charset="UTF-8">
+    <!--
+    /*
+     *  This code is released under Creative Commons Attribution 4.0 International
+     *  (CC BY 4.0) license, http://creativecommons.org/licenses/by/4.0/legalcode .
+     *  That means:
+     *
+     *  You are free to:
+     *
+     *      Share — copy and redistribute the material in any medium or format
+     *      Adapt — remix, transform, and build upon the material
+     *               for any purpose, even commercially.
+     *
+     *      The licensor cannot revoke these freedoms as long as you follow the
+     *      license terms.
+     *
+     *  Under the following terms:
+     *
+     *      Attribution — You must give appropriate credit, provide a link to the
+     *      license, and indicate if changes were made. You may do so in any
+     *      reasonable manner, but not in any way that suggests the licensor endorses
+     *      you or your use.
+     *
+     *  No additional restrictions — You may not apply legal terms or technological
+     *  measures that legally restrict others from doing anything the license
+     *  permits.
+     *
+     *
+     *  2014 Aeonium Software Systems, Robert Rohm.
+     */
+    -->
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="res/styles.css" />
+    <script type="text/javascript" >
+      /**
+       * Funktionen in JavaScript:
+       * - Funktionen sind Objekte
+       * - Funktionen definieren ihren eigenen Gültigkeitsbereich / Scope
+       */
+
+       // Definition von Funktion
+      // a) Funktions-Deklaration
+      function handleOnLoad(){
+        console.log('OK');
+        // Deklaration erst nach dieser Funktions-Deklaration,
+        // aber vor Aufruf
+        meineFunc();
+      }
+
+      // b) Definition mit Funktions-Ausdruck (unbenannt)
+      // b.1) mit anonymer Funktion
+      var meineFunc = function(){
+        console.log('Ausgabe aus meineFunc/Funktions-Ausdruck');
+      };
+
+      // b.2) mit benannter Funktion - in der Praxis nicht notwendig
+      var meineNamedFunc = function benannteFunc(){
+        console.log('Ausgabe aus meineNamedFunc/Funktions-Ausdruck');
+      };
+
+      // Aufruf: Mit Funktionsname oder Variablenname + ()
+      // handleOnLoad()
+      // meineFunc();
+
+      // Funktion als Parameter
+      // a) Funktionsausdruck:
+      var aF = function (){
+        console.log('Ausgabe aus Funktion aF');
+      };
+      // alternativ:
+      function aF2(){
+        console.log('Ausgabe aus Funktion aF2');
+      };
+      // b) Funktion mit Param:
+      function meineFuncMitParam(callback){
+        // Auswertung der übergebenen Funktion:
+        // z.B. diese Funktion meldet sich nach erfolgreicher Ausführung
+        // mit Aufruf der Callback-Funktion
+        if (callback && callback instanceof Function) {
+          callback();
+        }
+        
+        // ebenso möglich: 
+//        if (callback && callback typeof "function") {
+//          callback();
+//        }
+        
+        
+        // allgemein:
+        if (callback) {
+          // dann wahr, wenn callback
+          // - boolsch true
+          // - als Objekt oder primitiver Wert übergeben
+          // - ... allgemein: not null && not undefined
+        }
+      }
+      // Zuweisen einer Referenz auf ein Funktions-Objekt
+      var bF = aF;
+      bF();
+
+      // Aufruf:
+      meineFuncMitParam(123);
+      meineFuncMitParam(aF);
+      meineFuncMitParam(aF2);
+      // auch mit anonymer Funktion
+      meineFuncMitParam(function(){
+        console.log('Ausgabe aus anonymer Funktion');
+      });
+
+      /**
+       * Funktionsparameter
+       * - werden in der Funktionssignatur definiert:
+       * - müssen nicht zwingend übergeben werden (sind dann undefined)
+       * - werden über Parameternamen angesprochen
+       * - Ein Überladen von Funktionen durch verschiedene Parameterlisten
+       *   ist nicht möglich
+       */
+      function meineFuncMitParam2(param1){
+        console.log("Parameter übergeben: ");
+        console.log("param1: " + param1);
+
+      }
+      // Aufruf:
+      meineFuncMitParam2();
+      meineFuncMitParam2("erster Wert", "zweiter wert");
+
+       function meineFuncOhneParams(){
+         console.log("meineFuncOhneParams wurde aufgerufen mit " + arguments.length + " Argumenten");
+         for (var n in arguments) {
+           console.log(n + ": " + arguments[n]);
+         }
+       }
+       meineFuncOhneParams();
+       meineFuncOhneParams("Erster", "Zweiter", 123);
+
+      /**
+       * Um fehlendes Overloading zu umgehen:
+       * Funktion übernimmt als einzigen Parameter ein Parameter-Objekt
+       * (Konfigurations-Objekt)
+       */
+      function meineFuncMitConfigObj(o){
+        // Standard-Idiom zur Prüfung, ob o übergeben wurde
+        if (o) {
+          // z.B. auch erst abprüfen, ob alle Params gegeben
+          if (!(o.param1 && o.param2)) {
+            // Standard-Exception, mit frei definierbarer Nachricht:
+            throw "bitte o.param1 und o.param2 angegeben!";
+          }
+
+          // Für jeden parameter
+          if (o.param1) {
+            // o.param1 auswerten
+            console.log("o.param1: " + o.param1);
+          }
+        }
+      }
+      // Aufruf mit config-Objekt:
+      meineFuncMitConfigObj({
+        param1: "Hallo Welt",
+        param2: true
+      });
+      // kann von der Funktion geprüft und abgefangen werden
+      meineFuncMitConfigObj({
+        param2: true
+      });
+
+    </script>
+  </head>
+  <!-- Nicht optimal, besser mit Event, mehr dazu später.  -->
+  <body onload="handleOnLoad();">
+    <h1>Funktionen</h1>
+    <pre>
+      /**
+       * Funktionen in JavaScript:
+       * - Funktionen sind Objekte
+       * - Funktionen definieren ihren eigenen Gültigkeitsbereich / Scope
+       */
+
+       // Definition von Funktion
+      // a) Funktions-Deklaration
+      function handleOnLoad(){
+        console.log('OK');
+        // Deklaration erst nach dieser Funktions-Deklaration,
+        // aber vor Aufruf
+        meineFunc();
+      }
+
+      // b) Definition mit Funktions-Ausdruck (unbenannt)
+      // b.1) mit anonymer Funktion
+      var meineFunc = function(){
+        console.log('Ausgabe aus meineFunc/Funktions-Ausdruck');
+      }
+      // b.2) mit benannter Funktion - in der Praxis nicht notwendig
+      var meineNamedFunc = function benannteFunc(){
+        console.log('Ausgabe aus meineNamedFunc/Funktions-Ausdruck');
+      }
+
+      // Aufruf: Mit Funktionsname oder Variablenname + ()
+      // handleOnLoad()
+      // meineFunc();
+
+      // Funktion als Parameter
+      // a) Funktionsausdruck:
+      var aF = function (){
+        console.log('Ausgabe aus Funktion aF');
+      };
+      // alternativ:
+      function aF2(){
+        console.log('Ausgabe aus Funktion aF2');
+      };
+      // b) Funktion mit Param:
+      function meineFuncMitParam(callback){
+        // Auswertung der übergebenen Funktion:
+        // z.B. diese Funktion meldet sich nach erfolgreicher Ausführung
+        // mit Aufruf der Callback-Funktion
+        callback();
+      }
+      // Aufruf:
+      meineFuncMitParam(aF);
+      meineFuncMitParam(aF2);
+      // auch mit anonymer Funktion
+      meineFuncMitParam(function(){
+        console.log('Ausgabe aus anonymer Funktion');
+      });
+
+      /**
+       * Funktionsparameter
+       * - werden in der Funktionssignatur definiert:
+       * - müssen nicht zwingend übergeben werden (sind dann undefined)
+       * - werden über Parameternamen angesprochen
+       * - Ein Überladen von Funktionen durch verschiedene Parameterlisten
+       *   ist nicht möglich
+       */
+      function meineFuncMitParam2(param1){
+        console.log("Parameter übergeben: ");
+        console.log(param1);
+
+      }
+      // Aufruf:
+      meineFuncMitParam2();
+      meineFuncMitParam2("erster Wert", "zweiter wert");
+
+      /**
+       * Um fehlendes Overloading zu umgehen:
+       * Funktion übernimmt als einzigen Parameter ein Parameter-Objekt
+       * (Konfigurations-Objekt)
+       */
+
+    </pre>
+
+  </body>
+</html>

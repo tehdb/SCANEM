@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Objekt-Erzeugung mit Konstruktor-Funktion</title>
+    <meta charset="UTF-8">
+    <!--
+    /*
+     *  This code is released under Creative Commons Attribution 4.0 International
+     *  (CC BY 4.0) license, http://creativecommons.org/licenses/by/4.0/legalcode .
+     *  That means:
+     *
+     *  You are free to:
+     *
+     *      Share — copy and redistribute the material in any medium or format
+     *      Adapt — remix, transform, and build upon the material
+     *               for any purpose, even commercially.
+     *
+     *      The licensor cannot revoke these freedoms as long as you follow the
+     *      license terms.
+     *
+     *  Under the following terms:
+     *
+     *      Attribution — You must give appropriate credit, provide a link to the
+     *      license, and indicate if changes were made. You may do so in any
+     *      reasonable manner, but not in any way that suggests the licensor endorses
+     *      you or your use.
+     *
+     *  No additional restrictions — You may not apply legal terms or technological
+     *  measures that legally restrict others from doing anything the license
+     *  permits.
+     *
+     *
+     *  2014 Aeonium Software Systems, Robert Rohm.
+     */
+    -->
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="res/styles.css" />
+    <script type="text/javascript" >
+      /*
+       * Objekt-Erzeugung mit Konstruktor-Funktion
+       */
+       // Definition der Konstruktor-Funktion
+       // - ... sind an sich ganz einfache Funktionen
+       // - Häufig verwendete Konvention: Großsschreibung (zur Unterscheidung
+       //   von "nicht-Konstruktor-Funktion"
+
+       var Person = function(name, vorname){
+       // alternativ
+       // function Person(name, vorname){
+
+         // Eigenschaften:
+         // "this" bezieht sich in der Konstruktor-Funktion
+         // immer auf die (zukünftige) Instanz
+         // oder bei direktem Aufruf auf das Funktionsobjekt
+         this.name = name;
+         this.vorname = vorname;
+
+         // Methoden
+         this.sagHallo = function(zuWem){
+           return "Hallo " + zuWem + ', ich bin ' + this.name;
+         };
+       };
+
+       // Instanzierung einer Person mit new-Operator und Konstruktor-Aufruf
+       var einePerson = new Person("Mustermann", "Max");
+       console.log(einePerson.name);
+       console.log(einePerson.vorname);
+
+       var neuePerson = new Person("Müller", "Lisa");
+       console.log(neuePerson.name);
+       console.log(neuePerson.vorname);
+       console.log(neuePerson.sagHallo("Welt"));
+
+       // Individuelles Überschreiben einer Methode ist möglich:
+       neuePerson.sagHallo = function(zuWem){
+         return "Moin " + zuWem;
+       }
+       console.log(neuePerson.sagHallo("Welt"));
+       console.log(einePerson.sagHallo("Welt"));
+
+       // Individuelles Hinzufügen einer Methode ist möglich:
+       neuePerson.berichte = function (){
+         return "Bei der Arbeit!";
+       };
+       
+       console.log(neuePerson.berichte());
+       //console.log(einePerson.berichte()); // FEHLER! No method.
+
+       // Prüfen, ob ein Objekt eine Eigenschaft/Methode hat:
+       var ok = einePerson.berichte;
+       console.log("einePerson hat Methode berichte?");
+       console.log(ok);
+       // .. im Praxiskontext
+       if (einePerson.berichte) {
+         var wert = einePerson.berichte();
+         console.log(wert);
+       };
+
+       // Entfernen von Eigenschaften
+       console.log(neuePerson.berichte);
+       delete einePerson.berichte;
+       console.log(neuePerson.berichte);
+
+      // Funktions-Deklaration
+      function handleOnLoad(){
+//        alert('OK');
+      }
+
+    </script>
+  </head>
+  <!-- Nicht optimal, besser mit Event, mehr dazu später.  -->
+  <body onload="handleOnLoad();">
+    <h1>Objekt-Erzeugung mit Konstruktor-Funktion</h1>
+    <pre>
+
+      /*
+       * Objekt-Erzeugung mit Konstruktor-Funktion
+       */
+       // Definition der Konstruktor-Funktion
+       // - ... sind an sich ganz einfache Funktionen
+       // - Häufig verwendete Konvention: Großsschreibung (zur Unterscheidung
+       //   von "nicht-Konstruktor-Funktion"
+
+       var Person = function(name, vorname){
+       // alternativ
+       // function Person(name, vorname){
+
+         // Eigenschaften:
+         this.name = name;
+         this.vorname = vorname;
+
+         // Methoden
+         this.sagHallo = function(zuWem){
+           return "Hallo " + zuWem;
+         };
+       };
+
+       // Instanzierung einer Person mit new-Operator und Konstruktor-Aufruf
+       var einePerson = new Person("Mustermann", "Max");
+       console.log(einePerson.name);
+       console.log(einePerson.vorname);
+
+       var neuePerson = new Person("Müller", "Lisa");
+       console.log(neuePerson.name);
+       console.log(neuePerson.vorname);
+       console.log(neuePerson.sagHallo("Welt"));
+
+       // Individuelles Überschreiben einer Methode ist möglich:
+       neuePerson.sagHallo = function(zuWem){
+         return "Moin " + zuWem;
+       }
+       console.log(neuePerson.sagHallo("Welt"));
+       console.log(einePerson.sagHallo("Welt"));
+
+       // Individuelles Hinzufügen einer Methode ist möglich:
+       neuePerson.berichte = function (){
+         return "Bei der Arbeit!";
+       }
+       console.log(neuePerson.berichte());
+       //console.log(einePerson.berichte()); // FEHLER! No method.
+
+       // Prüfen, ob ein Objekt eine Eigenschaft/Methode hat:
+       var ok = einePerson.berichte;
+       console.log("einePerson hat Methode berichte?");
+       console.log(ok);
+       // .. im Praxiskontext
+       if (einePerson.berichte) {
+         var wert = einePerson.berichte();
+         console.log(wert);
+       };
+
+       // Entfernen von Eigenschaften
+       console.log(neuePerson.berichte);
+       delete einePerson.berichte;
+       console.log(neuePerson.berichte);
+
+    </pre>
+  </body>
+</html>

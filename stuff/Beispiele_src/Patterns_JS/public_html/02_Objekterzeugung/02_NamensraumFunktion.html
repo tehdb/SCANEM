@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Namensraum-Funktion</title>
+    <meta charset="UTF-8">
+    <!--
+    /*
+     *  This code is released under Creative Commons Attribution 4.0 International
+     *  (CC BY 4.0) license, http://creativecommons.org/licenses/by/4.0/legalcode .
+     *  That means:
+     *
+     *  You are free to:
+     *
+     *      Share — copy and redistribute the material in any medium or format
+     *      Adapt — remix, transform, and build upon the material
+     *               for any purpose, even commercially.
+     *
+     *      The licensor cannot revoke these freedoms as long as you follow the
+     *      license terms.
+     *
+     *  Under the following terms:
+     *
+     *      Attribution — You must give appropriate credit, provide a link to the
+     *      license, and indicate if changes were made. You may do so in any
+     *      reasonable manner, but not in any way that suggests the licensor endorses
+     *      you or your use.
+     *
+     *  No additional restrictions — You may not apply legal terms or technological
+     *  measures that legally restrict others from doing anything the license
+     *  permits.
+     *
+     *
+     *  2014 Aeonium Software Systems, Robert Rohm.
+     */
+    -->
+    <meta name="viewport" content="width=device-width">
+    <link href="../res/styles.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" >
+      /*
+       * Noch besser:
+       */;
+      // Hier: Idiom für nur einmalige Initialisierung
+      // bei mehrmaligem Script-Aufruf
+      var MYAPP = MYAPP || {};
+
+      MYAPP.namespace = function(ns_string){
+        var parts = ns_string.split('.');
+        var parent = MYAPP;
+        var i;
+
+        if (parts[0] === "MYAPP") {
+          parts = parts.slice(1);
+        }
+
+        for (i = 0; i < parts.length; i += 1) {
+          if (typeof parent[parts[i]] === "undefined") {
+            parent[parts[i]] = {};
+          }
+          parent = parent[parts[i]];
+        }
+        return parent;
+      };
+      // Erzeugung von namespace-Objekten, mit bequemer
+      // Namenskonvention (Referenzierungsoperator "." als Trenner)
+      var modul1 = MYAPP.namespace('MYAPP.modules.modul1');
+      var modul2 = MYAPP.namespace('modules.modul2');
+
+      // Arbeit mit den "namespaces":
+      modul1.eigenschaft = 1234;
+      modul2.Person = function(name){
+        this.name = name;
+      }
+      // Alternativ ohne Referenz-Objekte:
+      MYAPP.modules.modul2.Abteilung = function(){
+        // ...
+      }
+
+
+    </script>
+  </head>
+  <body>
+    <h1>JavaScript-Patterns</h1>
+    <h2>Objekterzeugungs-Patterns</h2>
+    <h3>Namensraum-Funktion</h3>
+    <pre>
+
+      /*
+       * Noch besser:
+       */;
+      // Hier: Idiom für nur einmalige Initialisierung
+      // bei mehrmaligem Script-Aufruf
+      var MYAPP = MYAPP || {};
+
+      MYAPP.namespace = function(ns_string){
+        var parts = ns_string.split('.');
+        var parent = MYAPP;
+        var i;
+
+        if (parts[0] === "MYAPP") {
+          parts = parts.slice(1);
+        }
+
+        for (i = 0; i < parts.length; i += 1) {
+          if (typeof parent[parts[i]] === "undefined") {
+            parent[parts[i]] = {};
+          }
+          parent = parent[parts[i]];
+        }
+        return parent;
+      };
+
+      // Erzeugung von namespace-Objekten:
+      var modul1 = MYAPP.namespace('MYAPP.modules.modul1');
+      var modul2 = MYAPP.namespace('modules.modul2');
+
+      // Arbeit mit den "namespaces":
+      modul1.eigenschaft = 1234;
+      modul2.Person = function(name){
+        this.name = name;
+      }
+
+      // Alternativ ohne Referenz-Objekte:
+      MYAPP.modules.modul2.Abteilung = function(){
+        // ...
+      }
+    </pre>
+  </body>
+</html>
