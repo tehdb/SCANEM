@@ -48,21 +48,28 @@ module.exports =
 
 			prop = req.query.p
 			query = if req.query.q then req.query.q.toLowerCase() else null
-			max = parseInt( req.query.m, 10) || 10
 			sort = req.query.s || null
+			max = parseInt( req.query.m, 10 ) # || 10
+			max = if max > 0 then max else 10
+
+
+
+			# console.log "prop #{prop}"
+			# console.log "query #{query}"
+			# console.log "max #{max}"
+			# console.log "sort #{sort}"
 
 			# filter if query passed
 			if query
 				# by property
-				if prop or _.contains( _entryProperties, prop )
+				if prop and _.contains( _entryProperties, prop )
 					out = _.filter _cachedData, (e) ->
 						return _.contains( e[prop].toLowerCase(), query )
 
 				# thru all properties
 				else
 					out = _.filter _cachedData, (e) ->
-						return _.some e, (p) ->
-							return _.contains( p.toLowerCase(), query )
+						return _.some e, (p) -> return _.contains( p.toLowerCase(), query )
 			else
 				out = _cachedData
 
