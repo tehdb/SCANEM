@@ -13,6 +13,7 @@ app.use 	methodOverride()
 app.use 	bodyParser.json()
 
 app.use 	express.static( "./public" )
+app.use 	express.static( "./bower_components" )
 
 app.use 	logger('dev')
 app.use 	errorHandler()

@@ -6,6 +6,8 @@
 	</head>
 <body>
 
+<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.js"></script>
 <script src="app.js"></script>
@@ -21,10 +23,16 @@
 
 		<div>
 			<h3>Results</h3>
-				<li ng-repeat="r in data.results">
-					<ul>{{ r }}</ul>
-				</li>
-		</div>
+
+			<div>
+				<table class="table">
+					<tr ng-repeat="r in data.results">
+							<td>{{r.firstname}}</td>
+							<td>{{r.lastname}}</td>
+					</tr>
+				</table>
+			</div>
+
 	</div>
 
 </div>
