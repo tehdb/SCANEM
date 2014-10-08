@@ -27,9 +27,7 @@ _sendData = (res, page) ->
 module.exports =
 		# select all users from db
 		select: (req, res, next) ->
-
 			page = parseInt( req.params.page, 10 ) || 1
-			# console.log page
 
 			if not _cachedData
 				_loadData (err, data) ->
@@ -39,19 +37,6 @@ module.exports =
 			else
 				_sendData( res, page )
 
-			# fs.readFile './server/database/users.json', (err, data) ->
-			# 	return res.status(400).json( {"reason" : err.toString()} ) if err
-			# 	json = JSON.parse(data)
-			# 	res.json( json )
-
-
-		# # append neu user to db
-		# insert: (req, res, next) ->
-		# 	data = req.body
-
-		# 	console.log data
-
-		# 	res.json( {status: 'OK'} )
 
 
 
