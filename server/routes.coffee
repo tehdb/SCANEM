@@ -1,14 +1,6 @@
-
-
-
-
-
-
 userCtrl = require('./controllers/users.ctrl')
 
 module.exports = ( app ) ->
-
-
 
 	# app.get '/api/users', (req, res) ->
 	# 	res.json({status: 'ok'})

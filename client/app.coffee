@@ -6,10 +6,6 @@ angular.module('jsworkshop', [
 		( $rp, $lp ) ->
 
 			$rp
-				# .when '/profile',
-				# 	template: '/partials/profile.html'
-				# 	controller: 'ProfileCtrl'
-
 				.when '/',
 					templateUrl: '/partials/home.html'
 					controller: 'HomeCtrl'

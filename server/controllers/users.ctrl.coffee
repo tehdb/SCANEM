@@ -5,7 +5,6 @@ _cachedData = fs.readFileSync('./server/database/users.json', {encoding:'utf-8'}
 _cachedData = JSON.parse(_cachedData)
 _entryProperties = _.keys(_cachedData[0])
 
-
 _loadData = (cb) ->
 	fs.readFile './server/database/users.json', (err, data) ->
 		return cb( err ) if err
