@@ -15,8 +15,6 @@ angular.module('jsworkshop').controller( 'HomeCtrl', [
 			m : undefined
 			p : undefined
 
-		#console.log $scope.data.maxitems
-
 		do $scope.search = ( ) ->
 			# console.log $scope.searchdata
 

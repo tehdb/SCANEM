@@ -1,9 +1,9 @@
-express 		= require("express")
-bodyParser 		= require('body-parser')
+express					= require("express")
+bodyParser 			= require('body-parser')
 methodOverride 	= require('method-override')
-multer 			= require('multer')
-logger 			= require('morgan')
-errorHandler 	= require('errorhandler')
+multer 					= require('multer')
+logger 					= require('morgan')
+errorHandler 		= require('errorhandler')
 
 app = express()
 app.set 	'port', 3030
@@ -18,9 +18,7 @@ app.use 	express.static( "./bower_components" )
 app.use 	logger('dev')
 app.use 	errorHandler()
 
-
 require( './routes')(app)
-
 
 app.listen app.get('port'), ->
 	console.log "Listening on port #{app.get('port')}..."

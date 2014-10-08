@@ -4,7 +4,6 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	'ProfileService'
 	( $scope, $rp, profileService ) ->
 
-
 		profileService.getProfileByEmail( $rp.email ).then (data) ->
 			$scope.profile = data
 ])
