@@ -4,16 +4,17 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	'ProfileService'
 	( $scope, $routeParams, profileService ) ->
 
-		$scope.vm =
+		$scope.data =
 			name : 'test'
-			results : ['']
+			results : {}
+
 
 		$scope.search = ( param ) ->
 			console.log param
 			profileService.search( param ).then(
 				( data ) ->
 					console.log data
-					$scope.wm.results = data
+					$scope.data.results = data
 			)
 
 		console.log 'profile controller init'

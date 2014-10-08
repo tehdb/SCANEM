@@ -7,15 +7,15 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ]);
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
-    $scope.vm = {
+    $scope.data = {
       name: 'test',
-      results: ['']
+      results: {}
     };
     $scope.search = function(param) {
       console.log(param);
       return profileService.search(param).then(function(data) {
         console.log(data);
-        return $scope.wm.results = data;
+        return $scope.data.results = data;
       });
     };
     return console.log('profile controller init');
