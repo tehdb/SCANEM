@@ -16,11 +16,11 @@ angular.module('jsworkshop', ['ngRoute']).config([
           key: '50',
           value: '50 results'
         }, {
-          key: 'all',
+          key: '-1',
           value: 'All'
         }
       ],
-      sort: [
+      properties: [
         {
           key: 'name',
           value: 'Name'
@@ -30,19 +30,24 @@ angular.module('jsworkshop', ['ngRoute']).config([
         }, {
           key: 'email',
           value: 'Email'
+        }, {
+          key: '-1',
+          value: 'All entries'
         }
       ],
-      results: {}
+      results: {},
+      total: 0
     };
     $scope.searchdata = {
       q: void 0,
       m: void 0,
-      s: void 0
+      p: void 0
     };
     $scope.search = function() {
       console.log($scope.searchdata);
       return profileService.search($scope.searchdata).then(function(data) {
         console.log(data);
+        $scope.data.total = data.length;
         return $scope.data.results = data;
       });
     };
@@ -52,16 +57,21 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ;angular.module('jsworkshop').service('ProfileService', [
   '$q', '$http', function($q, $http, $translate, restangular) {
     this.search = function(searchs) {
-      var deferred;
+      var deferred, m, p, q, _ref, _ref1;
       deferred = $q.defer();
+      q = searchs.q ? searchs.q : '';
+      m = ((_ref = searchs.m) != null ? _ref.key : void 0) != null ? searchs.m.key : '-1';
+      p = ((_ref1 = searchs.p) != null ? _ref1.key : void 0) != null ? searchs.p.key : '-1';
+      console.log('q: ' + q);
+      console.log('m: ' + m);
+      console.log('p: ' + p);
       $http({
-        url: "/api/users",
+        url: "/api/users?" + "q=" + q + "&m=" + m + "&p=" + p,
         method: "get",
         headers: {
           'Accept': "application/json",
           'Content-Type': "application/json;charset=UTF-8"
-        },
-        data: searchs
+        }
       }).success(function(data, status, headers, config) {
         return deferred.resolve(data);
       }).error(function(err, status, headers, config) {

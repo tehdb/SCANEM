@@ -27,7 +27,7 @@ Server
 
 API
 
-	# p - search by proporty
+	# p - search by property
 	# q - search string
 	# m - max result entries
 	# s - sort by property
