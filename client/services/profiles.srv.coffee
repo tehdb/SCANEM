@@ -1,10 +1,9 @@
 angular.module('jsworkshop').service( 'ProfileService', [
 	'$q'
 	'$http'
-	( $q, $http, $translate, restangular ) ->
+	( $q, $http ) ->
 
 		@search = ( searchs )->
-			#console.log "ProfileService searching..." + JSON.stringify( searchs )
 			deferred = $q.defer()
 
 			q = if searchs.q then searchs.q else ''
@@ -16,11 +15,11 @@ angular.module('jsworkshop').service( 'ProfileService', [
 			console.log('p: ' + p)
 
 			$http
-				url: "/api/users?" + "q=" + q + "&m=" + m  + "&p=" + p
+				url: "/api/users?q=#{q}&m=#{m}&p=#{p}"
 				method: "get"
 				headers:
-					'Accept': "application/json"
-					'Content-Type': "application/json;charset=UTF-8"
+					'Accept': 'application/json'
+					'Content-Type': 'application/json;charset=UTF-8'
 
 			.success ( data, status, headers, config) ->
 				deferred.resolve( data )
@@ -38,8 +37,8 @@ angular.module('jsworkshop').service( 'ProfileService', [
 				url: "/api/user/#{email}"
 				method: "get"
 				headers:
-					'Accept': "application/json"
-					'Content-Type': "application/json;charset=UTF-8"
+					'Accept': 'application/json'
+					'Content-Type': 'application/json;charset=UTF-8'
 
 			.success ( data, status, headers, config) ->
 				deferred.resolve( data )
