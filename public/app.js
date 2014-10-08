@@ -32,7 +32,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
           value: 'Email'
         }, {
           key: '-1',
-          value: 'Alle entries'
+          value: 'All entries'
         }
       ],
       results: {}
