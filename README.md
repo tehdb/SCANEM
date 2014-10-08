@@ -24,3 +24,12 @@ data structure
 
 Server
 	- start server: $ nodemon server/app.coffee
+
+API
+
+	# p - search by proporty
+	# q - search string
+	# m - max result entries
+	# s - sort by property
+
+	example: http://localhost:3030/api/users?q=Adam&s=surname

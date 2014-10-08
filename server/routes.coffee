@@ -13,8 +13,22 @@ module.exports = ( app ) ->
 	# app.get '/api/users', (req, res) ->
 	# 	res.json({status: 'ok'})
 	#
-	app.get '/api/users/:page?', userCtrl.select
-	# app.post '/api/users', userCtrl.insert
+	#
+
+	#  api/users/sort=XXX&q=XXX&max=XXX
+	#
+	#app.get '/api/users/:page?', userCtrl.select
+	app.get '/api/users', userCtrl.select
+
+	#app.post '/api/users', userCtrl.insert
+
+		# {
+		# 	search: ''
+		# 	filter: ''
+
+		# 	max: ''
+		# }
+
 
 	# unknow route
 	app.get '*', (req, res) ->

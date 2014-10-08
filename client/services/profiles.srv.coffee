@@ -21,5 +21,8 @@ angular.module('jsworkshop').service( 'ProfileService', [
 				deferred.reject( err );
 
 			return deferred.promise
+
+
+
 		return
 ])
