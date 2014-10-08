@@ -13,7 +13,7 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 			profileService.search( param ).then(
 				( data ) ->
 					console.log data
-					$scope.wm.results = JSON.stringify(data)
+					$scope.wm.results = data
 			)
 
 		console.log 'profile controller init'

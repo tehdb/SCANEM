@@ -15,7 +15,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
       console.log(param);
       return profileService.search(param).then(function(data) {
         console.log(data);
-        return $scope.wm.results = JSON.stringify(data);
+        return $scope.wm.results = data;
       });
     };
     return console.log('profile controller init');
