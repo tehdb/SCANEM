@@ -35,7 +35,8 @@ angular.module('jsworkshop', ['ngRoute']).config([
           value: 'All entries'
         }
       ],
-      results: {}
+      results: {},
+      total: 0
     };
     $scope.searchdata = {
       q: void 0,
@@ -46,6 +47,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
       console.log($scope.searchdata);
       return profileService.search($scope.searchdata).then(function(data) {
         console.log(data);
+        $scope.data.total = data.length;
         return $scope.data.results = data;
       });
     };
