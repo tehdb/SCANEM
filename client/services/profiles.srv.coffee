@@ -3,8 +3,8 @@ angular.module('jsworkshop').service( 'ProfileService', [
 	'$http'
 	( $q, $http, $translate, restangular ) ->
 
-		@search = ( data )->
-			console.log "ProfileService searching..." + JSON.stringify( data )
+		@search = ( searchs )->
+			#console.log "ProfileService searching..." + JSON.stringify( searchs )
 			deferred = $q.defer()
 			$http
 				url: "/api/users"
@@ -12,7 +12,7 @@ angular.module('jsworkshop').service( 'ProfileService', [
 				headers:
 					'Accept': "application/json"
 					'Content-Type': "application/json;charset=UTF-8"
-				data : data
+				data : searchs
 
 			.success ( data, status, headers, config) ->
 				deferred.resolve( data )

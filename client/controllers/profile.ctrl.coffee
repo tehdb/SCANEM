@@ -5,13 +5,21 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	( $scope, $routeParams, profileService ) ->
 
 		$scope.data =
-			searchparam : 'test'
+			maxitems: [ {key:'10', value:'10 results'}, {key:'50', value:'50 results'}, {key:'all', value:'All'} ]
+			sort: [ {key:'name', value:'Name'}, {key:'surname', value:'Surname'}, {key:'email', value:'Email'} ]
 			results : {}
 
+		$scope.searchdata =
+			q : undefined
+			m : undefined
+			s : undefined
 
-		$scope.search = ( searchparam ) ->
-			console.log searchparam
-			profileService.search( searchparam ).then(
+		#console.log $scope.data.maxitems
+
+		$scope.search = ( ) ->
+			console.log $scope.searchdata
+
+			profileService.search( $scope.searchdata ).then(
 				( data ) ->
 					console.log data
 					$scope.data.results = data

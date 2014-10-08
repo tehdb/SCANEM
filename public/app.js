@@ -8,12 +8,40 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
     $scope.data = {
-      searchparam: 'test',
+      maxitems: [
+        {
+          key: '10',
+          value: '10 results'
+        }, {
+          key: '50',
+          value: '50 results'
+        }, {
+          key: 'all',
+          value: 'All'
+        }
+      ],
+      sort: [
+        {
+          key: 'name',
+          value: 'Name'
+        }, {
+          key: 'surname',
+          value: 'Surname'
+        }, {
+          key: 'email',
+          value: 'Email'
+        }
+      ],
       results: {}
     };
-    $scope.search = function(searchparam) {
-      console.log(searchparam);
-      return profileService.search(searchparam).then(function(data) {
+    $scope.searchdata = {
+      q: void 0,
+      m: void 0,
+      s: void 0
+    };
+    $scope.search = function() {
+      console.log($scope.searchdata);
+      return profileService.search($scope.searchdata).then(function(data) {
         console.log(data);
         return $scope.data.results = data;
       });
@@ -23,9 +51,8 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ]);
 ;angular.module('jsworkshop').service('ProfileService', [
   '$q', '$http', function($q, $http, $translate, restangular) {
-    this.search = function(data) {
+    this.search = function(searchs) {
       var deferred;
-      console.log("ProfileService searching..." + JSON.stringify(data));
       deferred = $q.defer();
       $http({
         url: "/api/users",
@@ -34,7 +61,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
           'Accept': "application/json",
           'Content-Type': "application/json;charset=UTF-8"
         },
-        data: data
+        data: searchs
       }).success(function(data, status, headers, config) {
         return deferred.resolve(data);
       }).error(function(err, status, headers, config) {
