@@ -32,5 +32,8 @@ module.exports = ( app ) ->
 
 
 	# unknow route
+	# app.get '*', (req, res) ->
+	# 	res.send('<h1 style="color:red;">route not found</h1>')
+	#
 	app.get '*', (req, res) ->
-		res.send('<h1 style="color:red;">route not found</h1>')
+		res.render 'index'

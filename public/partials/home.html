@@ -1,0 +1,40 @@
+<div>
+	<h1>Welcome to JS Workshop</h1>
+
+	<form id="searchform" class="form-inline" role="form">
+		<div class="form-group">
+			<input type="text" class="form-control" id="search" placeholder="Enter search parameter" ng-model="searchdata.q">
+
+			<select id="maxitems" class="form-control" ng-options="max.value for max in data.maxitems" ng-model="searchdata.m">
+				<option>{{max.value}}</option>
+			</select>
+
+			<select id="properties" class="form-control" ng-options="p.value for p in data.properties" ng-model="searchdata.p">
+				<option>{{p.value}}</option>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-success" ng-click="search()">Search</button>
+	</form>
+
+	<div>
+		<h3>Results: {{data.total}}</h3>
+
+		<div class="table-responsive">
+			<table class="table">
+				<tr>
+					<th>Name</th>
+					<th>Surname</th>
+					<th>Email</th>
+					<th></th>
+				</tr>
+				<tr ng-repeat="r in data.results">
+					<td>{{r.name}}</td>
+					<td>{{r.surname}}</td>
+					<td>{{r.email}}</td>
+
+					<td><a class="btn btn-default" ng-href="/user/{{r.email}}">details</a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

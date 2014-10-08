@@ -1,0 +1,38 @@
+//- <!DOCTYPE html>
+//- <html ng-app="jsworkshop">
+//- 	<head>
+//- 		<meta charset="utf-8">
+//- 		<title>jsworkshop</title>
+//- 	</head>
+//- <body>
+
+//- <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+
+//- <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+//- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.js"></script>
+//- <script src="app.js"></script>
+
+
+//- <div class="container">
+//- 	<div ng-view></div>
+//- </div>
+
+//- </body>
+//- </html>
+
+
+doctype html
+html(lang="en" ng-app="jsworkshop")
+	head
+		title JSW
+
+		link( rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" )
+
+		script( src="/angular/angular.js")
+		script( src="/angular-route/angular-route.js")
+		script( src="/app.js")
+
+
+	body
+		div.container
+			div(ng-view)

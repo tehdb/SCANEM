@@ -1,11 +1,19 @@
 angular.module('jsworkshop', ['ngRoute']).config([
   '$routeProvider', '$locationProvider', function($rp, $lp) {
-    $rp.otherwise({
+    $rp.when('/', {
+      templateUrl: '/partials/home.html',
+      controller: 'HomeCtrl'
+    }).when('/user/:email', {
+      templateUrl: '/partials/profile.html',
+      controller: 'ProfileCtrl'
+    }).otherwise({
       redirectTo: '/'
     });
+    $lp.html5Mode(true);
+    $lp.hashPrefix('!');
   }
 ]);
-;angular.module('jsworkshop').controller('ProfileCtrl', [
+;angular.module('jsworkshop').controller('HomeCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
     $scope.data = {
       maxitems: [
@@ -43,15 +51,19 @@ angular.module('jsworkshop', ['ngRoute']).config([
       m: void 0,
       p: void 0
     };
-    $scope.search = function() {
-      console.log($scope.searchdata);
+    return ($scope.search = function() {
       return profileService.search($scope.searchdata).then(function(data) {
-        console.log(data);
         $scope.data.total = data.length;
         return $scope.data.results = data;
       });
-    };
-    return console.log('profile controller init');
+    })();
+  }
+]);
+;angular.module('jsworkshop').controller('ProfileCtrl', [
+  '$scope', '$routeParams', 'ProfileService', function($scope, $rp, profileService) {
+    return profileService.getProfileByEmail($rp.email).then(function(data) {
+      return $scope.profile = data;
+    });
   }
 ]);
 ;angular.module('jsworkshop').service('ProfileService', [
@@ -67,6 +79,23 @@ angular.module('jsworkshop', ['ngRoute']).config([
       console.log('p: ' + p);
       $http({
         url: "/api/users?" + "q=" + q + "&m=" + m + "&p=" + p,
+        method: "get",
+        headers: {
+          'Accept': "application/json",
+          'Content-Type': "application/json;charset=UTF-8"
+        }
+      }).success(function(data, status, headers, config) {
+        return deferred.resolve(data);
+      }).error(function(err, status, headers, config) {
+        return deferred.reject(err);
+      });
+      return deferred.promise;
+    };
+    this.getProfileByEmail = function(email) {
+      var deferred;
+      deferred = $q.defer();
+      $http({
+        url: "/api/user/" + email,
         method: "get",
         headers: {
           'Accept': "application/json",
