@@ -43,7 +43,7 @@ module.exports =
 		# q - search string
 		# m - max result entries
 		# s - sort by property
-		select: (req, res, next) ->
+		selectMulti: (req, res, next) ->
 			out = null
 
 			prop = req.query.p
@@ -77,6 +77,14 @@ module.exports =
 			out = out.slice(0, max)
 			res.send( out )
 
+
+		selectSingle: (req, res, next) ->
+			email = req.params.email
+
+			entry = _.find _cachedData, (e) ->
+				return e.email is email
+
+			res.json( entry )
 
 
 

@@ -18,7 +18,8 @@ module.exports = ( app ) ->
 	#  api/users/sort=XXX&q=XXX&max=XXX
 	#
 	#app.get '/api/users/:page?', userCtrl.select
-	app.get '/api/users', userCtrl.select
+	app.get '/api/users', userCtrl.selectMulti
+	app.get '/api/user/:email', userCtrl.selectSingle
 
 	#app.post '/api/users', userCtrl.insert
 
