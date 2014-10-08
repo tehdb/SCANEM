@@ -20,15 +20,17 @@
 
 		<form id="searchform" class="form-inline" role="form">
 			<div class="form-group">
-				<input type="text" class="form-control" id="search" placeholder="Enter search parameter" ng-model="data.searchparam">
-				<select class="form-control" >
-					<option ng-repeat="max in data.maxitems" ng-model="max">{{max}}</option>
+				<input type="text" class="form-control" id="search" placeholder="Enter search parameter" ng-model="searchdata.q">
+
+				<select id="maxitems" class="form-control" ng-options="max.value for max in data.maxitems" ng-model="searchdata.m">
+					<option>{{max.value}}</option>
 				</select>
-				<select class="form-control">
-					<option ng-repeat="s in data.sort" ng-model="s">{{s}}</option>
+
+				<select id="sort" class="form-control" ng-options="s.value for s in data.sort" ng-model="searchdata.s">
+					<option>{{s.value}}</option>
 				</select>
 			</div>
-			<button type="submit" class="btn btn-success" ng-click="search(data.searchparam)">Search</button>
+			<button type="submit" class="btn btn-success" ng-click="search()">Search</button>
 		</form>
 
 		<div>
