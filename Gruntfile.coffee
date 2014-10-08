@@ -40,6 +40,17 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 
+			server_unit_test:
+				files: ['tests/server/unit/**/*.spec.coffee']
+				tasks: ['mochaTest:unit']
+
+		mochaTest:
+			unit:
+				options:
+					reporter: 'spec'
+					require: 'coffee-script/register'
+				src: ['tests/server/unit/**/*.spec.coffee']
+
 	grunt
 		.registerTask( 'client-build', [
 			'coffee:client'
@@ -48,6 +59,10 @@ module.exports = (grunt) ->
 
 		.registerTask( 'client-watch', [
 			'watch:client'
+		])
+
+		.registerTask( 'server-test', [
+			'mochaTest:unit'
 		])
 
 		.registerTask( 'default', [] )

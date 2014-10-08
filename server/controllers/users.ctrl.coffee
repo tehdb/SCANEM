@@ -5,39 +5,7 @@ _cachedData = fs.readFileSync('./server/database/users.json', {encoding:'utf-8'}
 _cachedData = JSON.parse(_cachedData)
 _entryProperties = _.keys(_cachedData[0])
 
-_loadData = (cb) ->
-	fs.readFile './server/database/users.json', (err, data) ->
-		return cb( err ) if err
-		json = JSON.parse(data)
-
-		cb( null, json )
-
-# 1 		2 			3 			4
-# 0-9		10-19 		20-29 		30-39
-_entriesPerPage = 10
-_sendDataPaged = (res, page) ->
-	start = (page-1)*_entriesPerPage
-	end = start + _entriesPerPage
-
-	pagedData = _cachedData.slice( start, end )
-
-	res.json( pagedData )
-
-
 module.exports =
-		# select all users from db
-		# select: (req, res, next) ->
-		# 	page = parseInt( req.params.page, 10 ) || 1
-
-		# 	if not _cachedData
-		# 		_loadData (err, data) ->
-		# 			return res.status(400).json( {"reason" : err.toString()} ) if err
-		# 			_cachedData = data
-		# 			_sendData( res, page )
-		# 	else
-		# 		_sendData( res, page )
-		#
-
 		# p - search by proporty
 		# q - search string
 		# m - max result entries
