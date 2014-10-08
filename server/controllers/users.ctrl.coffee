@@ -52,13 +52,6 @@ module.exports =
 			max = parseInt( req.query.m, 10 ) # || 10
 			max = if max > 0 then max else 10
 
-
-
-			# console.log "prop #{prop}"
-			# console.log "query #{query}"
-			# console.log "max #{max}"
-			# console.log "sort #{sort}"
-
 			# filter if query passed
 			if query
 				# by property
@@ -75,7 +68,7 @@ module.exports =
 
 			out = _.sortBy(out, sort) if sort
 			out = out.slice(0, max)
-			res.send( out )
+			res.json( out )
 
 
 		selectSingle: (req, res, next) ->
