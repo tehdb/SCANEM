@@ -8,12 +8,12 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
     $scope.data = {
-      name: 'test',
+      searchparam: 'test',
       results: {}
     };
-    $scope.search = function(param) {
-      console.log(param);
-      return profileService.search(param).then(function(data) {
+    $scope.search = function(searchparam) {
+      console.log(searchparam);
+      return profileService.search(searchparam).then(function(data) {
         console.log(data);
         return $scope.data.results = data;
       });

@@ -5,13 +5,13 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 	( $scope, $routeParams, profileService ) ->
 
 		$scope.data =
-			name : 'test'
+			searchparam : 'test'
 			results : {}
 
 
-		$scope.search = ( param ) ->
-			console.log param
-			profileService.search( param ).then(
+		$scope.search = ( searchparam ) ->
+			console.log searchparam
+			profileService.search( searchparam ).then(
 				( data ) ->
 					console.log data
 					$scope.data.results = data
