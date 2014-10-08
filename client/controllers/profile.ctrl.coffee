@@ -6,6 +6,8 @@ angular.module('jsworkshop').controller( 'ProfileCtrl', [
 
 		$scope.data =
 			searchparam : 'test'
+			maxitems: [10, 50, 'all']
+			sort: ['name', 'surname', 'email']
 			results : {}
 
 

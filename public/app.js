@@ -9,6 +9,8 @@ angular.module('jsworkshop', ['ngRoute']).config([
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
     $scope.data = {
       searchparam: 'test',
+      maxitems: [10, 50, 'all'],
+      sort: ['name', 'surname', 'email'],
       results: {}
     };
     $scope.search = function(searchparam) {

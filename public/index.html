@@ -21,6 +21,12 @@
 		<form id="searchform" class="form-inline" role="form">
 			<div class="form-group">
 				<input type="text" class="form-control" id="search" placeholder="Enter search parameter" ng-model="data.searchparam">
+				<select class="form-control" >
+					<option ng-repeat="max in data.maxitems" ng-model="max">{{max}}</option>
+				</select>
+				<select class="form-control">
+					<option ng-repeat="s in data.sort" ng-model="s">{{s}}</option>
+				</select>
 			</div>
 			<button type="submit" class="btn btn-success" ng-click="search(data.searchparam)">Search</button>
 		</form>
@@ -31,8 +37,8 @@
 			<div class="table-responsive">
 				<table class="table">
 					<tr>
-						<th>Firstname</th>
-						<th>Lastname</th>
+						<th>Name</th>
+						<th>Surname</th>
 						<th>Email</th>
 					</tr>
 					<tr ng-repeat="r in data.results">
