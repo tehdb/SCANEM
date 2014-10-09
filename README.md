@@ -33,3 +33,9 @@ API
 	# s - sort by property
 
 	example: http://localhost:3030/api/users?q=Adam&s=surname
+
+
+SEO
+	start prerender server: 	$ grunt prerender-start
+	test prerender:				http://localhost:3030/?_escaped_fragment_=
+

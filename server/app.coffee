@@ -6,6 +6,9 @@ logger 					= require('morgan')
 errorHandler 		= require('errorhandler')
 
 app = express()
+
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://localhost:3000') )
+
 app.set 	'port', 3030
 app.set 	'view engine', 'jade'
 app.set 	'views', "./server/views"
@@ -17,6 +20,7 @@ app.use 	express.static( "./bower_components" )
 
 app.use 	logger('dev')
 app.use 	errorHandler()
+
 
 require( './routes')(app)
 

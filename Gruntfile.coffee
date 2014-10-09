@@ -51,20 +51,15 @@ module.exports = (grunt) ->
 					require: 'coffee-script/register'
 				src: ['tests/server/unit/**/*.spec.coffee']
 
+		exec:
+			prerender:
+				command: 'nodemon prerender.coffee'
+
 	grunt
-		.registerTask( 'client-build', [
-			'coffee:client'
-			'concat:scripts'
-		])
-
-		.registerTask( 'client-watch', [
-			'watch:client'
-		])
-
-		.registerTask( 'server-test', [
-			'mochaTest:unit'
-		])
-
+		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
+		.registerTask( 'client-watch', 		[ 'watch:client' ])
+		.registerTask( 'server-test', 		[ 'mochaTest:unit' ])
+		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
 		.registerTask( 'default', [] )
 
 
