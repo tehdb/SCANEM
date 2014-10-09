@@ -51,21 +51,25 @@ module.exports = (grunt) ->
 					require: 'coffee-script/register'
 				src: ['tests/server/unit/**/*.spec.coffee']
 
+		karma:
+			client:
+				 configFile: 'karma.conf.coffee'
+
 	grunt
 		.registerTask( 'client-build', [
 			'coffee:client'
 			'concat:scripts'
-		])
 
-		.registerTask( 'client-watch', [
+		]).registerTask( 'client-watch', [
 			'watch:client'
-		])
 
-		.registerTask( 'server-test', [
+		]).registerTask( 'karma', [
+			'karma'
+
+		]).registerTask( 'server-test', [
 			'mochaTest:unit'
-		])
 
-		.registerTask( 'default', [] )
+		]).registerTask( 'default', [] )
 
 
 
