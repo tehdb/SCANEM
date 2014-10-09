@@ -19,7 +19,7 @@ module.exports =
 			query = if req.query.q then req.query.q.toLowerCase() else null
 			sort = req.query.s || null
 			max = parseInt( req.query.m, 10 ) # || 10
-			max = if max > 0 then max else 10
+			max = if max? then max else 10
 
 			# filter if query passed
 			if query
@@ -36,7 +36,11 @@ module.exports =
 				out = _cachedData
 
 			out = _.sortBy(out, sort) if sort
-			out = out.slice(0, max)
+
+			out = out.slice(0, max) if max != -1
+
+			#console.log max
+
 			res.json( out )
 
 

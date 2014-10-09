@@ -16,8 +16,6 @@ angular.module('jsworkshop').controller( 'HomeCtrl', [
 			p : undefined
 
 		do $scope.search = ( ) ->
-			# console.log $scope.searchdata
-
 			profileService.search( $scope.searchdata ).then(
 				( data ) ->
 					# console.log data

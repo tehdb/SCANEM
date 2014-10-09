@@ -67,7 +67,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
   }
 ]);
 ;angular.module('jsworkshop').service('ProfileService', [
-  '$q', '$http', function($q, $http, $translate, restangular) {
+  '$q', '$http', function($q, $http) {
     this.search = function(searchs) {
       var deferred, m, p, q, _ref, _ref1;
       deferred = $q.defer();
@@ -78,11 +78,11 @@ angular.module('jsworkshop', ['ngRoute']).config([
       console.log('m: ' + m);
       console.log('p: ' + p);
       $http({
-        url: "/api/users?" + "q=" + q + "&m=" + m + "&p=" + p,
+        url: "/api/users?q=" + q + "&m=" + m + "&p=" + p,
         method: "get",
         headers: {
-          'Accept': "application/json",
-          'Content-Type': "application/json;charset=UTF-8"
+          'Accept': 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8'
         }
       }).success(function(data, status, headers, config) {
         return deferred.resolve(data);
@@ -98,8 +98,8 @@ angular.module('jsworkshop', ['ngRoute']).config([
         url: "/api/user/" + email,
         method: "get",
         headers: {
-          'Accept': "application/json",
-          'Content-Type': "application/json;charset=UTF-8"
+          'Accept': 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8'
         }
       }).success(function(data, status, headers, config) {
         return deferred.resolve(data);
