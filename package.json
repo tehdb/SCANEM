@@ -25,11 +25,8 @@
     "grunt-contrib-coffee": "^0.12.0",
     "grunt-contrib-concat": "^0.5.0",
     "grunt-contrib-watch": "^0.6.1",
-<<<<<<< HEAD
     "grunt-karma": "^0.9.0",
-=======
     "grunt-exec": "^0.4.6",
->>>>>>> ff8b33e67ac01a0de60c0424f6569af8a24cc770
     "jade": "^1.7.0",
     "load-grunt-tasks": "^0.6.0",
     "lodash": "^2.4.1",
@@ -52,11 +49,8 @@
     "karma-requirejs": "^0.2.2",
     "karma-sinon": "^1.0.3",
     "mocha": "^1.21.4",
-<<<<<<< HEAD
     "requirejs": "^2.1.15",
-=======
     "proxyquire": "^1.0.1",
->>>>>>> ff8b33e67ac01a0de60c0424f6569af8a24cc770
     "sinon": "^1.10.3"
   }
 }

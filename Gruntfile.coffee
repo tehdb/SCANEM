@@ -53,6 +53,7 @@ module.exports = (grunt) ->
 
 		karma:
 			client:
+				configFile: 'karma.conf.coffee'
 
 		exec:
 			prerender:
@@ -61,7 +62,7 @@ module.exports = (grunt) ->
 	grunt
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
 		.registerTask( 'client-watch', 		[ 'watch:client' ])
-		.registerTask( 'karma', 			[ 'karma'])
+		.registerTask( 'client-test', 		[ 'karma' ])
 		.registerTask( 'server-test', 		[ 'mochaTest:unit' ])
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
 		.registerTask( 'default', [] )
