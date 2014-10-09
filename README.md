@@ -3,7 +3,8 @@
 Content
 http://www.it-schulungen.com/seminare/softwareentwicklung/javascript/javascript-fortgeschrittene-programmierung.html
 
-## Projekt Thema:
+## Project Thema:
+A mini app that enable search profile data into backend. 
 
 Demo: http://localhost:3030/
 
