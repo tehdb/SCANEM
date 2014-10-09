@@ -66,7 +66,7 @@ module.exports = (grunt) ->
 		exec:
 			prerender:
 				command: 'nodemon prerender.coffee'
-xs
+
 	grunt
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
 		.registerTask( 'client-watch', 		[ 'watch:client' ])

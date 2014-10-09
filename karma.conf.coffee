@@ -7,14 +7,14 @@ module.exports = (config) ->
 			'bower_components/angular/angular.js'
 			'bower_components/angular-route/angular-route.js'
 			'bower_components/angular-mocks/angular-mocks.js'
-			'tests/client/test-main.coffee'
+			# 'tests/client/test-main.coffee'
 			'public/app.js'
-			#'tests/client/**/*.coffee'
+			'tests/client/**/*.coffee'
 		]
 		plugins: [
 			'karma-mocha'
 			'karma-chai'
-			'karma-chrome-launcher'
+			'karma-phantomjs-launcher'
 			'karma-coffee-preprocessor'
 		]
 		exclude: []
@@ -28,7 +28,7 @@ module.exports = (config) ->
 		logLevel: config.LOG_INFO
 		autoWatch: true
 		browsers: [
-			'Chrome'
-			# 'PhantomJS'
+			#'Chrome'
+			'PhantomJS'
 		]
 		singleRun: false
