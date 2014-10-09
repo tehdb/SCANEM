@@ -46,17 +46,17 @@ data structure
 	watch and run angular test: $ grunt client-test
 
 ## Global npm modules
-$ npm install -g grunt-cli        # JavaScript task runner (http://gruntjs.com)
-$ npm install -g coffee-script    # better JavaScript (http://coffeescript.org)
-$ npm install -g forever          # continuously running tool (https://github.com/nodejitsu/forever)
-$ npm install -g mocha            # feature-rich JavaScript test framework (http://visionmedia.github.io/mocha/)
+	$ npm install -g grunt-cli        # JavaScript task runner (http://gruntjs.com)
+	$ npm install -g coffee-script    # better JavaScript (http://coffeescript.org)
+	$ npm install -g forever          # continuously running tool (https://github.com/nodejitsu/forever)
+	$ npm install -g mocha            # feature-rich JavaScript test framework (http://visionmedia.github.io/mocha/)
 
 ## Intall
-$ git clone https://github.com/cbaeza/jsworkshop.git # clone repository
-$ cd jsworkshop
-$ npm install # install node.js dependencies
-$ bower install # install frontend dependencies
-$ grunt client-build # compile client
-$ nodemon server/app.coffee
+	$ git clone https://github.com/cbaeza/jsworkshop.git # clone repository
+	$ cd jsworkshop
+	$ npm install # install node.js dependencies
+	$ bower install # install frontend dependencies
+	$ grunt client-build # compile client
+	$ nodemon server/app.coffee
 
 
