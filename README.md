@@ -1,48 +1,47 @@
-JavaScript WorkShop at 07 - 09.10.2014
+## JavaScript WorkShop at 07 - 09.10.2014
+
 Content
 http://www.it-schulungen.com/seminare/softwareentwicklung/javascript/javascript-fortgeschrittene-programmierung.html
 
-Projekt Thema:
-=============
+## Projekt Thema:
 
-Demo: http://192.168.129.109:3030/
+Demo: http://localhost:3030/
 
 Client: AngularJS
-- Suche in profiles
+- Search in profiles
 
 Server: Node.js
 - WS Profile CRUD
 - WS Profile Search
-- Mongo
-
 
 data structure
 [{
-	firstname: 'String',
-	lastname: 'String',
+	name: 'String',
+	surname: 'String',
 	email: 'String'
 }]
 
 
-Server
+## Server
 	- start server: $ nodemon server/app.coffee
 
-API
+# API
 
 	# p - search by property
 	# q - search string
-	# m - max result entries
+	# m - max result entries. -1 to get all
 	# s - sort by property
 
-	example: http://localhost:3030/api/users?q=Adam&s=surname
+	Get all entries that contain 'Adam', sorted by surname
+	example: http://localhost:3030/api/users?q=Adam&s=surname&m=-1
 
-
-SEO
+## SEO
 	start prerender server: 	$ grunt prerender-start
 	test prerender:				http://localhost:3030/?_escaped_fragment_=
 
 
-Tests
-	watch and run unit tests: 	$ grunt server-test
+# Tests
+	watch and run unit tests: 	$ grunt watch_unit_tests
+	watch and run angular test: $ grunt client-test
 
 
