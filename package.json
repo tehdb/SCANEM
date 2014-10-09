@@ -41,6 +41,7 @@
     "grunt-mocha-test": "^0.12.1",
     "mocha": "^1.21.4",
     "proxyquire": "^1.0.1",
-    "sinon": "^1.10.3"
+    "sinon": "^1.10.3",
+    "superagent": "^0.20.0"
   }
 }

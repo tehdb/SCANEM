@@ -39,3 +39,8 @@ SEO
 	start prerender server: 	$ grunt prerender-start
 	test prerender:				http://localhost:3030/?_escaped_fragment_=
 
+
+Tests
+	watch and run unit tests: 	$ grunt server-test
+
+

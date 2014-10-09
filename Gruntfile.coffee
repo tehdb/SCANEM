@@ -40,16 +40,25 @@ module.exports = (grunt) ->
 				options:
 					livereload: true
 
-			server_unit_test:
+			server_unit_tests:
 				files: ['tests/server/unit/**/*.spec.coffee']
 				tasks: ['mochaTest:unit']
 
+			api_tests:
+				files: ['tests/server/api/**/*.spec.coffee']
+				tasks: ['mochaTest:api']
+
 		mochaTest:
+			options:
+				reporter: 'spec'
+				require: 'coffee-script/register'
+
 			unit:
-				options:
-					reporter: 'spec'
-					require: 'coffee-script/register'
 				src: ['tests/server/unit/**/*.spec.coffee']
+
+			api:
+				src: ['tests/server/api/**/*.spec.coffee']
+
 
 		exec:
 			prerender:
@@ -58,7 +67,9 @@ module.exports = (grunt) ->
 	grunt
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
 		.registerTask( 'client-watch', 		[ 'watch:client' ])
-		.registerTask( 'server-test', 		[ 'mochaTest:unit' ])
+		.registerTask( 'watch_unit_tests', 	[ 'watch:server_unit_tests' ])
+		.registerTask( 'watch_api_tests', 	[ 'watch:api_tests' ])
+
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
 		.registerTask( 'default', [] )
 
