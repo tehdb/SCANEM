@@ -53,23 +53,19 @@ module.exports = (grunt) ->
 
 		karma:
 			client:
-				 configFile: 'karma.conf.coffee'
+
+		exec:
+			prerender:
+				command: 'nodemon prerender.coffee'
 
 	grunt
-		.registerTask( 'client-build', [
-			'coffee:client'
-			'concat:scripts'
+		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
+		.registerTask( 'client-watch', 		[ 'watch:client' ])
+		.registerTask( 'karma', 			[ 'karma'])
+		.registerTask( 'server-test', 		[ 'mochaTest:unit' ])
+		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
+		.registerTask( 'default', [] )
 
-		]).registerTask( 'client-watch', [
-			'watch:client'
-
-		]).registerTask( 'karma', [
-			'karma'
-
-		]).registerTask( 'server-test', [
-			'mochaTest:unit'
-
-		]).registerTask( 'default', [] )
 
 
 

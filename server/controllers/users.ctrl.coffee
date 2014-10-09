@@ -1,9 +1,11 @@
 _ = require('lodash')
 fs = require('fs')
 
+
 _cachedData = fs.readFileSync('./server/database/users.json', {encoding:'utf-8'})
 _cachedData = JSON.parse(_cachedData)
 _entryProperties = _.keys(_cachedData[0])
+
 
 module.exports =
 		# p - search by proporty
