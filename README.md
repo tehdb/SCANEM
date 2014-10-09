@@ -5,6 +5,8 @@ http://www.it-schulungen.com/seminare/softwareentwicklung/javascript/javascript-
 Projekt Thema:
 =============
 
+Demo: http://192.168.129.109:3030/
+
 Client: AngularJS
 - Suche in profiles
 
