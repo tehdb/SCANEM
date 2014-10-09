@@ -3,12 +3,12 @@ angular.module('jsworkshop').service( 'ProfileService', [
 	'$http'
 	( $q, $http ) ->
 
-		@search = ( searchs )->
+		@search = ( searchParams )->
 			deferred = $q.defer()
 
-			q = if searchs.q then searchs.q else ''
-			m = if searchs.m?.key? then searchs.m.key else '-1'
-			p = if searchs.p?.key? then searchs.p.key else '-1'
+			q = if searchParams.q then searchParams.q else ''
+			m = if searchParams.m?.key? then searchParams.m.key else '-1'
+			p = if searchParams.p?.key? then searchParams.p.key else '-1'
 
 			console.log('q: ' + q)
 			console.log('m: ' + m)

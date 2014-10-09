@@ -68,12 +68,12 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ]);
 ;angular.module('jsworkshop').service('ProfileService', [
   '$q', '$http', function($q, $http) {
-    this.search = function(searchs) {
+    this.search = function(searchParams) {
       var deferred, m, p, q, _ref, _ref1;
       deferred = $q.defer();
-      q = searchs.q ? searchs.q : '';
-      m = ((_ref = searchs.m) != null ? _ref.key : void 0) != null ? searchs.m.key : '-1';
-      p = ((_ref1 = searchs.p) != null ? _ref1.key : void 0) != null ? searchs.p.key : '-1';
+      q = searchParams.q ? searchParams.q : '';
+      m = ((_ref = searchParams.m) != null ? _ref.key : void 0) != null ? searchParams.m.key : '-1';
+      p = ((_ref1 = searchParams.p) != null ? _ref1.key : void 0) != null ? searchParams.p.key : '-1';
       console.log('q: ' + q);
       console.log('m: ' + m);
       console.log('p: ' + p);
