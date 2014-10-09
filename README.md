@@ -51,7 +51,7 @@ data structure
 	$ npm install -g forever          # continuously running tool (https://github.com/nodejitsu/forever)
 	$ npm install -g mocha            # feature-rich JavaScript test framework (http://visionmedia.github.io/mocha/)
 
-## Intall
+## Installation
 	$ git clone https://github.com/cbaeza/jsworkshop.git # clone repository
 	$ cd jsworkshop
 	$ npm install # install node.js dependencies
