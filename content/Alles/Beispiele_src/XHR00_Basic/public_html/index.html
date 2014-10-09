@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Das XMLHttpRequest-Objekt</title>
+    <meta charset="UTF-8">
+    <!--
+    @see https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+    @see http://www.w3.org/TR/XMLHttpRequest2/
+    -->
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" type="text/css" href="res/styles.css" />
+    <script type="text/javascript">
+
+      /*
+       * XHR listeners
+       */
+      function reqListener() {
+	// Zugriff auf die responseText-Eigenschaft - des XMLHttpRequest-Objekts
+        console.log(this.responseText);
+      }
+      function updateProgress(oEvent) {
+        if (oEvent.lengthComputable) {
+          var percentComplete = oEvent.loaded / oEvent.total;
+          console.log(percentComplete);
+          // ...
+        } else {
+          // Unable to compute progress information since the total size is unknown
+        }
+      }
+      function transferComplete(evt) {
+        console.log("The transfer is complete.");
+      }
+
+      function transferFailed(evt) {
+        console.log("An error occurred while transferring the file.");
+      }
+
+      function transferCanceled(evt) {
+        console.log("The transfer has been canceled by the user.");
+      }
+
+      function loadEnd(e) {
+        console.log("The transfer finished (although we don't know if it succeeded or not).");
+      }
+
+
+      /**
+       * entry point
+       */
+      function start() {
+
+        var oReq = new XMLHttpRequest();
+        oReq.onload = reqListener;
+
+        // standard listeners
+        oReq.addEventListener("progress", updateProgress, false);
+        oReq.addEventListener("load", transferComplete, false);
+        oReq.addEventListener("error", transferFailed, false);
+        oReq.addEventListener("abort", transferCanceled, false);
+
+        // general unspecific listener:
+        oReq.addEventListener("loadend", loadEnd, false);
+
+        // listener for data handling
+        oReq.addEventListener("load", function(evt){
+          console.log("oReq.length\n" + oReq.length);
+          console.log("oReq.readyState\n" + oReq.readyState);
+          console.log("oReq.response\n" + oReq.response);
+          console.log("oReq.responseText\n" + oReq.responseText);
+          console.log("oReq.status\n" + oReq.status);
+          console.log("oReq.statusText\n" + oReq.statusText);
+        }, false);
+
+        oReq.open("get", "data.json", true);
+        oReq.send();
+      }
+      ;
+    </script>
+  </head>
+  <body onload="start()">
+    <h1>Das XMLHttpRequest-Objekt</h1>
+    <p>Dieses Beispiel illustriert AJAX-Kommunikation mit dem XMLHttpRequest-Objekt.</p>
+    <pre>
+
+      /*
+       * XHR listeners
+       */
+      function reqListener() {
+	// Zugriff auf die responseText-Eigenschaft - des XMLHttpRequest-Objekts
+        console.log(this.responseText);
+      }
+      function updateProgress(oEvent) {
+        if (oEvent.lengthComputable) {
+          var percentComplete = oEvent.loaded / oEvent.total;
+          console.log(percentComplete);
+          // ...
+        } else {
+          // Unable to compute progress information since the total size is unknown
+        }
+      }
+      function transferComplete(evt) {
+        console.log("The transfer is complete.");
+      }
+
+      function transferFailed(evt) {
+        console.log("An error occurred while transferring the file.");
+      }
+
+      function transferCanceled(evt) {
+        console.log("The transfer has been canceled by the user.");
+      }
+
+      function loadEnd(e) {
+        console.log("The transfer finished (although we don't know if it succeeded or not).");
+      }
+
+
+      /**
+       * entry point
+       */
+      function start() {
+
+        var oReq = new XMLHttpRequest();
+        oReq.onload = reqListener;
+
+        // standard listeners
+        oReq.addEventListener("progress", updateProgress, false);
+        oReq.addEventListener("load", transferComplete, false);
+        oReq.addEventListener("error", transferFailed, false);
+        oReq.addEventListener("abort", transferCanceled, false);
+
+        // general unspecific listener:
+        oReq.addEventListener("loadend", loadEnd, false);
+
+        // listener for data handling
+        oReq.addEventListener("load", function(evt){
+          console.log("oReq.length\n" + oReq.length);
+          console.log("oReq.readyState\n" + oReq.readyState);
+          console.log("oReq.response\n" + oReq.response);
+          console.log("oReq.responseText\n" + oReq.responseText);
+          console.log("oReq.status\n" + oReq.status);
+          console.log("oReq.statusText\n" + oReq.statusText);
+        }, false);
+
+        oReq.open("get", "data.json", true);
+        oReq.send();
+      }
+      ;
+    </pre>
+  </body>
+</html>

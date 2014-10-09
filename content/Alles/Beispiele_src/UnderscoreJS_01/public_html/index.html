@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <!--
+    /*
+     *  This code is released under Creative Commons Attribution 4.0 International
+     *  (CC BY 4.0) license, http://creativecommons.org/licenses/by/4.0/legalcode .
+     *  That means:
+     *
+     *  You are free to:
+     *
+     *      Share — copy and redistribute the material in any medium or format
+     *      Adapt — remix, transform, and build upon the material
+     *               for any purpose, even commercially.
+     *
+     *      The licensor cannot revoke these freedoms as long as you follow the
+     *      license terms.
+     *
+     *  Under the following terms:
+     *
+     *      Attribution — You must give appropriate credit, provide a link to the
+     *      license, and indicate if changes were made. You may do so in any
+     *      reasonable manner, but not in any way that suggests the licensor endorses
+     *      you or your use.
+     *
+     *  No additional restrictions — You may not apply legal terms or technological
+     *  measures that legally restrict others from doing anything the license
+     *  permits.
+     *
+     *
+     *  2014 Aeonium Software Systems, Robert Rohm.
+     */
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/libs/underscore.js" type="text/javascript"></script>
+    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" >
+
+      // Datentyp für die Ausgangsdaten:
+      var Person = function (name, vorname, alter) {
+        this.name = name;
+        this.vorname = vorname;
+        this.alter = alter;
+      }
+
+      // Die Beispieldaten:
+      var daten = [
+        new Person('Mustermann', 'Max', 54),
+        new Person('Müller', 'Lisa', 32),
+        new Person('Bauer', 'Hans', 36)
+      ];
+
+
+
+
+      // a) Filterung anhand von Objekt-Eigenschaften:
+      var verarbeiteteDaten1 = _.where(daten, {name: 'Mustermann'});
+
+      console.log(verarbeiteteDaten1);
+
+
+
+
+      // b) Filterung mit Prädikats-Funktion:
+      // "alle Personen, deren Nachname mit 'm' beginnt"
+      var verarbeiteteDaten2 = _.filter(daten, function (o) {
+        console.log(o.name.substr(0, 1).toLowerCase())
+
+        return o.name.substr(0, 1).toLowerCase() === 'm';
+      });
+
+      console.log(verarbeiteteDaten2);
+
+
+
+
+      // c) Abbildung von Eingangsdaten auf eine neue Ausgangsdatenmenge:
+      // "Objekte mit denselben Feldern, jedoch Text in klein
+      // und ü mit ue ersetzt".
+      // Im allgemeinen entspricht der map-Vorgang einer Projektion
+      // der Eingangsdatenmenge auf eine Ausgangsdatenmenge, ggf mit
+      // Datenmanipulation.
+      var verarbeiteteDaten3 = _.map(daten, function (o) {
+        for (var field in o) {
+          if (typeof o[field] === 'string') {
+            o[field] = o[field].toLowerCase();
+            o[field] = o[field].replace(/ü/, 'ue');
+          }
+        }
+        return o;
+      });
+      console.log(verarbeiteteDaten3);
+
+
+
+
+      // d) Reduzierung der Eingangsdaten auf eine Ausgangsdatenmenge:
+      // "Alle vorkommenden Anfangsbuchstaben mit Häufigkeit".
+      // Reduce-Vorgänge beinhalten neben Selektion häufig Gruppierungen
+      // und/oder komplexe Abbildungen.
+      var memo = {};
+      var verarbeiteteDaten4 = _.reduce(daten, function (memo, o) {
+        var initiale = o.name.substr(0, 1).toUpperCase();
+        if (memo[initiale]) {
+          memo[initiale] = memo[initiale] + 1;
+        } else {
+          memo[initiale] = 1;
+        }
+        return memo;
+      }, memo);
+
+      console.log(verarbeiteteDaten4);
+
+
+
+
+      // e) Verkettung mehrerer Bearbeitungsschritte:
+      // "Durchschittliches Alter aller Personen, deren Nachnamen mit 'm'
+      // oder 'M' beginnt".
+      var verarbeiteteDaten5 = _.chain(daten)
+              .filter(function (o) {
+                return o.name.substr(0, 1).toLowerCase() === 'm';
+              })
+              .reduce(function(memo, o){
+                memo.count++;
+                memo.values.push(o.alter);
+                var sum = 0;
+                for (var n in memo.values) {
+                  sum += memo.values[n];
+                }
+                if (memo.count > 0) {
+                  memo.avg = sum/ memo.count;
+                } else {
+                  memo.avg = 0;
+                }
+                return memo;
+              }, {avg:0, count:0, values:[]});
+
+      console.log(verarbeiteteDaten5);
+
+    </script>
+  </head>
+  <body>
+    <h1>Beispiele zu underscore.js</h1>
+    <h2></h2>
+    <p>(Vgl. <a href="http://underscorejs.org/">http://underscorejs.org/</a> )</p>
+    <pre>
+
+      // Datentyp für die Ausgangsdaten:
+      var Person = function (name, vorname, alter) {
+        this.name = name;
+        this.vorname = vorname;
+        this.alter = alter;
+      }
+
+      // Die Beispieldaten:
+      var daten = [
+        new Person('Mustermann', 'Max', 54),
+        new Person('Müller', 'Lisa', 32),
+        new Person('Bauer', 'Hans', 36)
+      ];
+
+
+
+
+      // a) Filterung anhand von Objekt-Eigenschaften:
+      var verarbeiteteDaten1 = _.where(daten, {name: 'Mustermann'});
+
+      console.log(verarbeiteteDaten1);
+
+
+
+
+      // b) Filterung mit Prädikats-Funktion:
+      // "alle Personen, deren Nachname mit 'm' beginnt"
+      var verarbeiteteDaten2 = _.filter(daten, function (o) {
+        console.log(o.name.substr(0, 1).toLowerCase())
+
+        return o.name.substr(0, 1).toLowerCase() === 'm';
+      });
+
+      console.log(verarbeiteteDaten2);
+
+
+
+
+      // c) Abbildung von Eingangsdaten auf eine neue Ausgangsdatenmenge:
+      // "Objekte mit denselben Feldern, jedoch Text in klein
+      // und ü mit ue ersetzt".
+      // Im allgemeinen entspricht der map-Vorgang einer Projektion
+      // der Eingangsdatenmenge auf eine Ausgangsdatenmenge, ggf mit
+      // Datenmanipulation.
+      var verarbeiteteDaten3 = _.map(daten, function (o) {
+        for (var field in o) {
+          if (typeof o[field] === 'string') {
+            o[field] = o[field].toLowerCase();
+            o[field] = o[field].replace(/ü/, 'ue');
+          }
+        }
+        return o;
+      });
+      console.log(verarbeiteteDaten3);
+
+
+
+
+      // d) Reduzierung der Eingangsdaten auf eine Ausgangsdatenmenge:
+      // "Alle vorkommenden Anfangsbuchstaben mit Häufigkeit".
+      // Reduce-Vorgänge beinhalten neben Selektion häufig Gruppierungen
+      // und/oder komplexe Abbildungen.
+      var memo = {};
+      var verarbeiteteDaten4 = _.reduce(daten, function (memo, o) {
+        var initale = o.name.substr(0, 1).toUpperCase();
+        if (memo[initale]) {
+          memo[initale] = memo[initale] + 1;
+        } else {
+          memo[initale] = 1;
+        }
+        return memo;
+      }, memo);
+
+      console.log(verarbeiteteDaten4);
+
+
+
+
+      // e) Verkettung mehrerer Bearbeitungsschritte:
+      // "Durchschittliches Alter aller Personen, deren Nachnamen mit 'm'
+      // oder 'M' beginnt".
+      var verarbeiteteDaten5 = _.chain(daten)
+              .filter(function (o) {
+                return o.name.substr(0, 1).toLowerCase() === 'm';
+              })
+              .reduce(function(memo, o){
+                memo.count++;
+                memo.values.push(o.alter);
+                var sum = 0;
+                for (var n in memo.values) {
+                  sum += memo.values[n];
+                }
+                if (memo.count > 0) {
+                  memo.avg = sum/ memo.count;
+                } else {
+                  memo.avg = 0;
+                }
+                return memo;
+              }, {avg:0, count:0, values:[]});
+
+      console.log(verarbeiteteDaten5);
+    </pre>
+  </body>
+</html>

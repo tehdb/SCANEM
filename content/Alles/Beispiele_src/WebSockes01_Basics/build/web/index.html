@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+-->
+<html>
+  <head>
+    <title>WebSockets-Beispiel 01</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <script type="text/javascript" src="res/js/call-websock.js"></script>
+  </head>
+  <body>
+    <h1>WebSockets-Beispiel 01</h1>
+    <div>
+      <p>Dieses Beispiel illustriert die grundlegende Herangehensweise beim
+        Einsatz von  WebSockets.
+        Das notwendige Javascript ist in eine separate Datei ausgelagert.
+      </p>
+
+      <h2>Der WebSockets-Server</h2>
+      <p>NetBeans  stellt für die Erstellung von WebSockets-Servern eine
+        entsprechende Vorlage bereit: Sie ist in der Kategorie Web erreichbar.
+      </p>
+      <img src="res/img/NetBeans-WebSockets-Endpunkt-erstellen.png"/>
+      <p>
+        Der zweite Schritt des Dialogs führt durch die notwendigen Angaben für
+        die Erstellung eines Websocket-Endpunkt. Neben den Standard-Eigenschaften
+        für die Endpunkt-Klasse (der Endpunkt ist ein  POJO!) ist zunächst
+        lediglich die Angabe des WebSockets-Identifyers erforderlich.
+      </p>
+
+      <h3>Quellcode</h3>
+      <p>Der Quellcode eines minimalistischen Socket-Servers ist überschaubar:</p>
+      <pre>
+@ServerEndpoint("/endpoint")
+public class MeinWSEndpoint {
+
+  @OnMessage
+  public String onMessage(String message) {
+    return "Hier folgt die Nachricht";
+  }
+
+}
+      </pre>
+
+      <h3>&ldquo;Und in echt…?&rdquo;</h3>
+      <p>Das minimalistische Beispiel tut nicht viel Sinnvolles, es verdeutlicht
+        zumindest jedoch die Bandbreite möglicher  Einsatz-Szenarien:
+        WebSocket-Kommunikation ist überall dort einsetzbar, wo der Inhalt
+        einer Nachricht in Text-Form übertragen werden kann. </p>
+    </div>
+
+    <div>
+      <h2>Nachricht an den Server senden</h2>
+      <p onclick="call_websocket();">Bitte klicken, eine Nachricht an den Server zu senden...</p>
+    </div>
+  </body>
+</html>
+
+
