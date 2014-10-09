@@ -25,7 +25,7 @@ data structure
 ## Server
 	- start server: $ nodemon server/app.coffee
 
-# API
+## API
 
 	# p - search by property
 	# q - search string
@@ -40,7 +40,7 @@ data structure
 	test prerender:				http://localhost:3030/?_escaped_fragment_=
 
 
-# Tests
+## Tests
 	watch and run unit tests: 	$ grunt watch_unit_tests
 	watch and run angular test: $ grunt client-test
 
