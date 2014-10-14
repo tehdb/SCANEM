@@ -1,4 +1,4 @@
-angular.module('jsworkshop', ['ngRoute']).config([
+angular.module('jsworkshop', ['ngRoute', 'breeze.angular']).config([
   '$routeProvider', '$locationProvider', function($rp, $lp) {
     $rp.when('/', {
       templateUrl: '/partials/home.html',
@@ -15,48 +15,7 @@ angular.module('jsworkshop', ['ngRoute']).config([
 ]);
 ;angular.module('jsworkshop').controller('HomeCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
-    $scope.data = {
-      maxitems: [
-        {
-          key: '10',
-          value: '10 results'
-        }, {
-          key: '50',
-          value: '50 results'
-        }, {
-          key: '-1',
-          value: 'All'
-        }
-      ],
-      properties: [
-        {
-          key: 'name',
-          value: 'Name'
-        }, {
-          key: 'surname',
-          value: 'Surname'
-        }, {
-          key: 'email',
-          value: 'Email'
-        }, {
-          key: '-1',
-          value: 'All entries'
-        }
-      ],
-      results: {},
-      total: 0
-    };
-    $scope.searchdata = {
-      q: void 0,
-      m: void 0,
-      p: void 0
-    };
-    return ($scope.search = function() {
-      return profileService.search($scope.searchdata).then(function(data) {
-        $scope.data.total = data.length;
-        return $scope.data.results = data;
-      });
-    })();
+    return profileService.select();
   }
 ]);
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
@@ -67,46 +26,19 @@ angular.module('jsworkshop', ['ngRoute']).config([
   }
 ]);
 ;angular.module('jsworkshop').service('ProfileService', [
-  '$q', '$http', function($q, $http) {
-    this.search = function(searchParams) {
-      var deferred, m, p, q, _ref, _ref1;
-      deferred = $q.defer();
-      q = searchParams.q ? searchParams.q : '';
-      m = ((_ref = searchParams.m) != null ? _ref.key : void 0) != null ? searchParams.m.key : '-1';
-      p = ((_ref1 = searchParams.p) != null ? _ref1.key : void 0) != null ? searchParams.p.key : '-1';
-      console.log('q: ' + q);
-      console.log('m: ' + m);
-      console.log('p: ' + p);
-      $http({
-        url: "/api/users?q=" + q + "&m=" + m + "&p=" + p,
-        method: "get",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8'
-        }
-      }).success(function(data, status, headers, config) {
-        return deferred.resolve(data);
-      }).error(function(err, status, headers, config) {
-        return deferred.reject(err);
+  'breeze', function(breeze) {
+    var c;
+    c = this;
+    c.select = function() {
+      var manager, query, res;
+      manager = new breeze.EntityManager('/api');
+      query = new breeze.EntityQuery().from('Users');
+      res = manager.executeQuery(query).then(function(data) {
+        return console.log(data);
+      })["catch"](function(err) {
+        return console.log(err);
       });
-      return deferred.promise;
-    };
-    this.getProfileByEmail = function(email) {
-      var deferred;
-      deferred = $q.defer();
-      $http({
-        url: "/api/user/" + email,
-        method: "get",
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json;charset=UTF-8'
-        }
-      }).success(function(data, status, headers, config) {
-        return deferred.resolve(data);
-      }).error(function(err, status, headers, config) {
-        return deferred.reject(err);
-      });
-      return deferred.promise;
+      return console.log(res);
     };
   }
 ]);

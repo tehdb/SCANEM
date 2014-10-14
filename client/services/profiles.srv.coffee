@@ -1,51 +1,20 @@
 angular.module('jsworkshop').service( 'ProfileService', [
-	'$q'
-	'$http'
-	( $q, $http ) ->
+	'breeze'
+	( breeze ) ->
+		c = @
 
-		@search = ( searchParams )->
-			deferred = $q.defer()
+		c.select = ->
+			manager = new breeze.EntityManager('/api')
 
-			q = if searchParams.q then searchParams.q else ''
-			m = if searchParams.m?.key? then searchParams.m.key else '-1'
-			p = if searchParams.p?.key? then searchParams.p.key else '-1'
+			query = new breeze.EntityQuery().from('Users')
 
-			console.log('q: ' + q)
-			console.log('m: ' + m)
-			console.log('p: ' + p)
+			res = manager
+				.executeQuery(query)
+				.then (data) ->
+					console.log data
+				.catch (err) ->
+					console.log err
+			console.log res
 
-			$http
-				url: "/api/users?q=#{q}&m=#{m}&p=#{p}"
-				method: "get"
-				headers:
-					'Accept': 'application/json'
-					'Content-Type': 'application/json;charset=UTF-8'
-
-			.success ( data, status, headers, config) ->
-				deferred.resolve( data )
-
-			.error ( err, status, headers, config) ->
-				deferred.reject( err );
-
-			return deferred.promise
-
-
-		@getProfileByEmail = (email) ->
-			deferred = $q.defer()
-
-			$http
-				url: "/api/user/#{email}"
-				method: "get"
-				headers:
-					'Accept': 'application/json'
-					'Content-Type': 'application/json;charset=UTF-8'
-
-			.success ( data, status, headers, config) ->
-				deferred.resolve( data )
-
-			.error ( err, status, headers, config) ->
-				deferred.reject( err );
-
-			return deferred.promise
 		return
 ])

@@ -45,6 +45,7 @@ module.exports = (grunt) ->
 				tasks: ['mochaTest:unit']
 
 			api_tests:
+				options: { debounceDelay: 500 }
 				files: ['tests/server/api/**/*.spec.coffee']
 				tasks: ['mochaTest:api']
 

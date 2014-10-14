@@ -1,6 +1,9 @@
 angular.module('jsworkshop', [
 	'ngRoute'
-	]).config([
+	'breeze.angular'
+])
+
+.config([
 		'$routeProvider'
 		'$locationProvider'
 		( $rp, $lp ) ->
@@ -22,3 +25,8 @@ angular.module('jsworkshop', [
 
 			return
 ])
+
+
+# .run(['breeze', (breeze) ->
+# 	#
+# ])
