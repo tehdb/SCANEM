@@ -1,20 +1,14 @@
-angular.module('jsworkshop').service( 'ProfileService', [
-	'breeze'
-	( breeze ) ->
+angular.module('app').service( 'ProfileService', [
+	'Restangular'
+	( ra ) ->
 		c = @
 
 		c.select = ->
-			manager = new breeze.EntityManager('/api')
+			base = ra.all('api/users')
 
-			query = new breeze.EntityQuery().from('Users')
 
-			res = manager
-				.executeQuery(query)
-				.then (data) ->
-					console.log data
-				.catch (err) ->
-					console.log err
-			console.log res
+			base.getList().then (users) ->
+				console.log users
 
 		return
 ])

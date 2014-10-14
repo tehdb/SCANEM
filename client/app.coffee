@@ -1,12 +1,14 @@
-angular.module('jsworkshop', [
+angular.module('app', [
 	'ngRoute'
-	'breeze.angular'
+	'classy'
+	'restangular'
 ])
 
 .config([
 		'$routeProvider'
 		'$locationProvider'
-		( $rp, $lp ) ->
+		'RestangularProvider'
+		( $rp, $lp, rp ) ->
 
 			$rp
 				.when '/',
@@ -22,6 +24,8 @@ angular.module('jsworkshop', [
 
 			$lp.html5Mode( true )
 			$lp.hashPrefix( '!' )
+
+			rp.setBaseUrl('/api')
 
 			return
 ])

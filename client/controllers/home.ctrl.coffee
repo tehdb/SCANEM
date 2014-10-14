@@ -1,28 +1,16 @@
-angular.module('jsworkshop').controller( 'HomeCtrl', [
-	'$scope'
-	'$routeParams'
-	'ProfileService'
-	( $scope, $routeParams, profileService ) ->
 
-		profileService.select()
-		# $scope.data =
-		# 	maxitems: [ {key:'10', value:'10 results'}, {key:'50', value:'50 results'}, {key:'-1', value:'All'} ]
-		# 	properties: [ {key:'name', value:'Name'}, {key:'surname', value:'Surname'}, {key:'email', value:'Email'}, {key:'-1', value:'All entries'}  ]
-		# 	results : {}
-		# 	total: 0
+angular.module('app').classy.controller({
+	name: 'HomeCtrl',
+	inject: {
+		'$scope' : '$'
+		'$routeParams' : '$rp'
+		'Restangular' : 'ra'
+	}
+	init: ->
+		c = @
 
-		# $scope.searchdata =
-		# 	q : undefined
-		# 	m : undefined
-		# 	p : undefined
+		c.$.data = {}
+		c.ra.all('users').getList().then (users) ->
+			c.$.data.results = users
 
-		# do $scope.search = ( ) ->
-		# 	profileService.search( $scope.searchdata ).then(
-		# 		( data ) ->
-		# 			# console.log data
-		# 			$scope.data.total = data.length
-		# 			$scope.data.results = data
-		# 	)
-
-		# console.log 'profile controller init'
-])
+});

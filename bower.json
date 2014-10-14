@@ -19,6 +19,7 @@
     "angular-route": "~1.2.16",
     "bootstrap": "~3.2.0",
     "angular-mocks": "~1.2.26",
-    "breezejs": "~1.5.0"
+    "restangular": "~1.4.0",
+    "angular-classy": "~0.4.2"
   }
 }

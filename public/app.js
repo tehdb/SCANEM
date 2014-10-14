@@ -1,5 +1,5 @@
-angular.module('jsworkshop', ['ngRoute', 'breeze.angular']).config([
-  '$routeProvider', '$locationProvider', function($rp, $lp) {
+angular.module('app', ['ngRoute', 'classy', 'restangular']).config([
+  '$routeProvider', '$locationProvider', 'RestangularProvider', function($rp, $lp, rp) {
     $rp.when('/', {
       templateUrl: '/partials/home.html',
       controller: 'HomeCtrl'
@@ -11,13 +11,25 @@ angular.module('jsworkshop', ['ngRoute', 'breeze.angular']).config([
     });
     $lp.html5Mode(true);
     $lp.hashPrefix('!');
+    rp.setBaseUrl('/api');
   }
 ]);
-;angular.module('jsworkshop').controller('HomeCtrl', [
-  '$scope', '$routeParams', 'ProfileService', function($scope, $routeParams, profileService) {
-    return profileService.select();
+;angular.module('app').classy.controller({
+  name: 'HomeCtrl',
+  inject: {
+    '$scope': '$',
+    '$routeParams': '$rp',
+    'Restangular': 'ra'
+  },
+  init: function() {
+    var c;
+    c = this;
+    c.$.data = {};
+    return c.ra.all('users').getList().then(function(users) {
+      return c.$.data.results = users;
+    });
   }
-]);
+});
 ;angular.module('jsworkshop').controller('ProfileCtrl', [
   '$scope', '$routeParams', 'ProfileService', function($scope, $rp, profileService) {
     return profileService.getProfileByEmail($rp.email).then(function(data) {
@@ -25,20 +37,16 @@ angular.module('jsworkshop', ['ngRoute', 'breeze.angular']).config([
     });
   }
 ]);
-;angular.module('jsworkshop').service('ProfileService', [
-  'breeze', function(breeze) {
+;angular.module('app').service('ProfileService', [
+  'Restangular', function(ra) {
     var c;
     c = this;
     c.select = function() {
-      var manager, query, res;
-      manager = new breeze.EntityManager('/api');
-      query = new breeze.EntityQuery().from('Users');
-      res = manager.executeQuery(query).then(function(data) {
-        return console.log(data);
-      })["catch"](function(err) {
-        return console.log(err);
+      var base;
+      base = ra.all('api/users');
+      return base.getList().then(function(users) {
+        return console.log(users);
       });
-      return console.log(res);
     };
   }
 ]);
