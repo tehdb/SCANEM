@@ -2,4 +2,5 @@ node_modules
 bower_components
 .DS_Store
 .temp
-proj.sublime-project
+scanem.sublime-project
+scanem.sublime-workspace

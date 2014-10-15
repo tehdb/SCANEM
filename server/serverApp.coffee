@@ -24,7 +24,7 @@ app.use 	logger('dev')
 app.use 	errorHandler()
 
 # mongo
-mongoose.connect( 'mongodb://localhost/mean-cs')
+mongoose.connect( 'mongodb://localhost/SCANEM')
 db = mongoose.connection
 db.on( 'error', console.error.bind( console, 'connection error...') )
 db.once 'open', -> console.log('db connection opened...')

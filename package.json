@@ -4,7 +4,7 @@
   "description": "JavaScript WorkShop at 07 - 09.10.2014 Content http://www.it-schulungen.com/seminare/softwareentwicklung/javascript/javascript-fortgeschrittene-programmierung.html",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/app.coffee",
+    "start": "nodemon server/serverApp.coffee",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

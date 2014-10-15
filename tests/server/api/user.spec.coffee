@@ -4,14 +4,14 @@ request 	= require('superagent')
 expect 		= require('chai').expect
 sinon 		= require('sinon')
 
-db = require('monk')('localhost/mean-cs')
+
+db = require('monk')('localhost/SCANEM')
 
 URL = 'http://localhost:3030/api/users'
 TestUser = null
 TestUserData =
 	email: 'test@user.com'
 	password: 'testtest'
-
 # UsersData = require('../../data/users.json')
 
 
@@ -56,7 +56,6 @@ describe 'users api', ->
 		request
 			.get("#{URL}")
 			.end (err, res) ->
-				expect( err ).to.be.null
 				expect( res.body ).to.be.an 'array'
 				done()
 
@@ -66,7 +65,6 @@ describe 'users api', ->
 			.put("#{URL}")
 			.send( TestUser )
 			.end (err, res) ->
-				expect( err ).to.be.null
 				expect( res.body.email ).to.equal( TestUser.email )
 				done()
 

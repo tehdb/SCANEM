@@ -20,13 +20,12 @@ module.exports = (grunt) ->
 				dest: '.temp/client'
 				ext: '.js'
 
-
 		concat:
 			options:
 				separator: ';'
 			scripts:
 				src: 	[
-					'.temp/client/app.js'
+					'.temp/client/clientApp.js'
 					'.temp/client/**/*.js'
 				]
 				dest: 	'public/app.js'
@@ -68,10 +67,15 @@ module.exports = (grunt) ->
 			prerender:
 				command: 'nodemon prerender.coffee'
 
+			server:
+				command: 'nodemon server/serverApp.coffee'
 	grunt
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
 		.registerTask( 'client-watch', 		[ 'watch:client' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
+		.registerTask( 'server-start', 		[ 'exec:server'] )
+		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
+		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )
 		.registerTask( 'watch_unit_tests', 	[ 'watch:server_unit_tests' ])
 		.registerTask( 'watch_api_tests', 	[ 'watch:api_tests' ])
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])

@@ -1,4 +1,9 @@
 {
 	"verbose": true,
-	"ignore": [ "public/*", "tests/*"]
+	"ignore": [
+		"client/*",
+		"public/*",
+		"tests/*",
+		".temp/"
+	]
 }

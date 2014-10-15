@@ -1,56 +1,43 @@
 _ = require('lodash')
-fs = require('fs')
 
-
-_cachedData = fs.readFileSync('./server/database/users.json', {encoding:'utf-8'})
-_cachedData = JSON.parse(_cachedData)
-_entryProperties = _.keys(_cachedData[0])
-
+User = require('../models/user.mdl')
 
 module.exports =
-		# p - search by proporty
-		# q - search string
-		# m - max result entries
-		# s - sort by property
-		selectMulti: (req, res, next) ->
-			out = null
+	select: (req, res) ->
+		if req.params.type and req.params.query
+			propertyName = req.params.type
+			switch propertyName
+				when 'id' then propertyName = "_#{propertyName}"
 
-			prop = req.query.p
-			query = if req.query.q then req.query.q.toLowerCase() else null
-			sort = req.query.s || null
-			max = parseInt( req.query.m, 10 ) # || 10
-			max = if max? then max else 10
+			filter = {}
+			filter[propertyName] = req.params.query
 
-			# filter if query passed
-			if query
-				# by property
-				if prop and _.contains( _entryProperties, prop )
-					out = _.filter _cachedData, (e) ->
-						return _.contains( e[prop].toLowerCase(), query )
+			User.findOne filter, (err, user) ->
+				return res.status(400).send( err ) if err
+				res.json( user )
 
-				# thru all properties
-				else
-					out = _.filter _cachedData, (e) ->
-						return _.some e, (p) -> return _.contains( p.toLowerCase(), query )
-			else
-				out = _cachedData
+		else
+			User.find (err, users) ->
+				return res.status(400).send( err ) if err
+				res.json( users )
 
-			out = _.sortBy(out, sort) if sort
-
-			out = out.slice(0, max) if max != -1
-
-			#console.log max
-
-			res.json( out )
+	insert: (req, res) ->
+		user = new User( req.body )
+		user.save (err) ->
+			return res.status(400).send( err ) if err
+			res.json( user )
 
 
-		selectSingle: (req, res, next) ->
-			email = req.params.email
+	update: (req, res) ->
+		User.findOne {_id: req.body._id}, (err, user) ->
+			return res.status(400).send( err ) if err
 
-			entry = _.find _cachedData, (e) ->
-				return e.email is email
+			user = _.assign( user, req.body )
 
-			res.json( entry )
+			user.save (err, user) ->
+				return res.status(400).send( err ) if err
+
+				res.json( user )
 
 
 

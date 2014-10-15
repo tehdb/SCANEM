@@ -30,13 +30,6 @@ angular.module('app', ['ngRoute', 'classy', 'restangular']).config([
     });
   }
 });
-;angular.module('jsworkshop').controller('ProfileCtrl', [
-  '$scope', '$routeParams', 'ProfileService', function($scope, $rp, profileService) {
-    return profileService.getProfileByEmail($rp.email).then(function(data) {
-      return $scope.profile = data;
-    });
-  }
-]);
 ;angular.module('app').service('ProfileService', [
   'Restangular', function(ra) {
     var c;
