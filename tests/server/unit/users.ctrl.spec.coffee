@@ -1,69 +1,56 @@
-pwd 	= process.env.PWD
-_ 		= require 'lodash'
-chai 	= require 'chai'
-expect 	= chai.expect
-sinon 	= require('sinon')
+pwd 		= process.env.PWD
 
-userCtrl = require("#{pwd}/server/controllers/users.ctrl")
+_ 			= require 'lodash'
+chai 		= require 'chai'
+expect 		= chai.expect
+sinon 		= require('sinon')
+proxyquire 	= require('proxyquire').noCallThru()
+
+
+
+userMdlStub = null
+userCtrl = null
+	# find : sinon.spy()
+	# findOne : sinon.spy()
+
+
 
 
 describe 'users controller', ->
 
-	it 'should select multiple users', ->
-		req = { query: {} }
+	beforeEach ->
+		userMdlStub =
+			find : sinon.spy()
+			findOne : sinon.spy()
+
+		userCtrl = proxyquire("#{pwd}/server/controllers/users.ctrl", {
+			'../models/user.mdl': userMdlStub
+		})
+
+
+	it 'should provide select method with no request parameters', ->
+		req = { params: {} }
 		res = { json : sinon.spy() }
 
-		userCtrl.selectMulti( req, res )
-
-		expect( res.json.calledOnce ).to.be.true
-		expect( res.json.args[0][0] ).to.be.an 'array'
+		userCtrl.select( req, res )
+		expect( userMdlStub.find.calledOnce ).to.be.true
 
 
-	it 'should limit the results', ->
-		req =
-			query:
-				m: 3
-
+	it 'should provide select method for query by id', ->
+		req = { params: { type: 'id', query: '123' } }
 		res = { json : sinon.spy() }
 
-		userCtrl.selectMulti( req, res )
-		users = res.json.args[0][0]
-
-		expect( res.json.calledOnce ).to.be.true
-		expect( users.length ).to.equal req.query.m
+		userCtrl.select( req, res )
+		expect( userMdlStub.findOne.calledOnce ).to.be.true
 
 
-	it 'should filter the results by property', ->
-		req =
-			query:
-				p: 'name'
-				q: 'Kyle'
-
+	it 'should provide select method for query by email', ->
+		req = { params: { type: 'email', query: 'test@mail.com' } }
 		res = { json : sinon.spy() }
 
-		userCtrl.selectMulti( req, res )
-		users = res.json.args[0][0]
+		userCtrl.select( req, res )
+		expect( userMdlStub.findOne.calledOnce ).to.be.true
 
-		expect( res.json.calledOnce ).to.be.true
-		expect( _.every(users, { 'name': 'Kyle' }) ).to.be.true
-
-
-	it 'should select user by email', ->
-		req =
-			params:
-				email: 'seth@moss.bw'
-
-		res = { json : sinon.spy() }
-
-		userCtrl.selectSingle( req, res)
-		user = res.json.args[0][0]
-
-		expect( res.json.calledOnce ).to.be.true
-		expect( user ).to.be.an 'object'
-
-		expect( user.name ).to.equal 'Regina'
-		expect( user.surname ).to.equal 'Hanson'
-		expect( user.email ).to.equal req.params.email
 
 
 
