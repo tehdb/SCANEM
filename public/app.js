@@ -1,4 +1,4 @@
-angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular']).constant('routes', [
+angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'ui.bootstrap', 'ui.select']).constant('routes', [
   {
     url: '/',
     config: {
@@ -15,7 +15,7 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular']).c
     }
   }
 ]).config([
-  '$routeProvider', '$locationProvider', 'RestangularProvider', 'routes', function($rp, $lp, rp, routes) {
+  '$routeProvider', '$locationProvider', 'RestangularProvider', 'routes', 'uiSelectConfig', function($rp, $lp, rp, routes, usc) {
     routes.forEach(function(r) {
       return $rp.when(r.url, r.config);
     });
@@ -25,8 +25,10 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular']).c
     $lp.html5Mode(true);
     $lp.hashPrefix('!');
     rp.setBaseUrl('/api');
+    usc.theme = 'bootstrap';
   }
 ]);
+;angular.module('app.usermanager', ['classy']);
 ;angular.module('app').classy.controller({
   name: 'HomeCtrl',
   inject: {
@@ -53,17 +55,44 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular']).c
     };
   }
 ]);
-;
-;angular.module('app.usermanager', []).directive('signup', [
-  function($modal) {
+;angular.module('app.usermanager').directive('signupbar', [
+  '$modal', function($modal) {
     return {
       restrict: 'AE',
       replace: true,
-/* Begin: .temp/client/usermanager/signup */
-      template: '<div class="signup"><p>please signup</p></div>',/* End: .temp/client/usermanager/signup */
+/* Begin: .temp/client/usermanager/signupbar */
+      template: '<div class="signup"><div ng-click="vm.openSignupModal($event)" class="btn btn-default">sign up</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/usermanager/signupbar */
+      scope: {},
       link: function($scope, element, attrs, ctrl) {
-        return console.log("signup direcitve");
+        $scope.person = {};
+        $scope.vm = {
+          openSignupModal: function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $modal.open({
+              controller: 'SignupModalCtrl',
+              templateUrl: '/partials/usermanager/signupmodal.html'
+            });
+          }
+        };
+        return $scope.people = [
+          {
+            name: 'tehdb'
+          }, {
+            name: 'mursa'
+          }
+        ];
       }
     };
   }
 ]);
+;angular.module('app.usermanager').classy.controller({
+  name: 'SignupModalCtrl',
+  inject: {
+    '$scope': '$'
+  },
+  init: function() {
+    var c;
+    return c = this;
+  }
+});

@@ -1,25 +1,27 @@
 {
-	"name": "flavity",
-	"version": "0.0.1",
-	"authors": [
-		"tehdb <tehdb@me.com>",
-		"carlos.baeza <carlos.baeza@posteo.de>"
-	],
-	"license": "MIT",
-	"private": true,
-	"ignore": [
-		"**/.*",
-		"node_modules",
-		"bower_components",
-		"test",
-		"tests"
-	],
-	"dependencies": {
-	"angular": "~1.2.16",
-	"angular-route": "~1.2.16",
-	"bootstrap": "~3.2.0",
-	"angular-mocks": "~1.2.26",
-	"restangular": "~1.4.0",
-	"angular-classy": "~0.4.2"
-	}
+  "name": "flavity",
+  "version": "0.0.1",
+  "authors": [
+    "tehdb <tehdb@me.com>",
+    "carlos.baeza <carlos.baeza@posteo.de>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "angular-route": "~1.2.16",
+    "bootstrap": "~3.2.0",
+    "angular-mocks": "~1.2.26",
+    "restangular": "~1.4.0",
+    "angular-classy": "~0.4.2",
+    "angular-ui-select": "~0.8.3",
+    "angular-bootstrap": "~0.11.2"
+  }
 }

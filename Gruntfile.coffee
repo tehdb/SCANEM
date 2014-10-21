@@ -20,6 +20,7 @@ module.exports = (grunt) ->
 				src: ['**/*.coffee']
 				dest: '.temp/client'
 				ext: '.js'
+				extDot: 'last'
 
 
 		concat:
@@ -27,8 +28,9 @@ module.exports = (grunt) ->
 				separator: ';'
 			scripts:
 				src: 	[
-					'.temp/client/clientApp.js'
-					'.temp/client/**/*.js'
+					'.temp/client/clientApp.js'	# order important: first app module
+					'.temp/client/**/*.mdl.js'	# all modules definitions
+					'.temp/client/**/*.js'		# rest
 				]
 				dest: 	'.temp/client/clientApp.js'
 
@@ -60,6 +62,10 @@ module.exports = (grunt) ->
 		copy:
 			client:
 				files: ['public/app.js' : '.temp/client/clientApp.js']
+
+
+		clean:
+			build: ['.temp/client']
 
 
 		watch:
@@ -111,7 +117,7 @@ module.exports = (grunt) ->
 				command: 'nodemon server/serverApp.coffee'
 
 	grunt
-		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views' ])
+		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views', 'clean:build' ])
 		.registerTask( 'client-watch', 		[ 'watch:clientApp' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
 		.registerTask( 'server-start', 		[ 'exec:server'] )

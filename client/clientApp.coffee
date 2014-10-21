@@ -10,6 +10,8 @@ angular
 		# 3rd Party Modules
 		'classy'
 		'restangular'
+		'ui.bootstrap'
+		'ui.select'
 	])
 
 	# configure routes
@@ -38,7 +40,8 @@ angular
 		'$locationProvider'
 		'RestangularProvider'
 		'routes'
-		( $rp, $lp, rp, routes ) ->
+		'uiSelectConfig'
+		( $rp, $lp, rp, routes, usc ) ->
 			routes.forEach (r) ->
 				$rp.when( r.url, r.config )
 
@@ -51,6 +54,9 @@ angular
 
 			# restangular base api url
 			rp.setBaseUrl('/api')
+
+			# ui select config
+			usc.theme = 'bootstrap'
 
 			return
 	])
