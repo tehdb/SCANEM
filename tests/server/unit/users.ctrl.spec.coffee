@@ -6,14 +6,8 @@ expect 		= chai.expect
 sinon 		= require('sinon')
 proxyquire 	= require('proxyquire').noCallThru()
 
-
-
 userMdlStub = null
 userCtrl = null
-	# find : sinon.spy()
-	# findOne : sinon.spy()
-
-
 
 
 describe 'users controller', ->

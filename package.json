@@ -56,6 +56,9 @@
     "sinon": "^1.10.3",
     "superagent": "^0.20.0",
     "supertest": "^0.14.0",
-    "monk": "^0.9.0"
+    "monk": "^0.9.0",
+    "grunt-contrib-jade": "^0.13.0",
+    "grunt-includes": "^0.4.5",
+    "grunt-contrib-copy": "^0.7.0"
   }
 }

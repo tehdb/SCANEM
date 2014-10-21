@@ -6,6 +6,7 @@ module.exports = (grunt) ->
 	grunt.initConfig
 		pkg: grunt.file.readJSON('package.json')
 
+
 		coffee:
 			options:
 				bare: true
@@ -20,6 +21,7 @@ module.exports = (grunt) ->
 				dest: '.temp/client'
 				ext: '.js'
 
+
 		concat:
 			options:
 				separator: ';'
@@ -28,16 +30,51 @@ module.exports = (grunt) ->
 					'.temp/client/clientApp.js'
 					'.temp/client/**/*.js'
 				]
-				dest: 	'public/app.js'
+				dest: 	'.temp/client/clientApp.js'
+
+
+		jade:
+			views:
+				cwd: 	'client/'
+				src: 	['**/*.tpl.jade', '!**/*.inl.tpl.jade']
+				dest: 	'public/partials'
+				expand: true
+				ext: 	'.html'
+
+			inline:
+				cwd: 	'client/'
+				src: 	'**/*.inl.tpl.jade'
+				dest: 	'.temp/client'
+				expand: true
+				ext: 	''
+
+
+		includes:
+			inline:
+				options:
+					includeRegexp: /['"]\[\[([^'"]+)\]\]['"]/
+					debug: true
+				files: [ '.temp/client/clientApp.js' : '.temp/client/clientApp.js' ]
+
+
+		copy:
+			client:
+				files: ['public/app.js' : '.temp/client/clientApp.js']
+
 
 		watch:
-			client :
-				files : [
-					'client/**/*.coffee'
-				]
+			clientApp:
+				files: [ 'client/**/*.coffee', 'client/**/*.jade' ]
 				tasks: [ 'client-build' ]
 				options:
 					livereload: true
+
+			# templates:
+			# 	files: [ 'client/**/*.tpl.jade' ]
+			# 	tasks: [ 'jade:views' ]
+			# 	options:
+			# 		livereload: true
+
 
 			server_unit_tests:
 				files: ['tests/server/unit/**/*.spec.coffee']
@@ -47,6 +84,7 @@ module.exports = (grunt) ->
 				options: { debounceDelay: 500 }
 				files: ['tests/server/api/**/*.spec.coffee']
 				tasks: ['mochaTest:api']
+
 
 		mochaTest:
 			options:
@@ -59,9 +97,11 @@ module.exports = (grunt) ->
 			api:
 				src: ['tests/server/api/**/*.spec.coffee']
 
+
 		karma:
 			client:
 				configFile: 'karma.conf.coffee'
+
 
 		exec:
 			prerender:
@@ -69,9 +109,10 @@ module.exports = (grunt) ->
 
 			server:
 				command: 'nodemon server/serverApp.coffee'
+
 	grunt
-		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts' ])
-		.registerTask( 'client-watch', 		[ 'watch:client' ])
+		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views' ])
+		.registerTask( 'client-watch', 		[ 'watch:clientApp' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
