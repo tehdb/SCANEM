@@ -1,5 +1,5 @@
 {
-  "name": "flavity",
+  "name": "SCANEM",
   "version": "0.0.1",
   "authors": [
     "tehdb <tehdb@me.com>",
@@ -15,7 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.16",
+    "angular": "~1.3.0",
     "angular-route": "~1.2.16",
     "bootstrap": "~3.2.0",
     "angular-mocks": "~1.2.26",

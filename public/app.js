@@ -55,26 +55,87 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'u
     };
   }
 ]);
-;angular.module('app.usermanager').directive('signupbar', [
+;angular.module('app.usermanager').classy.controller({
+  name: 'LoginModalCtrl',
+  inject: {
+    '$scope': '$',
+    '$modalInstance': '$mi'
+  },
+  init: function() {
+    var c;
+    c = this;
+    return c.$.registration = function($event) {
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+      return c.$mi.close({
+        status: 'registration'
+      });
+    };
+  }
+});
+;angular.module('app.usermanager').classy.controller({
+  name: 'RegistrationModalCtrl',
+  inject: {
+    '$scope': '$'
+  },
+  init: function() {
+    var c;
+    return c = this;
+  }
+});
+;angular.module('app.usermanager').directive('signupBar', [
   '$modal', function($modal) {
     return {
       restrict: 'AE',
       replace: true,
-/* Begin: .temp/client/usermanager/signupbar */
-      template: '<div class="signup"><div ng-click="vm.openSignupModal($event)" class="btn btn-default">sign up</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/usermanager/signupbar */
+/* Begin: .temp/client/usermanager/signup-bar */
+      template: '<div class="signup"><div ng-click="vm.openRegistrationModal($event)" class="btn btn-link">create accout</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">sign up</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/usermanager/signup-bar */
       scope: {},
+      controller: angular.module('app.usermanager').classy.controller({
+        inject: {
+          '$scope': '$'
+        },
+        init: function() {
+          var c;
+          c = this;
+          return c.$.vm = {
+            openLoginModal: function($event) {
+              if ($event == null) {
+                $event = null;
+              }
+              if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+              }
+              return $modal.open({
+                controller: 'LoginModalCtrl',
+                templateUrl: '/partials/usermanager/login-modal.html'
+              }).result.then(function(data) {
+                if (data.status === 'registration') {
+                  return c.$.vm.openRegistrationModal();
+                }
+              });
+            },
+            openRegistrationModal: function($event) {
+              if ($event == null) {
+                $event = null;
+              }
+              if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+              }
+              return $modal.open({
+                controller: 'RegistrationModalCtrl',
+                templateUrl: '/partials/usermanager/registration-modal.html'
+              });
+            }
+          };
+        }
+      }),
       link: function($scope, element, attrs, ctrl) {
         $scope.person = {};
-        $scope.vm = {
-          openSignupModal: function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            return $modal.open({
-              controller: 'SignupModalCtrl',
-              templateUrl: '/partials/usermanager/signupmodal.html'
-            });
-          }
-        };
         return $scope.people = [
           {
             name: 'tehdb'
@@ -86,13 +147,3 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'u
     };
   }
 ]);
-;angular.module('app.usermanager').classy.controller({
-  name: 'SignupModalCtrl',
-  inject: {
-    '$scope': '$'
-  },
-  init: function() {
-    var c;
-    return c = this;
-  }
-});
