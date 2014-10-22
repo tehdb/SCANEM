@@ -1,9 +1,0 @@
-.signup
-
-	.btn.btn-default(ng-click="vm.openSignupModal($event)") sign up
-
-	div(ng-show="false")
-		ui-select(ng-model="person.selected")
-			ui-select-match(placeholder="Select...") {{$select.selected.name}}
-			ui-select-choices(repeat="p in people | filter: $select.search")
-				div(ng-bind="p.name")
