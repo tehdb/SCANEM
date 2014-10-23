@@ -14,5 +14,4 @@ angular.module('app').classy.controller({
 		vm.title = 'home ctrl'
 
 
-
 });

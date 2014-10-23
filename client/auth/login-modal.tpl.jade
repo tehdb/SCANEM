@@ -1,23 +1,37 @@
 .modal-header
-	h3.modal-title Log in
+	h3.modal-title {{"auth.log_in" | translate }}
 
 .modal-body
-	form( role="form" )
+	form( role="form" name="formLogin" novalidate)
 
 		.form-group
-			input.form-control( type="email" name="email" placeholder="Email or Username" )
+			input.form-control(
+				type="text"
+				name="inpUsername"
+				placeholder="Email or Username"
+				ng-model="login.username"
+			)
 
 		.form-group
-			input.form-control( type="password" name="password" placeholder="Password" )
+			input.form-control(
+				type="password"
+				name="inpPassword"
+				placeholder="Password"
+				ng-model="login.password"
+			)
 
 		.form-group
 			.checkbox
 				label
-					input(type="checkbox" name="remember")
-					span Remember me
+					input(
+						type="checkbox"
+						name="inpRemember"
+						ng-model="login.remember"
+					)
+					span {{"auth.remember_me" | translate }}
 
 		.form-group
-			button.btn.btn-default(type="submit" ) Submit
+			button.btn.btn-default(type="submit" ng-click="doLogin($event)" ) {{"common.submit" | translate }}
 
 		.form-group
-			button.btn.btn-link(ng-click="signup($event)") Sign up
+			button.btn.btn-link(ng-click="doSignup($event)") {{"auth.sign_up" | translate }}

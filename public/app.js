@@ -1,4 +1,4 @@
-angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangular', 'ui.bootstrap', 'ui.select', 'pascalprecht.translate']).constant('routes', [
+angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangular', 'ui.bootstrap', 'ui.select', 'pascalprecht.translate', 'angular-md5']).constant('routes', [
   {
     url: '/',
     config: {
@@ -34,16 +34,42 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
   }
 ]);
 ;angular.module('app.auth', ['classy']);
+;angular.module('app.auth').factory('AuthSrvc', [
+  'Restangular', 'md5', function(ra, md5) {
+    var base, res;
+    base = ra.all('users');
+    res = {
+      auth: function(userData) {
+        userData.password = md5.createHash(userData.password);
+        base.post;
+        console.log("***********");
+        console.log(userData);
+        return console.log("***********");
+      }
+    };
+    return res;
+  }
+]);
 ;angular.module('app.auth').classy.controller({
   name: 'LoginModalCtrl',
   inject: {
     '$scope': '$',
-    '$modalInstance': '$mi'
+    '$modalInstance': '$mi',
+    'AuthSrvc': 'as'
   },
   init: function() {
     var c;
     c = this;
-    return c.$.signup = function($event) {
+    c.$.doLogin = function($event) {
+      var userData;
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+      userData = _.pick(c.$.login, 'username', 'password');
+      return c.as.auth(userData);
+    };
+    return c.$.doSignup = function($event) {
       if ($event) {
         $event.preventDefault();
         $event.stopPropagation();

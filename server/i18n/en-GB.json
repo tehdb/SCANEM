@@ -9,7 +9,8 @@
 
 		"auth": {
 			"sign_up": "sign up",
-			"log_in" : "log in"
+			"log_in" : "log in",
+			"remember_me" : "Remember me"
 		}
 	}
 }

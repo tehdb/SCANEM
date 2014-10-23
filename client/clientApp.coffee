@@ -14,6 +14,7 @@ angular
 		'ui.bootstrap'
 		'ui.select'
 		'pascalprecht.translate'
+		'angular-md5'
 	])
 
 	# configure routes
