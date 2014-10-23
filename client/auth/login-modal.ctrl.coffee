@@ -1,5 +1,5 @@
 
-angular.module('app.usermanager').classy.controller({
+angular.module('app.auth').classy.controller({
 	name: 'LoginModalCtrl'
 	inject: {
 		'$scope' : '$'
@@ -9,11 +9,11 @@ angular.module('app.usermanager').classy.controller({
 		c = @
 
 
-		c.$.registration = ($event) ->
+		c.$.signup = ($event) ->
 			if $event
 				$event.preventDefault()
 				$event.stopPropagation()
 
-			c.$mi.close( {status:'registration' });
+			c.$mi.close( {status:'signup' });
 
 })

@@ -1,0 +1,15 @@
+{
+	"lang_key" : "de_DE",
+	"lang_intval" : "deutsch",
+	"labels" : {
+
+		"common": {
+			"submit": "abschicken"
+		},
+
+		"auth": {
+			"sign_up": "registrieren",
+			"log_in" : "einloggen"
+		}
+	}
+}

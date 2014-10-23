@@ -1,0 +1,23 @@
+.modal-header
+	h3.modal-title Log in
+
+.modal-body
+	form( role="form" )
+
+		.form-group
+			input.form-control( type="email" name="email" placeholder="Email or Username" )
+
+		.form-group
+			input.form-control( type="password" name="password" placeholder="Password" )
+
+		.form-group
+			.checkbox
+				label
+					input(type="checkbox" name="remember")
+					span Remember me
+
+		.form-group
+			button.btn.btn-default(type="submit" ) Submit
+
+		.form-group
+			button.btn.btn-link(ng-click="signup($event)") Sign up

@@ -1,4 +1,4 @@
-angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'ui.bootstrap', 'ui.select']).constant('routes', [
+angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangular', 'ui.bootstrap', 'ui.select', 'pascalprecht.translate']).constant('routes', [
   {
     url: '/',
     config: {
@@ -15,7 +15,7 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'u
     }
   }
 ]).config([
-  '$routeProvider', '$locationProvider', 'RestangularProvider', 'routes', 'uiSelectConfig', function($rp, $lp, rp, routes, usc) {
+  '$routeProvider', '$locationProvider', '$translateProvider', 'RestangularProvider', 'routes', 'uiSelectConfig', function($rp, $lp, $tp, rp, routes, usc) {
     routes.forEach(function(r) {
       return $rp.when(r.url, r.config);
     });
@@ -26,9 +26,120 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'u
     $lp.hashPrefix('!');
     rp.setBaseUrl('/api');
     usc.theme = 'bootstrap';
+    $tp.useUrlLoader('/api/i18n');
+    $tp.preferredLanguage('en_GB');
+    $tp.fallbackLanguage('en_GB');
+    $tp.usePostCompiling(true);
+    $tp.useLocalStorage();
   }
 ]);
-;angular.module('app.usermanager', ['classy']);
+;angular.module('app.auth', ['classy']);
+;angular.module('app.auth').classy.controller({
+  name: 'LoginModalCtrl',
+  inject: {
+    '$scope': '$',
+    '$modalInstance': '$mi'
+  },
+  init: function() {
+    var c;
+    c = this;
+    return c.$.signup = function($event) {
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+      return c.$mi.close({
+        status: 'signup'
+      });
+    };
+  }
+});
+;angular.module('app.auth').directive('logupBar', [
+  '$modal', function($modal) {
+    return {
+      restrict: 'AE',
+      replace: true,
+/* Begin: .temp/client/auth/logup-bar */
+      template: '<div class="signup"><div ng-click="vm.openSignupModal($event)" class="btn btn-link">{{"auth.sign_up" | translate }}</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">{{"auth.log_in" | translate }}</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/auth/logup-bar */
+      scope: {},
+      controller: angular.module('app.auth').classy.controller({
+        inject: {
+          '$scope': '$'
+        },
+        init: function() {
+          var c;
+          c = this;
+          return c.$.vm = {
+            openLoginModal: function($event) {
+              if ($event == null) {
+                $event = null;
+              }
+              if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+              }
+              return $modal.open({
+                controller: 'LoginModalCtrl',
+                templateUrl: '/partials/auth/login-modal.html'
+              }).result.then(function(data) {
+                if (data.status === 'signup') {
+                  return c.$.vm.openSignupModal();
+                }
+              });
+            },
+            openSignupModal: function($event) {
+              if ($event == null) {
+                $event = null;
+              }
+              if ($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+              }
+              return $modal.open({
+                controller: 'SignupModalCtrl',
+                templateUrl: '/partials/auth/signup-modal.html'
+              }).result.then(function(data) {
+                if (data.status === 'login') {
+                  return c.$.vm.openLoginModal();
+                }
+              });
+            }
+          };
+        }
+      }),
+      link: function($scope, element, attrs, ctrl) {
+        $scope.person = {};
+        return $scope.people = [
+          {
+            name: 'tehdb'
+          }, {
+            name: 'mursa'
+          }
+        ];
+      }
+    };
+  }
+]);
+;angular.module('app.auth').classy.controller({
+  name: 'SignupModalCtrl',
+  inject: {
+    '$scope': '$',
+    '$modalInstance': '$mi'
+  },
+  init: function() {
+    var c;
+    c = this;
+    return c.$.login = function($event) {
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+      return c.$mi.close({
+        status: 'login'
+      });
+    };
+  }
+});
 ;angular.module('app').classy.controller({
   name: 'HomeCtrl',
   inject: {
@@ -52,98 +163,6 @@ angular.module('app', ['ngRoute', 'app.usermanager', 'classy', 'restangular', 'u
       return base.getList().then(function(users) {
         return console.log(users);
       });
-    };
-  }
-]);
-;angular.module('app.usermanager').classy.controller({
-  name: 'LoginModalCtrl',
-  inject: {
-    '$scope': '$',
-    '$modalInstance': '$mi'
-  },
-  init: function() {
-    var c;
-    c = this;
-    return c.$.registration = function($event) {
-      if ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-      }
-      return c.$mi.close({
-        status: 'registration'
-      });
-    };
-  }
-});
-;angular.module('app.usermanager').classy.controller({
-  name: 'RegistrationModalCtrl',
-  inject: {
-    '$scope': '$'
-  },
-  init: function() {
-    var c;
-    return c = this;
-  }
-});
-;angular.module('app.usermanager').directive('signupBar', [
-  '$modal', function($modal) {
-    return {
-      restrict: 'AE',
-      replace: true,
-/* Begin: .temp/client/usermanager/signup-bar */
-      template: '<div class="signup"><div ng-click="vm.openRegistrationModal($event)" class="btn btn-link">create accout</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">sign up</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/usermanager/signup-bar */
-      scope: {},
-      controller: angular.module('app.usermanager').classy.controller({
-        inject: {
-          '$scope': '$'
-        },
-        init: function() {
-          var c;
-          c = this;
-          return c.$.vm = {
-            openLoginModal: function($event) {
-              if ($event == null) {
-                $event = null;
-              }
-              if ($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-              }
-              return $modal.open({
-                controller: 'LoginModalCtrl',
-                templateUrl: '/partials/usermanager/login-modal.html'
-              }).result.then(function(data) {
-                if (data.status === 'registration') {
-                  return c.$.vm.openRegistrationModal();
-                }
-              });
-            },
-            openRegistrationModal: function($event) {
-              if ($event == null) {
-                $event = null;
-              }
-              if ($event) {
-                $event.preventDefault();
-                $event.stopPropagation();
-              }
-              return $modal.open({
-                controller: 'RegistrationModalCtrl',
-                templateUrl: '/partials/usermanager/registration-modal.html'
-              });
-            }
-          };
-        }
-      }),
-      link: function($scope, element, attrs, ctrl) {
-        $scope.person = {};
-        return $scope.people = [
-          {
-            name: 'tehdb'
-          }, {
-            name: 'mursa'
-          }
-        ];
-      }
     };
   }
 ]);

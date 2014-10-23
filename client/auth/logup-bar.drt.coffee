@@ -1,13 +1,13 @@
 angular
-	.module('app.usermanager')
-	.directive( 'signupBar', [
+	.module('app.auth')
+	.directive( 'logupBar', [
 		'$modal'
 		($modal) ->
 			restrict: 'AE'
 			replace: true
-			template: '"[[usermanager/signup-bar]]"'
+			template: '"[[auth/logup-bar]]"'
 			scope: {}
-			controller: angular.module('app.usermanager').classy.controller({
+			controller: angular.module('app.auth').classy.controller({
 				inject:
 					'$scope' : '$'
 				init: ->
@@ -22,21 +22,21 @@ angular
 
 							$modal.open({
 								controller: 'LoginModalCtrl'
-								templateUrl: '/partials/usermanager/login-modal.html'
+								templateUrl: '/partials/auth/login-modal.html'
 
 							}).result.then (data) ->
-								c.$.vm.openRegistrationModal() if data.status is 'registration'
+								c.$.vm.openSignupModal() if data.status is 'signup'
 
-						openRegistrationModal: ($event=null) ->
+						openSignupModal: ($event=null) ->
 							if $event
 								$event.preventDefault()
 								$event.stopPropagation()
 
 							$modal.open({
-								controller: 'RegistrationModalCtrl'
-								templateUrl: '/partials/usermanager/registration-modal.html'
-
-						})
+								controller: 'SignupModalCtrl'
+								templateUrl: '/partials/auth/signup-modal.html'
+							}).result.then (data) ->
+								c.$.vm.openLoginModal() if data.status is 'login'
 			})
 			link : ($scope, element, attrs, ctrl) ->
 

@@ -1,0 +1,15 @@
+{
+	"lang_key" : "en_GB",
+	"lang_intval" : "english",
+	"labels" : {
+
+		"common": {
+			"submit": "submit"
+		},
+
+		"auth": {
+			"sign_up": "sign up",
+			"log_in" : "log in"
+		}
+	}
+}

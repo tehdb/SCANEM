@@ -3,15 +3,17 @@ angular
 
 		# Angular modules
 		'ngRoute'
+		'ngCookies'
 
 		# Custom modules
-		'app.usermanager'
+		'app.auth'
 
 		# 3rd Party Modules
 		'classy'
 		'restangular'
 		'ui.bootstrap'
 		'ui.select'
+		'pascalprecht.translate'
 	])
 
 	# configure routes
@@ -38,10 +40,11 @@ angular
 	.config([
 		'$routeProvider'
 		'$locationProvider'
+		'$translateProvider'
 		'RestangularProvider'
 		'routes'
 		'uiSelectConfig'
-		( $rp, $lp, rp, routes, usc ) ->
+		( $rp, $lp, $tp, rp, routes, usc ) ->
 			routes.forEach (r) ->
 				$rp.when( r.url, r.config )
 
@@ -57,6 +60,15 @@ angular
 
 			# ui select config
 			usc.theme = 'bootstrap'
+
+
+			# angular-translate
+			$tp.useUrlLoader('/api/i18n')
+			$tp.preferredLanguage('en_GB')
+			$tp.fallbackLanguage('en_GB')
+			$tp.usePostCompiling(true)
+			$tp.useLocalStorage()
+			# $tp.useCookieStorage()
 
 			return
 	])
