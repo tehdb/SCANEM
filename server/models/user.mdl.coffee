@@ -14,6 +14,10 @@ userSchema = new mongoose.Schema(
 	# 	required: true
 	# token: String
 	# status: String
+
+	# createdOn:
+	# 	type: Date
+	# 	default:
 	# ip: String
 	# type: String
 )
