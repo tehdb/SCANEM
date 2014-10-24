@@ -13,7 +13,7 @@ angular
 					userData.password = md5.createHash( userData.password )
 
 
-					base.post
+					# base.post
 					console.log "***********"
 					console.log( userData )
 					console.log "***********"

@@ -1,16 +1,16 @@
 fs = require('fs')
 
-module.exports =
+i18nCtrl =
 	get: (req, res, next) ->
 
 		# get a list of available languages
 		if req.params.langs is 'all'
 
-			langsDir = "#{__dirname}/../i18n/"
+			langsDir = "#{__dirname}/langs"
 			result = []
 
 			fs.readdirSync( langsDir ).forEach ( file ) ->
-				langData = fs.readFileSync( "#{langsDir}#{file}" )
+				langData = fs.readFileSync( "#{langsDir}/#{file}" )
 				langData = JSON.parse( langData )
 
 				result.push({
@@ -23,7 +23,7 @@ module.exports =
 		# get lables for language
 		else if req.query.lang?
 			lang = req.query.lang.replace('_', '-')
-			langFile = "#{__dirname}/../i18n/#{lang}.json"
+			langFile = "#{__dirname}/langs/#{lang}.json"
 
 			fs.readFile langFile, 'utf8', (err, data) ->
 				return res.status(400).send( err ) if err
@@ -36,7 +36,7 @@ module.exports =
 		else
 			next()
 
-
-
-
-
+module.exports = ( router ) ->
+	router
+		.route('/i18n/:langs?')
+		.get( i18nCtrl.get )
