@@ -1,11 +1,11 @@
 PWD = process.env.PWD
 # router = require('express').Router()
 
-ctrl = require("#{__dirname}/user.ctrl")
-auth = require("#{PWD}/server/config/auth")
 
 
-module.exports = (router) ->
+module.exports = (router, eventEmmiter) ->
+	ctrl = require("#{__dirname}/user.ctrl")(eventEmmiter)
+	auth = require("#{PWD}/server/config/auth")
 
 	router
 		.route('/user/signup')

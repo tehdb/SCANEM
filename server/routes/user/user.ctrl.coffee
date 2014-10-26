@@ -5,38 +5,46 @@ hat = require('hat')
 mongoose = require('mongoose')
 encrypt = require("#{__dirname}/encrypt")
 
-module.exports =
-	signup : (req, res, next) ->
 
-		user = new User( req.body )
+module.exports = (pubsub) ->
+	return out =
+		signup : (req, res, next) ->
 
-		user.ips.push( req.ip )
-		user.token = hat()
-		user.status = 'notverified'
-		user.salt = encrypt.createSalt()
-		user.password = encrypt.hash(user.salt, user.password)
+			user = new User( req.body )
 
-		user.save (err, user) ->
-			return res.status(400).json( err ) if err
-			res.json( user.getPublicFields() )
+			user.ips.push( req.ip )
+			user.token = hat()
+			user.status = 'notverified'
+			user.salt = encrypt.createSalt()
+			user.password = encrypt.hash(user.salt, user.password)
+
+			user.save (err, user) ->
+				return res.status(400).json( err ) if err
+
+				publicUserData = user.getPublicFields()
+
+				pubsub.emit('UserCreatedEvent', publicUserData)
+
+				res.json( publicUserData )
 
 
-	verify : (req, res, next) ->
+		verify : (req, res, next) ->
 
-		condit = { token: req.body.token }
-		update =
-			status: "verified"
-			$unset:
-				token: ""
+			condit = { token: req.body.token }
+			update =
+				status: "verified"
+				$unset:
+					token: ""
 
-		# console.log user
+			User.findOneAndUpdate condit, update, (err, user) ->
+				return res.status(400).json( err ) if err
 
-		User.findOneAndUpdate condit, update, (err, user) ->
-			return res.status(400).json( err ) if err
-			res.send( user.getPublicFields() )
+				pubsub.emit('UserVerifiedEvent', user)
 
-	login : (req, res, next) ->
-		res.send('login')
+				res.send( user.getPublicFields() )
 
-	logout : (req, res, next) ->
-		res.send('logout')
+		login : (req, res, next) ->
+			res.send('login')
+
+		logout : (req, res, next) ->
+			res.send('logout')

@@ -9,6 +9,9 @@ session			= require('express-session')
 
 passport 		= require('passport')
 
+EventEmitter 	= require('events').EventEmitter
+pubsub 			= new EventEmitter()
+
 app = express()
 
 app.use(require('prerender-node').set('prerenderServiceUrl', 'http://localhost:3000') )
@@ -36,8 +39,12 @@ require( './config/mongoose')()
 # passport
 require( './config/passport')()
 
+
+# mailer
+require( './mailer' )( pubsub )
+
 # routes
-app.use 	'/api', require('./routes')
+app.use 	'/api', require('./routes')( pubsub )
 app.get 	'*', 	(req, res) -> res.render 'index'
 
 

@@ -10,7 +10,8 @@
 		"auth": {
 			"sign_up": "sign up",
 			"log_in" : "log in",
-			"remember_me" : "Remember me"
+			"restore_password" : "restore password",
+			"remember_me" : "remember me"
 		}
 	}
 }

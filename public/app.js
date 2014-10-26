@@ -41,7 +41,6 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
     res = {
       auth: function(userData) {
         userData.password = md5.createHash(userData.password);
-        base.post;
         console.log("***********");
         console.log(userData);
         return console.log("***********");

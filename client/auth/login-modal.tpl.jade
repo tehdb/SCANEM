@@ -20,18 +20,25 @@
 				ng-model="login.password"
 			)
 
-		.form-group
-			.checkbox
-				label
-					input(
-						type="checkbox"
-						name="inpRemember"
-						ng-model="login.remember"
-					)
-					span {{"auth.remember_me" | translate }}
 
-		.form-group
-			button.btn.btn-default(type="submit" ng-click="doLogin($event)" ) {{"common.submit" | translate }}
+		.row
+			.col-sm-6
+				.form-groupt
+					button.btn.btn-link {{"auth.restore_password" | translate }}
 
-		.form-group
-			button.btn.btn-link(ng-click="doSignup($event)") {{"auth.sign_up" | translate }}
+				.form-group
+					button.btn.btn-link(ng-click="doSignup($event)") {{"auth.sign_up" | translate }}
+
+			.col-sm-6
+				.form-group
+					.checkbox
+						label
+							input(
+								type="checkbox"
+								name="inpRemember"
+								ng-model="login.remember"
+							)
+							span {{"auth.remember_me" | translate }}
+
+				.form-group
+					button.btn.btn-default(type="submit" ng-click="doLogin($event)" ) {{"common.submit" | translate }}
