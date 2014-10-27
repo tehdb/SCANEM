@@ -21,12 +21,20 @@ angular.module('app.auth').classy.controller({
 
 
 
-			userData = _.pick( c.$.login, 'username', 'password' )
+			# userData = _.pick( c.$.login, 'username', 'password' )
 			# userData.password = c.md5.createHash( userData.password )
 
 			# console.log userData
 			#
-			c.as.auth( userData )
+			# c.as.auth( userData )
+			#console.log c.$.login
+
+			c.as.login( c.$.login ).then(
+				(user) ->
+					console.log user
+				,(err) ->
+					console.log "am i here?"
+			)
 
 		c.$.doSignup = ($event) ->
 			if $event

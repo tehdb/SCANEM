@@ -26,14 +26,6 @@ angular
 				# controller: 	'HomeCtrl'
 				templateUrl: 	'/partials/layout/home.html'
 				settings: 		{}
-		}, {
-			url: '/user/:email'
-			config:
-				title: 			'user'
-				# controller: 	'ProfileCtrl'
-				templateUrl: 	'/partials/profile.html'
-				settings: 		{}
-
 		}
 	])
 
@@ -57,7 +49,7 @@ angular
 
 
 			# restangular base api url
-			rp.setBaseUrl('/api')
+			rp.setBaseUrl('http://localhost:3030/api')
 
 			# ui select config
 			usc.theme = 'bootstrap'
@@ -73,4 +65,19 @@ angular
 
 			return
 	])
+
+
+	# main app controller
+	.classy.controller({
+		name: 'AppCtrl'
+		inject: {
+			'$rootScope' : '$rs'
+			'$location'  : '$l'
+		}
+		init: ->
+			c = @
+
+			c.$rs.$on "$routeChangeError", (event, current, previous, rejection) ->
+				c.$l.path('/')
+	})
 

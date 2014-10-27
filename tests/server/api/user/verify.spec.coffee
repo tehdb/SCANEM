@@ -13,38 +13,43 @@ URL = 'http://localhost:3030/api/user'
 
 # server = request.agent( URL );
 
-UserInput =
+USER_INPUT = _.constant({
 	email: 'test@user.com'
 	username: 'testuser'
 	password: '123123123123'
+})
 
-User = null
-
+_users_db = db.get('users')
+_user = null
+_token = null
 
 describe 'api user verify', ->
 
 	before (done) ->
 		agent
 			.post( "#{URL}/signup" )
-			.send( UserInput )
+			.send( USER_INPUT() )
 			# .expect( 200 )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 200 )
-				User = res.body
-				done()
+				_user = res.body
+
+				_users_db.findOne {_id: _user._id}, (err, user) ->
+					expect( err ).to.be.null
+					_token = user.token
+					done()
 
 
 	# clean up db
 	after (done) ->
-		users = db.get('users')
-		users.remove {_id: User._id}, (err ) ->
+		_users_db.remove {_id: _user._id}, (err ) ->
 			expect( err ).to.be.null
 			done()
 
 	it 'should verify a user after sign up', (done) ->
 		agent
 			.post( "#{URL}/verify" )
-			.send({ token: User.token })
+			.send({ token: _token })
 			# .expect( 200 )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 200 )

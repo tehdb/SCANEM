@@ -11,7 +11,8 @@
 			"sign_up": "sign up",
 			"log_in" : "log in",
 			"restore_password" : "restore password",
-			"remember_me" : "remember me"
+			"remember_me" : "remember me",
+			"confirmed_login" : "successfully confirmed, you can log in now"
 		}
 	}
 }

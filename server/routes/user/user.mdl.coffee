@@ -7,7 +7,8 @@ encrypt = require("#{__dirname}/encrypt")
 # hat = require('hat')
 # encrypt = require("#{PWD}/server/utils/encryption")
 #
-_publicFields = '_id username email token role'
+# _publicFields = '_id username email token role'
+_publicFields = '_id username email role'
 _schemaName = 'User'
 
 _schema = new mongoose.Schema(
@@ -22,7 +23,7 @@ _schema = new mongoose.Schema(
 		lowercase: true
 		unique: true
 		required: 'Email address is required'
-		match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+		match: [/^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$/, 'Please fill a valid email address']
 
 	password:
 		type: String
@@ -35,6 +36,7 @@ _schema = new mongoose.Schema(
 	token:
 		type: String
 		unique: true
+		sparse: true
 
 	status: String
 

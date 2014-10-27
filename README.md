@@ -9,6 +9,8 @@
 	$ npm install -g coffee-script    # better JavaScript (http://coffeescript.org)
 	$ npm install -g forever          # continuously running tool (https://github.com/nodejitsu/forever)
 	$ npm install -g mocha            # feature-rich JavaScript test framework (http://visionmedia.github.io/mocha/)
+
+	$ npm install -g Haraka           # high performance SMTP server (https://haraka.github.io)
 ```
 
 ### local installation

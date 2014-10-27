@@ -4,19 +4,26 @@ angular
 		'Restangular'
 		'md5'
 		(ra, md5) ->
-			base = ra.all('users')
 
 			res =
-				auth: (userData) ->
+				login: (userData) ->
+
+					base = ra.all('user/login')
 
 					# encrypt password
 					userData.password = md5.createHash( userData.password )
 
+					return base.post( userData )
 
-					# base.post
-					console.log "***********"
-					console.log( userData )
-					console.log "***********"
+				signup: (userData) ->
+					# base =
+					base = ra.all('user/signup')
+					userData.password = md5.createHash( userData.password )
+					return base.post( userData )
+
+				verify: (token) ->
+					base = ra.all('user/verify')
+					return base.post( token: token )
 
 			return res
 ])

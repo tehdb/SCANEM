@@ -6,13 +6,6 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
       templateUrl: '/partials/layout/home.html',
       settings: {}
     }
-  }, {
-    url: '/user/:email',
-    config: {
-      title: 'user',
-      templateUrl: '/partials/profile.html',
-      settings: {}
-    }
   }
 ]).config([
   '$routeProvider', '$locationProvider', '$translateProvider', 'RestangularProvider', 'routes', 'uiSelectConfig', function($rp, $lp, $tp, rp, routes, usc) {
@@ -24,7 +17,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
     });
     $lp.html5Mode(true);
     $lp.hashPrefix('!');
-    rp.setBaseUrl('/api');
+    rp.setBaseUrl('http://localhost:3030/api');
     usc.theme = 'bootstrap';
     $tp.useUrlLoader('/api/i18n');
     $tp.preferredLanguage('en_GB');
@@ -32,18 +25,57 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
     $tp.usePostCompiling(true);
     $tp.useLocalStorage();
   }
+]).classy.controller({
+  name: 'AppCtrl',
+  inject: {
+    '$rootScope': '$rs',
+    '$location': '$l'
+  },
+  init: function() {
+    var c;
+    c = this;
+    return c.$rs.$on("$routeChangeError", function(event, current, previous, rejection) {
+      return c.$l.path('/');
+    });
+  }
+});
+;angular.module('app.auth', ['ngRoute', 'classy']).config([
+  '$routeProvider', function($rp) {
+    return $rp.when('/verify/:token?', {
+      controller: 'VerifyPageCtrl',
+      templateUrl: '/partials/auth/verify-page.html',
+      resolve: {
+        user: [
+          '$route', 'AuthSrvc', function($r, as) {
+            return as.verify($r.current.params.token);
+          }
+        ]
+      }
+    });
+  }
 ]);
-;angular.module('app.auth', ['classy']);
 ;angular.module('app.auth').factory('AuthSrvc', [
   'Restangular', 'md5', function(ra, md5) {
-    var base, res;
-    base = ra.all('users');
+    var res;
     res = {
-      auth: function(userData) {
+      login: function(userData) {
+        var base;
+        base = ra.all('user/login');
         userData.password = md5.createHash(userData.password);
-        console.log("***********");
-        console.log(userData);
-        return console.log("***********");
+        return base.post(userData);
+      },
+      signup: function(userData) {
+        var base;
+        base = ra.all('user/signup');
+        userData.password = md5.createHash(userData.password);
+        return base.post(userData);
+      },
+      verify: function(token) {
+        var base;
+        base = ra.all('user/verify');
+        return base.post({
+          token: token
+        });
       }
     };
     return res;
@@ -60,13 +92,15 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
     var c;
     c = this;
     c.$.doLogin = function($event) {
-      var userData;
       if ($event) {
         $event.preventDefault();
         $event.stopPropagation();
       }
-      userData = _.pick(c.$.login, 'username', 'password');
-      return c.as.auth(userData);
+      return c.as.login(c.$.login).then(function(user) {
+        return console.log(user);
+      }, function(err) {
+        return console.log("am i here?");
+      });
     };
     return c.$.doSignup = function($event) {
       if ($event) {
@@ -149,12 +183,24 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
   name: 'SignupModalCtrl',
   inject: {
     '$scope': '$',
-    '$modalInstance': '$mi'
+    '$modalInstance': '$mi',
+    'AuthSrvc': 'as'
   },
   init: function() {
     var c;
     c = this;
-    return c.$.login = function($event) {
+    c.$.doSignup = function($event) {
+      if ($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+      return c.as.signup(c.$.signup).then(function(data) {
+        return console.log(data);
+      }, function(err) {
+        return console.log(err);
+      });
+    };
+    return c.$.doLogin = function($event) {
       if ($event) {
         $event.preventDefault();
         $event.stopPropagation();
@@ -162,6 +208,21 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
       return c.$mi.close({
         status: 'login'
       });
+    };
+  }
+});
+;angular.module('app.auth').classy.controller({
+  name: 'VerifyPageCtrl',
+  inject: {
+    '$scope': '$',
+    'user': 'u'
+  },
+  init: function() {
+    var c;
+    c = this;
+    console.log(c.u);
+    return c.$.vm = {
+      email: c.u.email
     };
   }
 });

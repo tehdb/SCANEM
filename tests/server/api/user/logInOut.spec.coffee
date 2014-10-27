@@ -10,12 +10,16 @@ db = require('monk')('localhost/SCANEM')
 URL = 'http://localhost:3030/api/user'
 
 
-UserInput =
+USER_INPUT = _.constant({
 	email: 'test@user.com'
 	username: 'testuser'
 	password: '123123123123'
+})
 
-User = null
+# User = null
+_users_db = db.get('users')
+_user = null
+_token = null
 
 
 describe 'api user log in / log out', ->
@@ -23,24 +27,26 @@ describe 'api user log in / log out', ->
 	before (done) ->
 		agent
 			.post( "#{URL}/signup" )
-			.send( UserInput )
+			.send( USER_INPUT() )
 			# .expect( 200 )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 200 )
-				User = res.body
+				_user = res.body
 
-				agent
-					.post( "#{URL}/verify" )
-					.send({ token: User.token })
-					.end (err, res) ->
-						expect( res.status ).to.equal( 200 )
-						expect( res.body._id ).to.exist
-						done()
+				_users_db.findOne {_id: _user._id}, (err, user) ->
+					expect( err ).to.be.null
+
+					agent
+						.post( "#{URL}/verify" )
+						.send({ token: user.token })
+						.end (err, res) ->
+							expect( res.status ).to.equal( 200 )
+							expect( res.body._id ).to.exist
+							done()
 
 	# clean up db
 	after (done) ->
-		users = db.get('users')
-		users.remove {_id: User._id}, (err ) ->
+		_users_db.remove {_id: _user._id}, (err ) ->
 			expect( err ).to.be.null
 			done()
 
@@ -48,7 +54,7 @@ describe 'api user log in / log out', ->
 	it 'should log in a user', (done) ->
 		agent
 			.post( "#{URL}/login" )
-			.send( _.pick(UserInput, 'username', 'password') )
+			.send( _.pick(USER_INPUT(), 'username', 'password') )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 200 )
 				expect( res.body._id ).to.exist

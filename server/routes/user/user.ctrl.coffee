@@ -39,6 +39,9 @@ module.exports = (pubsub) ->
 			User.findOneAndUpdate condit, update, (err, user) ->
 				return res.status(400).json( err ) if err
 
+				return res.status(400).json( new Error('User not found') ) if !user?
+
+
 				pubsub.emit('UserVerifiedEvent', user)
 
 				res.send( user.getPublicFields() )

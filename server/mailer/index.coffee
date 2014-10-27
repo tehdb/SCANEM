@@ -1,5 +1,5 @@
 
-# PWD = process.env.PWD
+PWD = process.env.PWD
 
 nodemailer = require("nodemailer")
 jade = require('jade')
@@ -13,34 +13,42 @@ fs = require('fs')
 # 		user: 'support@flavity.de'
 # 		pass: 'fl@v1t7$1000'
 
+_transporter = nodemailer.createTransport()
 
-_sendVerifyEmail = (userData) ->
-	console.log userData
-	# tpl = './verify.tpl.jade'
-	# vm =
-	# 	title: 		req.i18n.t('labels.verify_email')
-	# 	header: 	req.i18n.t('labels.thank_for_registration')
-	# 	linklabel: 	req.i18n.t('labels.click_to_verify_email')
-	# 	verifylink: "http://localhost:3030/verify/#{userData.token}"
+_sendVerifyEmail = (userData, i18n, logger) ->
 
+	# console.log "*******"
+	# console.log i18n.__('labels.test')
+	# console.log "*******"
 
-	# fs.readFile tpl, 'utf8', ( err, template ) ->
-	# 	return _callback( err ) if err
-	# 	html = jade.compile( template )(vm)
-	# 	_smtpTransport.sendMail
-	# 		from: 		'support@flavity.de'
-	# 		to: 		userData.email
-	# 		subject: 	vm.title
-	# 		html: 		html
-	# 	, ( err, res ) ->
-	# 		return callback?( err ) if err
-	# 		_smtpTransport.close()
-	# 		callback?( null, true )
+	# console.log userData
+	tpl = "#{PWD}/server/mailer/verify.tpl.jade"
+	vm =
+		title: 		i18n.__('verify_email_title')
+		linklabel: 	i18n.__('verify_link_label')
+		verifylink: "http://localhost:3030/verify/#{userData.token}" # TODO: pass domain
 
 
+	fs.readFile tpl, 'utf8', ( err, template ) ->
+		return console.log( err ) if err
 
-module.exports = ( pubsub, logger ) ->
-	pubsub.on 'UserCreatedEvent', (user) -> _sendVerifyEmail(user, logger)
+		html = jade.compile( template )(vm)
+
+		console.log html
+		# _smtpTransport.sendMail
+		# 	from: 		'sender@address'
+		# 	to: 		userData.email
+		# 	subject: 	vm.title
+		# 	html: 		html
+		# , ( err, res ) ->
+		# 	return callback?( err ) if err
+		# 	_smtpTransport.close()
+		# 	callback?( null, true )
+
+
+
+module.exports = ( pubsub, i18n, logger ) ->
+	pubsub.on 'UserCreatedEvent', (user) -> _sendVerifyEmail(user, i18n, logger)
 
 
 

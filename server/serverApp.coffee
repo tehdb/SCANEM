@@ -1,47 +1,25 @@
-express			= require('express')
-bodyParser 		= require('body-parser')
-cookieParser 	= require('cookie-parser')
-methodOverride 	= require('method-override')
-multer 			= require('multer')
-logger 			= require('morgan')
-errorHandler 	= require('errorhandler')
-session			= require('express-session')
-
-passport 		= require('passport')
-
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
 
-app = express()
+# express
+app = require( './config/express')
 
-app.use(require('prerender-node').set('prerenderServiceUrl', 'http://localhost:3000') )
-
-app.set 	'port', 3030
-app.set 	'view engine', 'jade'
-app.set 	'views', "./server/views"
-app.use 	methodOverride()
-app.use 	bodyParser.json()
-app.use 	bodyParser.urlencoded({ extended: true })
-app.use		session({ secret: 'SCANEM', saveUninitialized:true, resave: true })
-app.use 	cookieParser()
-app.use 	express.static( "./public" )
-app.use 	express.static( "./bower_components" )
-
-app.use 	passport.initialize()
-app.use 	passport.session()
-
-app.use 	logger('dev')
-app.use 	errorHandler()
 
 # mongo
 require( './config/mongoose')()
+
 
 # passport
 require( './config/passport')()
 
 
+# i18n
+i18n = require( './config/i18next')( app )
+
+
 # mailer
-require( './mailer' )( pubsub )
+require( './mailer' )( pubsub, i18n )
+
 
 # routes
 app.use 	'/api', require('./routes')( pubsub )
