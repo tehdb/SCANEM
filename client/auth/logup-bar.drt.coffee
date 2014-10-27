@@ -15,6 +15,7 @@ angular
 
 
 					c.$.vm =
+						user: null
 						openLoginModal: ($event=null) ->
 							if $event
 								$event.preventDefault()
@@ -25,7 +26,10 @@ angular
 								templateUrl: '/partials/auth/login-modal.html'
 
 							}).result.then (data) ->
-								c.$.vm.openSignupModal() if data.status is 'signup'
+
+								switch data.status
+									when 'signup' then c.$.vm.openSignupModal()
+									when 'login' then c.$.vm.user = data.user
 
 						openSignupModal: ($event=null) ->
 							if $event

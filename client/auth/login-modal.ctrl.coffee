@@ -31,9 +31,10 @@ angular.module('app.auth').classy.controller({
 
 			c.as.login( c.$.login ).then(
 				(user) ->
-					console.log user
+					c.$mi.close( {status: 'login', user: user})
+					# console.log user
 				,(err) ->
-					console.log "am i here?"
+					console.log err
 			)
 
 		c.$.doSignup = ($event) ->

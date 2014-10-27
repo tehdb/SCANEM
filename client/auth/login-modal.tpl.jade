@@ -6,6 +6,7 @@
 		role="form"
 		name="formLogin"
 		novalidate
+		ng-submit="doLogin()"
 	)
 
 		.form-group
@@ -45,4 +46,4 @@
 							span {{"auth.remember_me" | translate }}
 
 				.form-group
-					button.btn.btn-default(type="submit" ng-click="doLogin($event)" ) {{"common.submit" | translate }}
+					button.btn.btn-default(type="submit") {{"common.submit" | translate }}

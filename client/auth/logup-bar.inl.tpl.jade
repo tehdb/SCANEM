@@ -1,8 +1,13 @@
 .signup
 
-	.btn.btn-link(ng-click="vm.openSignupModal($event)") {{"auth.sign_up" | translate }}
+	div(ng-hide="vm.user")
+		.btn.btn-link(ng-click="vm.openSignupModal($event)") {{"auth.sign_up" | translate }}
 
-	.btn.btn-default(ng-click="vm.openLoginModal($event)") {{"auth.log_in" | translate }}
+		.btn.btn-default(ng-click="vm.openLoginModal($event)") {{"auth.log_in" | translate }}
+
+	div(ng-show="vm.user")
+		span {{vm.user.username}}
+
 
 	div(ng-show="false")
 		ui-select(ng-model="person.selected")

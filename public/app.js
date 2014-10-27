@@ -97,9 +97,12 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
         $event.stopPropagation();
       }
       return c.as.login(c.$.login).then(function(user) {
-        return console.log(user);
+        return c.$mi.close({
+          status: 'login',
+          user: user
+        });
       }, function(err) {
-        return console.log("am i here?");
+        return console.log(err);
       });
     };
     return c.$.doSignup = function($event) {
@@ -119,7 +122,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
       restrict: 'AE',
       replace: true,
 /* Begin: .temp/client/auth/logup-bar */
-      template: '<div class="signup"><div ng-click="vm.openSignupModal($event)" class="btn btn-link">{{"auth.sign_up" | translate }}</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">{{"auth.log_in" | translate }}</div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/auth/logup-bar */
+      template: '<div class="signup"><div ng-hide="vm.user"><div ng-click="vm.openSignupModal($event)" class="btn btn-link">{{"auth.sign_up" | translate }}</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">{{"auth.log_in" | translate }}</div></div><div ng-show="vm.user"><span>{{vm.user.username}}</span></div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/auth/logup-bar */
       scope: {},
       controller: angular.module('app.auth').classy.controller({
         inject: {
@@ -129,6 +132,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
           var c;
           c = this;
           return c.$.vm = {
+            user: null,
             openLoginModal: function($event) {
               if ($event == null) {
                 $event = null;
@@ -141,8 +145,11 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
                 controller: 'LoginModalCtrl',
                 templateUrl: '/partials/auth/login-modal.html'
               }).result.then(function(data) {
-                if (data.status === 'signup') {
-                  return c.$.vm.openSignupModal();
+                switch (data.status) {
+                  case 'signup':
+                    return c.$.vm.openSignupModal();
+                  case 'login':
+                    return c.$.vm.user = data.user;
                 }
               });
             },
