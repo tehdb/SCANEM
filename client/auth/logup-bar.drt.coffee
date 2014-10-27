@@ -41,16 +41,12 @@ angular
 								templateUrl: '/partials/auth/signup-modal.html'
 							}).result.then (data) ->
 								c.$.vm.openLoginModal() if data.status is 'login'
+
+					c.$.doLogout = ->
+
+						console.log "do logout"
+						console.log c.$.vm.user
+
 			})
-			link : ($scope, element, attrs, ctrl) ->
-
-				$scope.person = {}
-
-				$scope.people = [
-					{
-						name: 'tehdb'
-					},{
-						name: 'mursa'
-					}
-				]
+			# link : ($scope, element, attrs, ctrl) ->
 	])

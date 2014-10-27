@@ -6,7 +6,15 @@
 		.btn.btn-default(ng-click="vm.openLoginModal($event)") {{"auth.log_in" | translate }}
 
 	div(ng-show="vm.user")
-		span {{vm.user.username}}
+		span.dropdown
+			a.dropdown-toggle( href )
+				span {{vm.user.username}}
+				i.fa.fa-caret-down
+			ul.dropdown-menu
+				li
+					a(href) profile
+				li
+					a(ng-click="doLogout()") logout
 
 
 	div(ng-show="false")

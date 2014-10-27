@@ -9,6 +9,9 @@ angular.module('app.auth').classy.controller({
 	init: ->
 		c = @
 
+		c.$.vm =
+			signedup : false
+
 		c.$.doSignup = ($event) ->
 			if $event
 				$event.preventDefault()
@@ -17,6 +20,7 @@ angular.module('app.auth').classy.controller({
 
 			c.as.signup( c.$.signup ).then(
 				(data) ->
+					c.$.vm.signedup = true
 					console.log data
 				,(err) ->
 					console.log err
