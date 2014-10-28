@@ -17,7 +17,7 @@ module.exports = ->
 			password: password
 
 		new UserModel().authenticate loginData, (err, user) ->
-			return done( null, false) if err
+			return done( err, false) if err
 			done(null, user )
 
 	passport.serializeUser ( user, done ) ->

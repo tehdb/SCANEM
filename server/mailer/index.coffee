@@ -5,14 +5,6 @@ nodemailer = require("nodemailer")
 jade = require('jade')
 fs = require('fs')
 
-# _smtpTransport = nodemailer.createTransport "SMTP",
-# 	host: 'flavity.de'
-# 	# secureConnection: true,
-# 	port: 25
-# 	auth:
-# 		user: 'support@flavity.de'
-# 		pass: 'fl@v1t7$1000'
-
 _transporter = nodemailer.createTransport()
 
 _sendVerifyEmail = (userData, i18n, logger) ->

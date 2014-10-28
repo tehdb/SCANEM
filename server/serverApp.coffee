@@ -1,6 +1,7 @@
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
 
+
 # express
 app = require( './config/express')
 
@@ -21,12 +22,22 @@ i18n = require( './config/i18next')( app )
 require( './mailer' )( pubsub, i18n )
 
 
-# routes
+# api routes
 app.use 	'/api', require('./routes')( pubsub )
-app.get 	'*', (req, res) -> res.render 'index', {user: req.user}
 
 
+# main view
+app.get 	'*', (req, res) ->
+	res.render 'index', { user: req.user?.getPublicFields?()}
 
 
+# error handler
+app.use 	(err, req, res, next) ->
+	status = err.status or 400
+	reason = err.reason?.message or err.reason?.toString() or 'unknown error'
+	res.status( status ).json( {reason : reason } )
+
+
+# start server
 app.listen app.get('port'), ->
 	console.log "Listening on port #{app.get('port')}..."

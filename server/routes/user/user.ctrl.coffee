@@ -19,7 +19,7 @@ module.exports = (pubsub) ->
 			user.password = encrypt.hash(user.salt, user.password)
 
 			user.save (err, user) ->
-				return res.status(400).json( err ) if err
+				return res.status(400).json({ 'reason' : err }) if err
 
 				publicUserData = user.getPublicFields()
 
@@ -37,9 +37,9 @@ module.exports = (pubsub) ->
 					token: ""
 
 			User.findOneAndUpdate condit, update, (err, user) ->
-				return res.status(400).json( err ) if err
+				return res.status(400).json({ 'reason' : err }) if err
 
-				return res.status(400).json( new Error('User not found') ) if !user?
+				return res.status(400).json({ 'reason' : 'User not found'}) if !user?
 
 
 				pubsub.emit('UserVerifiedEvent', user)

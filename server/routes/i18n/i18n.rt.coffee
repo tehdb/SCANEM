@@ -28,7 +28,7 @@ i18nCtrl =
 			langFile = "#{_langsDir}/#{lang}.json"
 
 			fs.readFile langFile, 'utf8', (err, data) ->
-				return res.status(400).send( err ) if err
+				return res.status(400).send( { 'reason' : err } ) if err
 
 				data = JSON.parse(data)
 

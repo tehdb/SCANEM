@@ -29,9 +29,9 @@ angular.module('app.auth').classy.controller({
 			# c.as.auth( userData )
 			#console.log c.$.login
 
-			c.as.login( c.$.login ).then(
-				(user) ->
-					c.$mi.close( {status: 'login', user: user})
+			c.as.login( angular.copy( c.$.login) ).then(
+				(data) ->
+					c.$mi.close( {status: 'login', user: data})
 					# console.log user
 				,(err) ->
 					console.log err

@@ -12,6 +12,7 @@ _publicFields = '_id username email role'
 _schemaName = 'User'
 
 _schema = new mongoose.Schema(
+
 	username:
 		type: String
 		lowercase: true
@@ -47,7 +48,6 @@ _schema = new mongoose.Schema(
 		required: true
 		default: 'user'
 
-
 	ips: []
 
 	loginOn:
@@ -61,6 +61,7 @@ _schema = new mongoose.Schema(
 	updateOn:
 		type: Date
 		default: Date.now
+
 )
 
 
@@ -73,18 +74,31 @@ _schema.methods =
 
 		# find user by email or username with status is 'verified'
 		condit =
-			$and: [{
-				$or: [{
+			# $and: [
+			# 	{
+			# 		$or: [
+			# 			{
+			# 				username: data.username
+			# 			},{
+			# 				email: data.username
+			# 			}
+			# 		]
+			# 	}, {
+			# 		status: 'verified'
+			# 	}
+			# ]
+			$or: [
+				{
 					username: data.username
 				},{
 					email: data.username
-				}] }, {
-				status: 'verified'
-			}]
+				}
+			]
 
 		this.model(_schemaName).findOne condit, (err, user) ->
 			return cb( err ) if err
 			return cb( new Error('user not found') ) if !user?
+			return cb( new Error('user not verified') ) if user.status isnt 'verified'
 
 			if encrypt.hash( user.salt, data.password ) is user.password
 				cb?( null, user.getPublicFields() )

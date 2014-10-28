@@ -12,7 +12,7 @@
 				i.fa.fa-caret-down
 			ul.dropdown-menu
 				li
-					a(href) profile
+					a(ng-href="/profile/{{vm.user.username}}") profile
 				li
 					a(ng-click="doLogout()") logout
 
