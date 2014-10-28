@@ -71,11 +71,15 @@ angular
 	.classy.controller({
 		name: 'AppCtrl'
 		inject: {
-			'$rootScope' : '$rs'
-			'$location'  : '$l'
+			'$rootScope' 	: '$rs'
+			'$scope' 		: '$'
+			'$location' 	: '$l'
 		}
 		init: ->
 			c = @
+
+			c.$.vm =
+				mainNavbarCollapsed : true
 
 			c.$rs.$on "$routeChangeError", (event, current, previous, rejection) ->
 				c.$l.path('/')

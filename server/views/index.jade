@@ -1,5 +1,5 @@
 doctype html
-html(lang="en" ng-app="app" ng-controller="AppCtrl")
+html(lang="en" ng-app="app" )
 	head
 		base(href="/")
 
@@ -43,6 +43,15 @@ html(lang="en" ng-app="app" ng-controller="AppCtrl")
 
 		script( src="/app.js")
 
-	body
+	body(ng-controller="AppCtrl")
+		nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+			.container-fluid
+				.navbar-header
+					a.navbar-brand(href="/") SCANEM
+					button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
+
+				.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
+					logup-bar
+
 		div.container
 			div(ng-view)

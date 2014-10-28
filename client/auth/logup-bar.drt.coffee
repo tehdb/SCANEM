@@ -10,6 +10,7 @@ angular
 			controller: angular.module('app.auth').classy.controller({
 				inject:
 					'$scope' : '$'
+					'$location' : '$l'
 					'AuthSrvc' : 'as'
 				init: ->
 					c = @
@@ -43,11 +44,11 @@ angular
 								c.$.vm.openLoginModal() if data.status is 'login'
 
 					c.$.doLogout = ->
-						c.as.logout().then(
-							(data) -> c.$.vm.user = null
-						,
-							(err) -> c.$.vm.user = null
-						)
+						logoutHanlder = ->
+							c.$.vm.user = null
+							c.$l.path('/')
+
+						c.as.logout().then( logoutHanlder, logoutHanlder )
 
 
 			})
