@@ -51,7 +51,11 @@ html(lang="en" ng-app="app" )
 					button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
 
 				.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
-					logup-bar
+					ul.nav.navbar-nav.navbar-right
+						li
+							a(href="#") Link
+						li
+							logup-bar
 
 		div.container
 			div(ng-view)
