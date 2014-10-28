@@ -6,6 +6,7 @@
 		role="form"
 		name="formSignup"
 		novalidate
+		ng-hide="vm.signedup"
 	)
 
 		.form-group
@@ -40,3 +41,7 @@
 
 		.form-group
 			button.btn.btn-link( ng-click="doLogin($event)" ) {{"common.submit" | translate }}
+
+
+	div(ng-show="vm.signedup")
+		p.text-center {{"auth.sign_up_complete" | translate }}

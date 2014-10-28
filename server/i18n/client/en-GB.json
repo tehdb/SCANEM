@@ -9,6 +9,7 @@
 
 		"auth": {
 			"sign_up": "sign up",
+			"sign_up_complete" : "to complete the registration please confirm your e-mail address",
 			"log_in" : "log in",
 			"restore_password" : "restore password",
 			"remember_me" : "remember me",

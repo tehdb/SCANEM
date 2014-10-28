@@ -116,10 +116,14 @@ module.exports = (grunt) ->
 			server:
 				command: 'nodemon server/serverApp.coffee'
 
+			installDeps:
+				command: 'bower install && npm install'
+
 	grunt
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views', 'clean:build' ])
 		.registerTask( 'client-watch', 		[ 'watch:clientApp' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
+		.registerTask( 'install-deps',		[ 'exec:installDeps' ])
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
 		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )

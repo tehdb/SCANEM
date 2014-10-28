@@ -122,7 +122,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
       restrict: 'AE',
       replace: true,
 /* Begin: .temp/client/auth/logup-bar */
-      template: '<div class="signup"><div ng-hide="vm.user"><div ng-click="vm.openSignupModal($event)" class="btn btn-link">{{"auth.sign_up" | translate }}</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">{{"auth.log_in" | translate }}</div></div><div ng-show="vm.user"><span>{{vm.user.username}}</span></div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/auth/logup-bar */
+      template: '<div class="signup"><div ng-hide="vm.user"><div ng-click="vm.openSignupModal($event)" class="btn btn-link">{{"auth.sign_up" | translate }}</div><div ng-click="vm.openLoginModal($event)" class="btn btn-default">{{"auth.log_in" | translate }}</div></div><div ng-show="vm.user"><span class="dropdown"><a href="href" class="dropdown-toggle"><span>{{vm.user.username}}</span><i class="fa fa-caret-down"></i></a><ul class="dropdown-menu"><li><a href="href">profile</a></li><li><a ng-click="doLogout()">logout</a></li></ul></span></div><div ng-show="false"><ui-select ng-model="person.selected"><ui-select-match placeholder="Select...">{{$select.selected.name}}</ui-select-match><ui-select-choices repeat="p in people | filter: $select.search"><div ng-bind="p.name"></div></ui-select-choices></ui-select></div></div>',/* End: .temp/client/auth/logup-bar */
       scope: {},
       controller: angular.module('app.auth').classy.controller({
         inject: {
@@ -131,7 +131,7 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
         init: function() {
           var c;
           c = this;
-          return c.$.vm = {
+          c.$.vm = {
             user: null,
             openLoginModal: function($event) {
               if ($event == null) {
@@ -171,18 +171,12 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
               });
             }
           };
+          return c.$.doLogout = function() {
+            console.log("do logout");
+            return console.log(c.$.vm.user);
+          };
         }
-      }),
-      link: function($scope, element, attrs, ctrl) {
-        $scope.person = {};
-        return $scope.people = [
-          {
-            name: 'tehdb'
-          }, {
-            name: 'mursa'
-          }
-        ];
-      }
+      })
     };
   }
 ]);
@@ -196,12 +190,16 @@ angular.module('app', ['ngRoute', 'ngCookies', 'app.auth', 'classy', 'restangula
   init: function() {
     var c;
     c = this;
+    c.$.vm = {
+      signedup: false
+    };
     c.$.doSignup = function($event) {
       if ($event) {
         $event.preventDefault();
         $event.stopPropagation();
       }
       return c.as.signup(c.$.signup).then(function(data) {
+        c.$.vm.signedup = true;
         return console.log(data);
       }, function(err) {
         return console.log(err);
