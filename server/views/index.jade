@@ -10,6 +10,12 @@ html(lang="en" ng-app="app" ng-controller="AppCtrl")
 		link( rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" )
 		link( rel="stylesheet" href="/angular-ui-select/dist/select.min.css" )
 
+		//- auth
+		if !!user
+			script.
+				window.bootstrappedUserObject = !{JSON.stringify(user)}
+
+
 		//- helper
 		script( src="/lodash/dist/lodash.js" )
 

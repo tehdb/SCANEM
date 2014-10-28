@@ -23,7 +23,8 @@ require( './mailer' )( pubsub, i18n )
 
 # routes
 app.use 	'/api', require('./routes')( pubsub )
-app.get 	'*', 	(req, res) -> res.render 'index'
+app.get 	'*', (req, res) -> res.render 'index', {user: req.user}
+
 
 
 
