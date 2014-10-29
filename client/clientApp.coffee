@@ -8,6 +8,7 @@ angular
 		# Custom modules
 		'app.auth'
 		'app.header'
+		'app.products'
 
 		# 3rd Party Modules
 		'classy'
