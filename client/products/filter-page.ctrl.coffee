@@ -1,11 +1,11 @@
 
 angular.module('app.products').classy.controller({
-	name: 'ProductsPageCtrl'
+	name: 'FilterPageCtrl'
 	inject: {
 		'$scope' : '$'
 	}
 	init: ->
 		c = @
-		console.log "products overview"
+		console.log "filter overview"
 
 })

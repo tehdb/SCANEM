@@ -135,14 +135,14 @@ module.exports = (grunt) ->
 		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views', 'clean:build' ])
 		.registerTask( 'client-watch', 		[ 'watch:clientApp' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
-		.registerTask( 'install-deps',		[ 'exec:installDeps' ])
+		# .registerTask( 'install',			[ 'exec:installDeps', 'client-build' ])
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
 		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )
 		.registerTask( 'watch_unit_tests', 	[ 'watch:server_unit_tests' ])
 		.registerTask( 'watch_api_tests', 	[ 'watch:api_tests' ])
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
-		.registerTask( 'default', [] )
+		.registerTask( 'default', 			['exec:installDeps', 'client-build', 'server-start'] )
 
 
 

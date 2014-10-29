@@ -1,9 +1,13 @@
 {
 	"verbose": true,
 	"ignore": [
+		".gitignore",
 		"client/*",
 		"public/*",
 		"tests/*",
-		".temp/"
+		".temp/",
+		"node_modules/",
+		"bower_components/",
+		".sass-cache/"
 	]
 }
