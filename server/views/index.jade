@@ -10,6 +10,7 @@ html(lang="en" ng-app="app" )
 		link( rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" )
 		link( rel="stylesheet" href="/font-awesome/css/font-awesome.css")
 		link( rel="stylesheet" href="/angular-ui-select/dist/select.min.css" )
+		link( rel="stylesheet" href="/styles/scanem.css" )
 
 		//- auth
 		if !!user
@@ -44,18 +45,8 @@ html(lang="en" ng-app="app" )
 		script( src="/app.js")
 
 	body(ng-controller="AppCtrl")
-		nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
-			.container-fluid
-				.navbar-header
-					a.navbar-brand(href="/") SCANEM
-					button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
 
-				.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
-					ul.nav.navbar-nav.navbar-right
-						li
-							a(href="#") Link
-						li
-							logup-bar
+		sm-header
 
 		div.container
 			div(ng-view)

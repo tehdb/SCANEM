@@ -1,0 +1,11 @@
+nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+	.container-fluid
+		.navbar-header
+			a.navbar-brand(href="/") SCANEM
+			button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
+
+		.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
+			ul.nav.navbar-nav.navbar-right
+				li
+					logup-bar
+

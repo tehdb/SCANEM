@@ -7,6 +7,7 @@ angular
 
 		# Custom modules
 		'app.auth'
+		'app.header'
 
 		# 3rd Party Modules
 		'classy'
@@ -77,9 +78,6 @@ angular
 		}
 		init: ->
 			c = @
-
-			c.$.vm =
-				mainNavbarCollapsed : true
 
 			c.$rs.$on "$routeChangeError", (event, current, previous, rejection) ->
 				c.$l.path('/')

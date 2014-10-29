@@ -6,6 +6,12 @@ module.exports = (grunt) ->
 	grunt.initConfig
 		pkg: grunt.file.readJSON('package.json')
 
+		compass:
+			styles:
+				options:
+					require: 'sass-globbing'
+					sassDir: "client/"
+					cssDir: "public/styles"
 
 		coffee:
 			options:
@@ -74,6 +80,12 @@ module.exports = (grunt) ->
 				tasks: [ 'client-build' ]
 				options:
 					livereload: true
+			styles:
+				files: ['client/**/*.sass']
+				tasks: ['compass']
+				# options:
+				# 	livereload: true
+
 
 			# templates:
 			# 	files: [ 'client/**/*.tpl.jade' ]

@@ -1,9 +1,12 @@
 .logup
 
 	div(ng-hide="vm.user")
-		.btn.btn-link(ng-click="vm.openSignupModal($event)") {{"auth.sign_up" | translate }}
+		.btn.btn-link(ng-click="vm.openSignupModal($event)") 
+			span {{"auth.sign_up" | translate }}
 
-		.btn.btn-default(ng-click="vm.openLoginModal($event)") {{"auth.log_in" | translate }}
+		.btn.btn-default(ng-click="vm.openLoginModal($event)") 
+			i.fa.fa-sign-in
+			span {{"auth.log_in" | translate }}
 
 	div(ng-show="vm.user")
 		span.dropdown
@@ -12,9 +15,14 @@
 				i.fa.fa-caret-down
 			ul.dropdown-menu
 				li
-					a(ng-href="/profile/{{vm.user.username}}") profile
+					a(ng-href="/profile/{{vm.user.username}}")
+						i.fa.fa-user
+						span profile
 				li
-					a(ng-href="#" ng-click="doLogout()") logout
+					a(ng-href="#" ng-click="doLogout()")
+						i.fa.fa-sign-out
+						span logout
+
 
 
 	div(ng-show="false")

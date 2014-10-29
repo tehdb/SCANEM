@@ -6,3 +6,4 @@ bower_components
 scanem.sublime-project
 scanem.sublime-workspace
 public
+.sass-cache
