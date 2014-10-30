@@ -23,7 +23,7 @@ require( './mailer' )( pubsub, i18n )
 
 
 # api routes
-app.use 	'/api', require('./routes')( pubsub )
+app.use 	'/api', require('./modules')( pubsub )
 
 
 # main view

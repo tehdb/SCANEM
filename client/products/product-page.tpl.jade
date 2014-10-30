@@ -1,7 +1,16 @@
 .product-view
 
-	.well
-		i.fa.fa-picture-o
-		.title {{vm.title}}
-		.price {{vm.price}} &euro;
-		rating(ng-model="vm.rate")
+	.row
+		.col-sm-6
+			img.img-thumbnail( src="http://tehdb.com/img/fotoleinwand24/AA0197-1.jpg" )
+
+		.col-sm-6
+			h1 {{vm.title}}
+			h2 {{vm.price}} &euro;
+
+
+			p
+				span.label.label-default(ng-repeat="tag in vm.tags") {{tag}}
+
+
+			rating(ng-model="vm.rate")

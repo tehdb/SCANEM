@@ -7,38 +7,28 @@ angular
 		($rp) ->
 
 
-			# domain.com/p/PID
-			# domain.com/f/?
-			# 	q=XXX&	- query
-			# 	c=XXX&	- category
-			# 	t=XXX&	- tag
-			# 	s=XXX&	- sort
-			# 	size=123&color=white&price=123.13
+			# /p/ 							- overview of the cats
+			# /p/pid 						- product page
+			# /f/?key1=val1&key2-val2 		- filter page
 			#
-			# domain.com/products/search/xxx
-			# domain.com/products/category/xxx
-			# domain.com/products/tag/xxx
-			# domain.com/products/product/xxx
+			#	common
+			# 	- q = query
+			# 	- s = sort
+			# 	- c = category
+			# 	- t = tag
 			#
-			#
-			#
-			#
-			#
+			# 	specific
+			# 	- size 	= size of the product
+			# 	- color = color or colors of the product ; separated
+			# 	- price = price or pricerange
 
 			$rp
 
-				# .when '/products/search/:query',
-
-				# .when '/products/category/:cat',
-
-				# .when '/products/tag/:tag',
-
-				# .when '/products/product/:pid',
 				.when '/f/',
 					controller: 	'FilterPageCtrl'
 					templateUrl: 	'/partials/products/filter-page.html'
 
-				.when '/p/:pid',
+				.when '/p/:pid?',
 					controller: 	'ProductPageCtrl'
 					templateUrl: 	'/partials/products/product-page.html'
 

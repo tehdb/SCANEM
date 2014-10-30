@@ -4,7 +4,7 @@ PWD = process.env.PWD
 
 passport = require('passport')
 LocalStrategy = require('passport-local').Strategy
-UserModel = require("#{PWD}/server/routes/user/user.mdl")
+UserModel = require("#{PWD}/server/modules/user/user.mdl")
 
 
 module.exports = ->

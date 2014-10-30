@@ -12,6 +12,12 @@ angular.module('app.products').classy.controller({
 			title : "Product title"
 			price : 11.77
 			rate : 3
+			tags : [
+				'fensterblick'
+				'natur'
+				'meer'
+				'sonneuntergang'
+			]
 
 
 })
