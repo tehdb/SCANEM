@@ -1,4 +1,4 @@
-PWD = process.env.PWD
+# PWD = process.env.PWD
 
 module.exports = (router, eventEmmiter) ->
 	ctrl = require("#{__dirname}/products.ctrl")()

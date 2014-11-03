@@ -1,6 +1,6 @@
 
-angular.module('app.products').classy.controller({
-	name: 'ProductPageCtrl'
+angular.module('app.store').classy.controller({
+	name: 'SingleViewCtrl'
 	inject: {
 		'$scope' : '$'
 	}

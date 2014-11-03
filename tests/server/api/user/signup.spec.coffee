@@ -47,7 +47,7 @@ describe 'api user sing up', ->
 			.send( tempData )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 400 )
-				expect( res.body.name ).to.equal( 'ValidationError' )
+				expect( res.body.reason.name ).to.equal( 'ValidationError' )
 				done()
 
 	it 'should not signup if username is empty', (done) ->
@@ -61,7 +61,7 @@ describe 'api user sing up', ->
 			.send( tempData )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 400 )
-				expect( res.body.name ).to.equal( 'ValidationError' )
+				expect( res.body.reason.name ).to.equal( 'ValidationError' )
 				done()
 
 
@@ -75,7 +75,7 @@ describe 'api user sing up', ->
 			.send( tempData )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 400 )
-				expect( res.body.name ).to.equal( 'ValidationError' )
+				expect( res.body.reason.name ).to.equal( 'ValidationError' )
 				done()
 
 	it 'should not signup if email is empty', (done) ->
@@ -88,7 +88,7 @@ describe 'api user sing up', ->
 			.send( tempData )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 400 )
-				expect( res.body.name ).to.equal( 'ValidationError' )
+				expect( res.body.reason.name ).to.equal( 'ValidationError' )
 				done()
 
 	it 'should not signup if email is invalid', (done) ->
@@ -102,6 +102,6 @@ describe 'api user sing up', ->
 			.send( tempData )
 			.end (err, res) ->
 				expect( res.status ).to.equal( 400 )
-				expect( res.body.name ).to.equal( 'ValidationError' )
+				expect( res.body.reason.name ).to.equal( 'ValidationError' )
 				done()
 

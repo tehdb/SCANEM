@@ -1,0 +1,34 @@
+.store-list-view
+
+	//- .row
+	//- 	.col-md-3.col-sm-6( ng-repeat="p in vm.products" ng-class="{ 'raw-clear' : ($index+1)%5  == 0}")
+	//- 		.product
+	//- 			img.img-thumbnail( ng-src="{{c.image}}" )
+
+	//- 			.row
+	//- 				.col-sm-6
+	//- 					.title {{c.title}} {{$index}}
+
+
+	//- 				.col-sm-6.text-right
+	//- 					.price {{p.price | currency: "&euro; "}}
+
+	//- 					rating(ng-model="p.rating" readonly="true")
+
+
+	.row.products-row( ng-repeat="r in vm.rows")
+		.col-md-3.col-sm-6( ng-repeat="c in r" )
+			.product
+				img.img-thumbnail( ng-src="{{c.image}}" )
+				.row
+					.col-sm-6
+						.title {{c.title}} {{$index}}
+
+
+					.col-sm-6.text-right
+						.price {{c.price | currency: "&euro; "}}
+						rating(ng-model="c.rating" readonly="true")
+
+		.clearfix.visible-lg-block
+
+

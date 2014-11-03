@@ -9,9 +9,12 @@ module.exports = (grunt) ->
 		compass:
 			styles:
 				options:
-					require: 'sass-globbing'
-					sassDir: "client/"
+				# require: 'sass-globbing'
+					sassDir: ".temp/client/"
 					cssDir: "public/styles"
+
+
+
 
 		coffee:
 			options:
@@ -30,15 +33,23 @@ module.exports = (grunt) ->
 
 
 		concat:
-			options:
-				separator: ';'
 			scripts:
+				options:
+					separator: ';'
 				src: 	[
 					'.temp/client/clientApp.js'	# order important: first app module
 					'.temp/client/**/*.mdl.js'	# all modules definitions
 					'.temp/client/**/*.js'		# rest
 				]
 				dest: 	'.temp/client/clientApp.js'
+
+			styles:
+				src: [
+					'client/scanem.sass'
+					'client/layout/**/*.sass'
+					'client/**/*.sass'
+				]
+				dest: '.temp/client/scanem.sass'
 
 
 		jade:
@@ -66,7 +77,7 @@ module.exports = (grunt) ->
 
 
 		copy:
-			client:
+			scripts:
 				files: ['public/app.js' : '.temp/client/clientApp.js']
 
 
@@ -75,14 +86,11 @@ module.exports = (grunt) ->
 
 
 		watch:
-			clientApp:
-				files: [ 'client/**/*.coffee', 'client/**/*.jade' ]
+			client:
+				files: [ 'client/**/*.coffee', 'client/**/*.jade', 'client/**/*.sass' ]
 				tasks: [ 'client-build' ]
 				options:
 					livereload: true
-			styles:
-				files: ['client/**/*.sass']
-				tasks: ['compass']
 				# options:
 				# 	livereload: true
 
@@ -132,8 +140,25 @@ module.exports = (grunt) ->
 				command: 'bower install && npm install'
 
 	grunt
-		.registerTask( 'client-build', 		[ 'coffee:client', 'concat:scripts', 'jade:inline', 'includes:inline', 'copy:client', 'jade:views', 'clean:build' ])
-		.registerTask( 'client-watch', 		[ 'watch:clientApp' ])
+		.registerTask( 'client-build', [
+			# compile client app
+			'coffee:client'
+			'concat:scripts'
+			'jade:inline'
+			'includes:inline'
+			'copy:scripts'
+
+			# compile html templates
+			'jade:views'
+
+			# compile styles
+			'concat:styles'
+			'compass:styles'
+
+			# clean up .temp dir
+			'clean:build'
+		])
+		.registerTask( 'client-watch', 		[ 'watch:client' ])
 		.registerTask( 'client-test', 		[ 'karma' ])
 		# .registerTask( 'install',			[ 'exec:installDeps', 'client-build' ])
 		.registerTask( 'server-start', 		[ 'exec:server'] )

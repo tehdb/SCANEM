@@ -1,0 +1,66 @@
+.store-single-view
+
+	ol.breadcrumb
+		li
+			a(href="#") Home
+		li
+			a(href="#") {{vm.category}}
+		li.active {{vm.title}}
+
+	.row
+		.col-sm-6
+			img.img-thumbnail( src="/images/AA0197-1.jpg" )
+
+			.thumbs
+				img.active(src="/images/AA0197-1.jpg")
+				img(src="/images/AA0197-1-1.jpg")
+				img(src="/images/frame.jpg")
+
+
+		.col-sm-6
+			h1.title {{vm.title}}
+
+			.price.text-warning
+				span {{vm.price}} &euro;
+
+			.delivery
+				i.fa.fa-truck
+				span auf lager, versand in 24 Stunden
+
+
+			.rating
+				span user rating:
+				rating(ng-model="vm.rate")
+
+			.selected-size selected size: {{vm.selectedSize}}
+
+			.sizes.label-bar
+				span.label.label-default(ng-repeat="s in vm.sizes" ng-class="{active: $first}") {{s}}
+
+			.selected-color selected color: {{vm.selectedColor}}
+
+			.colors
+				img.color.active(src="/images/AA0197-1.jpg")
+				img.color(src="/images/AA0197-2.jpg")
+				img.color(src="/images/AA0197-3.jpg")
+				img.color(src="/images/AA0197-4.jpg")
+
+			.action-bar
+				button.btn.btn-default.btn-lg.btn-primary
+					i.fa.fa-shopping-cart
+					span add to card
+				button.btn.btn-default
+					i.fa.fa-bookmark
+					spann add to favorites
+
+
+			.tags.label-bar
+				span.label.label-default(ng-repeat="t in vm.tags") {{t}}
+
+			.info
+				p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum quos enim commodi, perspiciatis optio cum accusamus voluptates possimus! Eum earum aliquam reiciendis vero ratione quibusdam rerum debitis nisi accusantium praesentium, quaerat veniam officia doloribus odio, expedita a ab repellendus eaque. Maxime ad doloribus cumque quae vero nostrum sed nulla alias, blanditiis laborum placeat ab non nemo quas asperiores ex corrupti repellat possimus laboriosam. Nam iste necessitatibus dolore, vitae quasi, saepe sunt velit natus unde optio, ullam, provident impedit. Ipsum nihil excepturi itaque numquam aliquam nemo tenetur delectus vero doloribus laboriosam aperiam maiores commodi laudantium recusandae porro, repudiandae similique sit enim.
+
+
+
+
+

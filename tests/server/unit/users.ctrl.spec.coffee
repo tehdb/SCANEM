@@ -1,4 +1,4 @@
-pwd 		= process.env.PWD
+PWD 		= process.env.PWD
 
 _ 			= require 'lodash'
 chai 		= require 'chai'
@@ -17,7 +17,7 @@ describe 'users controller', ->
 			find : sinon.spy()
 			findOne : sinon.spy()
 
-		userCtrl = proxyquire("#{pwd}/server/controllers/users.ctrl", {
+		userCtrl = proxyquire("#{PWD}/users.ctrl", {
 			'../models/user.mdl': userMdlStub
 		})
 

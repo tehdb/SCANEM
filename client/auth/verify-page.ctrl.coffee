@@ -8,7 +8,7 @@ angular.module('app.auth').classy.controller({
 	init: ->
 		c = @
 
-		console.log c.u
+		# console.log c.u
 
 		c.$.vm =
 			email: c.u.email

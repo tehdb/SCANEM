@@ -1,7 +1,8 @@
-PWD = process.env.PWD
+# PWD = process.env.PWD
 fs = require('fs')
 
-_langsDir = "#{PWD}/server/i18n/client"
+# _langsDir = "#{PWD}/i18n/langs/client"
+_langsDir = "#{__dirname}/langs/client"
 
 i18nCtrl =
 	get: (req, res, next) ->

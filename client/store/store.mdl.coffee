@@ -1,5 +1,5 @@
 angular
-	.module('app.products', [
+	.module('app.store', [
 		'ngRoute'
 		'classy'
 	]).config([
@@ -23,14 +23,16 @@ angular
 			# 	- price = price or pricerange
 
 			$rp
+				# .when '/o/',
+
 
 				.when '/f/',
-					controller: 	'FilterPageCtrl'
-					templateUrl: 	'/partials/products/filter-page.html'
+					controller: 	'ListViewCtrl'
+					templateUrl: 	'/partials/store/list.html'
 
-				.when '/p/:pid?',
-					controller: 	'ProductPageCtrl'
-					templateUrl: 	'/partials/products/product-page.html'
+				.when '/p/:pid',
+					controller: 	'SingleViewCtrl'
+					templateUrl: 	'/partials/store/single.html'
 
 
 

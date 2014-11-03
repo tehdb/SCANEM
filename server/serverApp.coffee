@@ -1,6 +1,6 @@
+
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
-
 
 # express
 app = require( './config/express')
@@ -23,8 +23,8 @@ require( './mailer' )( pubsub, i18n )
 
 
 # api routes
-app.use 	'/api', require('./modules')( pubsub )
-
+# app.use 	'/api', require('./modules')( pubsub )
+app.use 	'/api', require('./config/routes')( pubsub )
 
 # main view
 app.get 	'*', (req, res) ->

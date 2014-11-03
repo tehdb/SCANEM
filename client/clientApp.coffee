@@ -8,7 +8,7 @@ angular
 		# Custom modules
 		'app.auth'
 		'app.header'
-		'app.products'
+		'app.store'
 
 		# 3rd Party Modules
 		'classy'

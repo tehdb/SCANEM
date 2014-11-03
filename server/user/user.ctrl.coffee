@@ -1,8 +1,9 @@
 # PWD = process.env.PWD
 
-User = require("#{__dirname}/user.mdl")
 hat = require('hat')
 mongoose = require('mongoose')
+
+User = require("#{__dirname}/user.mdl")
 encrypt = require("#{__dirname}/encrypt")
 
 

@@ -1,4 +1,4 @@
-PWD = process.env.PWD
+# PWD = process.env.PWD
 i18n 		= require('i18n')
 
 module.exports = (app) ->
@@ -18,7 +18,7 @@ module.exports = (app) ->
 
 	i18n.configure({
 		locales: ['en-GB', 'de-DE']
-		directory: "#{PWD}/server/i18n/mailer/"
+		directory: "#{__dirname}/../i18n/langs/mailer/"
 		defaultLocale: 'en-GB'
 		updateFiles: false
 		objectNotation: true
