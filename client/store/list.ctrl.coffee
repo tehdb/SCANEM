@@ -7,6 +7,7 @@ angular.module('app.store').classy.controller({
 	init: ->
 		c = @
 
+		console.log "live view ctrl"
 
 		c.$.vm =
 			rows: [

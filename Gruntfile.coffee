@@ -53,7 +53,7 @@ module.exports = (grunt) ->
 
 
 		jade:
-			views:
+			templates:
 				cwd: 	'client/'
 				src: 	['**/*.tpl.jade', '!**/*.inl.tpl.jade']
 				dest: 	'public/partials'
@@ -85,32 +85,6 @@ module.exports = (grunt) ->
 			build: ['.temp/client']
 
 
-		watch:
-			client:
-				files: [ 'client/**/*.coffee', 'client/**/*.jade', 'client/**/*.sass' ]
-				tasks: [ 'client-build' ]
-				options:
-					livereload: true
-				# options:
-				# 	livereload: true
-
-
-			# templates:
-			# 	files: [ 'client/**/*.tpl.jade' ]
-			# 	tasks: [ 'jade:views' ]
-			# 	options:
-			# 		livereload: true
-
-
-			server_unit_tests:
-				files: ['tests/server/unit/**/*.spec.coffee']
-				tasks: ['mochaTest:unit']
-
-			api_tests:
-				options: { debounceDelay: 500 }
-				files: ['tests/server/api/**/*.spec.coffee']
-				tasks: ['mochaTest:api']
-
 
 		mochaTest:
 			options:
@@ -139,34 +113,43 @@ module.exports = (grunt) ->
 			installDeps:
 				command: 'bower install && npm install'
 
+
+		watch:
+			options:
+				livereload: true
+			scripts:
+				files: [ 'client/**/*.coffee', 'client/**/*.jade' ]
+				tasks: [ 'client-build-scripts' ]
+
+			styles:
+				files: ['client/**/*.sass' ]
+				tasks: [ 'client-build-styles' ]
+
+
+			server_unit_tests:
+				files: ['tests/server/unit/**/*.spec.coffee']
+				tasks: ['mochaTest:unit']
+
+			api_tests:
+				options: { debounceDelay: 500 }
+				files: ['tests/server/api/**/*.spec.coffee']
+				tasks: ['mochaTest:api']
+
 	grunt
 		.registerTask( 'client-build', [
-			# compile client app
-			'coffee:client'
-			'concat:scripts'
-			'jade:inline'
-			'includes:inline'
-			'copy:scripts'
 
-			# compile html templates
-			'jade:views'
-
-			# compile styles
-			'concat:styles'
-			'compass:styles'
-
-			# clean up .temp dir
 			'clean:build'
 		])
-		.registerTask( 'client-watch', 		[ 'watch:client' ])
-		.registerTask( 'client-test', 		[ 'karma' ])
-		# .registerTask( 'install',			[ 'exec:installDeps', 'client-build' ])
+		.registerTask( 'client-build-styles', 	[ 'concat:styles', 'compass:styles' ])
+		.registerTask( 'client-build-scripts', 	[ 'jade:inline', 'jade:templates', 'coffee:client', 'concat:scripts', 'includes:inline', 'copy:scripts' ])
+		.registerTask( 'client-test', 			[ 'karma' ])
+
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
 		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )
-		.registerTask( 'watch_unit_tests', 	[ 'watch:server_unit_tests' ])
-		.registerTask( 'watch_api_tests', 	[ 'watch:api_tests' ])
+
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
+
 		.registerTask( 'default', 			['exec:installDeps', 'client-build', 'server-start'] )
 
 

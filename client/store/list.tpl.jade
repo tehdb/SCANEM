@@ -15,20 +15,21 @@
 
 	//- 					rating(ng-model="p.rating" readonly="true")
 
-
-	.row.products-row( ng-repeat="r in vm.rows")
-		.col-md-3.col-sm-6( ng-repeat="c in r" )
-			.product
-				img.img-thumbnail( ng-src="{{c.image}}" )
-				.row
-					.col-sm-6
-						.title {{c.title}} {{$index}}
-
-
-					.col-sm-6.text-right
+	.container.products-grid
+		.row( ng-repeat="r in vm.rows")
+			.col-md-3.col-sm-6( ng-repeat="c in r" )
+				.product
+					img.img-responsive( ng-src="{{c.image}}" )
+					.title {{c.title}}
+					.info.pull-right
+						rating(
+							ng-model="c.rating"
+							readonly="true"
+							state-on="'fa fa-star'"
+							state-off="'fa fa-star-o'"
+						)
 						.price {{c.price | currency: "&euro; "}}
-						rating(ng-model="c.rating" readonly="true")
 
-		.clearfix.visible-lg-block
+			.clearfix.hidden-sm.hidden-xs
 
 
