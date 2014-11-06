@@ -10,6 +10,8 @@ angular.module('app.store').classy.controller({
 		console.log "live view ctrl"
 
 		c.$.vm =
+			filter:
+				prise: null
 			rows: [
 				[
 					{

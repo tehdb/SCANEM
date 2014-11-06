@@ -1,4 +1,4 @@
-.store-list-view
+.store-list-view.container
 
 	//- .row
 	//- 	.col-md-3.col-sm-6( ng-repeat="p in vm.products" ng-class="{ 'raw-clear' : ($index+1)%5  == 0}")
@@ -14,8 +14,17 @@
 	//- 					.price {{p.price | currency: "&euro; "}}
 
 	//- 					rating(ng-model="p.rating" readonly="true")
+	.filter
+		slider(
+			ng-model="vm.filter.price.min"
+			ng-model-range="vm.filter.price.max"
+			floor="0"
+			ceiling="100"
+			buffer="10"
+			step="5"
+		)
 
-	.container.products-grid
+	.products-grid
 		.row( ng-repeat="r in vm.rows")
 			.col-md-3.col-sm-6( ng-repeat="c in r" )
 				.product
@@ -31,5 +40,41 @@
 						.price {{c.price | currency: "&euro; "}}
 
 			.clearfix.hidden-sm.hidden-xs
+
+	nav.text-center
+			ul.pagination
+				li
+					a(href="#")
+						i.fa.fa-angle-double-left
+				li
+					a(href="#")
+						i.fa.fa-angle-left
+
+				li.disabled
+					a(href="#") 1
+
+				li.active
+					a(href="#") 2
+
+				li
+					a(href="#") 3
+
+				li
+					a(href="#") &hellip;
+
+				li
+					a(href="#") 30
+
+				li
+					a(href="#") 31
+
+				li
+					a(href="#")
+						i.fa.fa-angle-right
+
+				li
+					a(href="#")
+						i.fa.fa-angle-double-right
+
 
 

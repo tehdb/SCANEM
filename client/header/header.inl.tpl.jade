@@ -1,12 +1,34 @@
-nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
-	.container-fluid
-		.navbar-header
-			a.navbar-brand(href="/") SCANEM
-			button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
-				i.fa.fa-bars
+.header
+	nav.navbar.navbar-default.navbar-fixed-top(role="navigation")
+		.container-fluid
+			.navbar-header
+				a.navbar-brand(href="/") SCANEM
+				button.navbar-toggle.collapsed(type="button" ng-click="vm.mainNavbarCollapsed = !vm.mainNavbarCollapsed")
+					i.fa.fa-bars
 
-		.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
-			ul.nav.navbar-nav.navbar-right
-				li
-					logup-bar
+			.collapse.navbar-collapse(collapse="vm.mainNavbarCollapsed")
+				ul.nav.navbar-nav.navbar-right
+					li
+						logup-bar
+	.container
+		.row
+			.col-sm-8
+				ol.breadcrumb
+					li
+						a(href="#") Home
+					li
+						a(href="#") category name
 
+					li.active active element
+
+			.col-sm-4
+				.input-group
+					.input-group-btn
+						button.btn.btn-default(type="button")
+							span Alle
+							span.caret
+
+					input.form-control( type="text" placeholder="was suchen sie" )
+					.input-group-btn
+						button.btn.btn-default(type="button")
+							i.fa.fa-search
