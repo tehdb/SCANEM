@@ -5,7 +5,7 @@ angular.module('app.auth').classy.controller({
 		'$scope' : '$'
 		'$modalInstance': '$mi'
 		# 'md5' : '.'
-		'AuthSrvc': 'as'
+		'app.auth.AuthSrvc': 'as'
 	}
 	init: ->
 		c = @

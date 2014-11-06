@@ -82,8 +82,7 @@ module.exports = (grunt) ->
 
 
 		clean:
-			build: ['.temp/client']
-
+			build: [ '.temp/client' ]
 
 
 		mochaTest:
@@ -135,14 +134,25 @@ module.exports = (grunt) ->
 				files: ['tests/server/api/**/*.spec.coffee']
 				tasks: ['mochaTest:api']
 
+
 	grunt
 		.registerTask( 'client-build', [
 
 			'clean:build'
 		])
-		.registerTask( 'client-build-styles', 	[ 'concat:styles', 'compass:styles' ])
-		.registerTask( 'client-build-scripts', 	[ 'jade:inline', 'jade:templates', 'coffee:client', 'concat:scripts', 'includes:inline', 'copy:scripts' ])
-		.registerTask( 'client-test', 			[ 'karma' ])
+		.registerTask( 'client-build-styles', [
+			'concat:styles'
+			'compass:styles'
+		])
+		.registerTask( 'client-build-scripts', [
+			'jade:inline'
+			'jade:templates'
+			'coffee:client'
+			'concat:scripts'
+			'includes:inline'
+			'copy:scripts'
+		])
+		.registerTask( 'client-test', 		[ 'karma' ])
 
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
@@ -150,7 +160,12 @@ module.exports = (grunt) ->
 
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])
 
-		.registerTask( 'default', 			['exec:installDeps', 'client-build', 'server-start'] )
+		.registerTask( 'default', [
+			'exec:installDeps'
+			'client-build-styles'
+			'client-build-scripts'
+			'server-start'
+		])
 
 
 

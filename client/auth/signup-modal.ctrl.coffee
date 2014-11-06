@@ -4,7 +4,7 @@ angular.module('app.auth').classy.controller({
 	inject: {
 		'$scope' : '$'
 		'$modalInstance': '$mi'
-		'AuthSrvc' : 'as'
+		'app.auth.AuthSrvc' : 'as'
 	}
 	init: ->
 		c = @

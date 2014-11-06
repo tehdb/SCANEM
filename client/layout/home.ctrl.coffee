@@ -10,7 +10,6 @@ angular.module('app').classy.controller({
 		c.$.vm = {}
 		vm = c.$.vm
 
-
 		vm.title = 'home ctrl'
 
 

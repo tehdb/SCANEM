@@ -11,7 +11,7 @@ angular
 				inject:
 					'$scope' : '$'
 					'$location' : '$l'
-					'AuthSrvc' : 'as'
+					'app.auth.AuthSrvc' : 'as'
 				init: ->
 					c = @
 

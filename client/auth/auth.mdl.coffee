@@ -2,7 +2,9 @@ angular
 	.module('app.auth', [
 		'ngRoute'
 		'classy'
-	]).config([
+	])
+	.namespace()
+	.config([
 		'$routeProvider'
 		($rp) ->
 
@@ -13,7 +15,7 @@ angular
 					resolve:
 						user: [
 							'$route'
-							'AuthSrvc'
+							'app.auth.AuthSrvc'
 							($r, as) -> return as.verify( $r.current.params.token )
 						]
 
@@ -25,7 +27,7 @@ angular
 							'$q'
 							'$route'
 							'$timeout'
-							'AuthSrvc'
+							'app.auth.AuthSrvc'
 							($q, $r, $to, as) ->
 								dfd = $q.defer()
 

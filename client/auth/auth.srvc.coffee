@@ -51,6 +51,5 @@ angular
 				getUser: ->
 					return _user
 
-
 			return res
 ])
