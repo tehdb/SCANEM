@@ -4,14 +4,24 @@ angular.module('app.store').classy.controller({
 	inject: {
 		'$scope' : '$'
 	}
+	watch:
+		'vm.filter.price.selected.min' : (nv, ov) ->
+				# nv = parseFloat(nv)
+			console.log typeof nv
 	init: ->
 		c = @
 
-		console.log "live view ctrl"
 
 		c.$.vm =
 			filter:
-				prise: null
+				price:
+					range:
+						min: 0
+						max: 100
+					selected:
+						min: 0
+						max: 100
+
 			rows: [
 				[
 					{

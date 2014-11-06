@@ -137,7 +137,9 @@ module.exports = (grunt) ->
 
 	grunt
 		.registerTask( 'client-build', [
-
+			'clean:build'
+			'client-build-styles'
+			'client-build-scripts'
 			'clean:build'
 		])
 		.registerTask( 'client-build-styles', [

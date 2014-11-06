@@ -15,7 +15,7 @@ angular
 		'restangular'
 		'ui.bootstrap'
 		'ui.select'
-		'vr.directives.slider'
+		'ui-rangeSlider'
 		'pascalprecht.translate'
 		'angular-md5'
 	])
