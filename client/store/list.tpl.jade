@@ -33,16 +33,37 @@
 					model-min="vm.filter.price.selected.min"
 					model-max="vm.filter.price.selected.max"
 					filter="currency"
+					filter-options="€"
 					step="5"
 					prevent-equal-min-max
 					show-values="true"
 				)
 
 	h4 1234 elements availeble
+
 	.products-grid
-		.row( ng-repeat="r in vm.rows" )
-			.col-md-3.col-sm-6( ng-repeat="c in r" )
-				.product
+		//- .row( ng-repeat="r in vm.rows" )
+		//- 	.col-md-3.col-sm-6( ng-repeat="c in r" )
+		//- 		.product
+		//- 			img.img-responsive( ng-src="{{c.image}}" )
+		//- 			.title {{c.title}}
+		//- 			.info.pull-right
+		//- 				rating(
+		//- 					ng-model="c.rating"
+		//- 					readonly="true"
+		//- 					state-on="'fa fa-star'"
+		//- 					state-off="'fa fa-star-o'"
+		//- 				)
+		//- 				.price {{c.price | currency: "&euro; "}}
+
+		//- 	.clearfix.hidden-sm.hidden-xs
+
+		.row
+			.col-md-3.col-sm-6(
+				ng-repeat="c in vm.products"
+				ng-class="{clear: $index != 0 && $index%4 == 0 }"
+			)
+				.product.clearfix
 					img.img-responsive( ng-src="{{c.image}}" )
 					.title {{c.title}}
 					.info.pull-right
@@ -53,8 +74,6 @@
 							state-off="'fa fa-star-o'"
 						)
 						.price {{c.price | currency: "&euro; "}}
-
-			.clearfix.hidden-sm.hidden-xs
 
 	nav.text-center
 			ul.pagination
