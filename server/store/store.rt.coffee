@@ -7,3 +7,14 @@ module.exports = (router, eventEmmiter) ->
 		.route('/store/p/:pid')
 		.get( ctrl.selectById )
 
+	router
+		.route('/store/insert')
+		.post(
+			(req, res, next) ->
+				console.log "check auth"
+				next()
+			, ctrl.create
+		)
+
+	return router
+
