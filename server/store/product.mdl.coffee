@@ -49,8 +49,9 @@ _schema = new Schema(
 	tags : []					# tags
 	rats : []					# ratings
 	vars : [variantsSchema]		# variants
-	orie : String 				# orientation - landscape | portrait | quadratic
-
+	orie :
+		type: String 				# orientation - landscape | portrait | quadratic
+		enum: ['landscape', 'portrait', 'quadratic']
 	cdate :		# create date
 		type : 		Date
 		default : 	Date.now
