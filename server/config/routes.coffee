@@ -14,16 +14,23 @@ module.exports = (pubsub) ->
 		modulePath = "#{pathToModules}/#{file}"
 		stats = fs.statSync( modulePath )
 		if stats.isDirectory()
-			routesFilePath = "#{modulePath}/#{file}.rt"
+			routesFilePath = "#{modulePath}/#{file}.rt.coffee"
+
+			# fileStats = fs.statSync( routesFilePath )
 
 			# console.log routesFilePath
+			if fs.existsSync( routesFilePath )
+				require( routesFilePath )(router, pubsub)
 			# console.log fs.existsSync( routesFilePath )
 
-			# if fs.existsSync( routesFilePath )
-				# console.log routesFilePath
-			try
-				require( routesFilePath )(router, pubsub)
-			catch e
+			# console.log routesFilePath
+			# # if fs.existsSync( routesFilePath )
+
+			# try
+			# 	# console.log routesFilePath
+			# 	require( routesFilePath )(router, pubsub)
+			# catch e
+			# 	# console.log "error?"
 				# console.log e
 
 	return router

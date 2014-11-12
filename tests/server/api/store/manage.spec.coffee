@@ -5,9 +5,14 @@ sinon 		= require('sinon')
 superagent = require('superagent');
 agent = superagent.agent();
 
+db = require('monk')('localhost/SCANEM')
+
 URL = 'http://localhost:3030/api/store'
 
-_ProductData =
+products_db = db.get('products')
+
+product = null
+PRODUCT = _.constant({
 	title: 'Test product'
 	ean: 	'123'
 	vars: [{
@@ -24,15 +29,30 @@ _ProductData =
 		}]
 		orie: 'landscape'
 	}]
+})
 
 describe.only 'api products manager', ->
 
-	it 'should create a product', (done) ->
+	before (done) ->
 		agent
-			.post("#{URL}/insert")
-			.send( _ProductData )
+			.post( "#{URL}/product/insert" )
+			.send( PRODUCT() )
 			.end ( err, res) ->
-				console.log res.body
+				expect(res.status).to.equal(200)
+				product = res.body
+				done()
 
+
+	after (done) ->
+		products_db.remove {ean: PRODUCT().ean}, (err ) ->
+			expect( err ).to.be.null
+			done()
+
+
+	it 'should select one product by id', (done) ->
+		agent
+			.get( "#{URL}/product/#{product._id}")
+			.end (err, res) ->
 				expect(res.status).to.equal(200)
 				done()
+

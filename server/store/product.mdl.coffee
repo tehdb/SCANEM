@@ -4,24 +4,24 @@ Schema = mongoose.Schema
 
 _schemaName = 'Product'
 
-rgbSchema = new Schema(
-	r:
-		type: Number
-		required: true
-		default: 0
-	g:
-		type: Number
-		required: true
-		default: 0
-	b:
-		type: Number
-		required: true
-		default: 0
-)
 
 colorsSchema = new Schema(
 	key: String
-	val: {} #rgbSchema
+	val:
+		type: {}
+		validate: [
+			(val) ->
+				valid = true
+				for k, v of val
+					return false if !_.isNumber(v) or v < 0 or v > 255
+
+				val.r = val.r || 0
+				val.g = val.g || 0
+				val.b = val.b || 0
+
+				return true
+			, 'Invalid RGB Object'
+		]
 )
 
 variantsSchema = new Schema(
@@ -30,7 +30,6 @@ variantsSchema = new Schema(
 	price: Number
 	imgs: [String]
 	colors: [colorsSchema]
-	# colors: []
 )
 
 _schema = new Schema(
