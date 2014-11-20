@@ -44,7 +44,7 @@ _schema = new Schema(
 		unique : 	true
 
 	imgs : []					# images
-	cats : []					# categories
+	cats : []					# categories TODO: format?
 	tags : []					# tags
 	rats : []					# ratings
 	vars : [variantsSchema]		# variants
@@ -59,6 +59,18 @@ _schema = new Schema(
 		type : 		Date
 		default : 	Date.now
 )
+
+_schema.methods =
+	findByColor: (color, cb) ->
+		# this.model(_schemaName).find
+		#
+		console.log "find by color"
+		cb(null, [])
+
+	# create: (postData, callback) ->
+	# 	this.model('Post').create postData, (err, post) ->
+	# 		return callback( err ) if err
+	# 		callback( null, post )
 
 module.exports = mongoose.model(_schemaName, _schema)
 
