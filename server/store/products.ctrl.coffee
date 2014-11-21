@@ -12,8 +12,14 @@ module.exports = () ->
 
 		# TODO: store multiple products
 		insert: (req, res, next) ->
-			p = new Product(req.body)
-			p.save ( err, p) ->
+			# p = req.body
+
+
+			# p = new Product(req.body)
+			# p.save ( err, p) ->
+			# 	return res.status(400).json({ 'reason' : err }) if err
+			# 	res.json( p )
+			Product.create req.body, (err, p...) ->
 				return res.status(400).json({ 'reason' : err }) if err
 				res.json( p )
 
@@ -40,17 +46,32 @@ module.exports = () ->
 			if id?
 				Product.findOne {_id:id}, (err, p) ->
 					return res.status(400).json({ 'reason' : err }) if err
+					console.log p
 					res.json(p)
 
 			else
+				if req.query.size?
+					sizes = []
+					vars = req.query.size.split(';')
+					for v in vars
+						s = v.split('x')
+						sizes.push({ w: s[0], h: s[1] })
+
+					console.log sizes
+
+					res.send("ok")
+
 				if req.query.color?
 					# Product.find { vars: { colors: { $in: [req.query.color] }}}, (err, pArr) ->
 
 					# 	return res.status(400).json({ 'reason' : err }) if err
 					# 	res.send(pArr)
-					Product.find {vars: $in: {width: 80}}, (err, p) ->
-						return res.status(400).json({ 'reason' : err }) if err
+					# Product.find {vars: $in: {width: 80}}, (err, p) ->
+					# 	return res.status(400).json({ 'reason' : err }) if err
+					# 	console.log p
+					# 	res.json(p)
+					Product.find {vars: {$elemMatch: { width: 80} }}, (err,p) ->
 						console.log p
-						res.json(p)
 
+					res.send("ok")
 

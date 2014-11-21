@@ -6,9 +6,7 @@ _schemaName = 'Product'
 
 
 colorsSchema = new Schema(
-	key:
-		type: String
-		required: true
+	key: String
 	val:
 		type: {}
 		validate: [
@@ -26,13 +24,13 @@ colorsSchema = new Schema(
 		]
 )
 
-# variantsSchema = new Schema(
-# 	width: Number
-# 	height: Number
-# 	price: Number
-# 	imgs: [String]
-# 	colors: [colorsSchema]
-# )
+variantsSchema = new Schema(
+	width: Number
+	height: Number
+	price: Number
+	imgs: [String]
+	colors: [colorsSchema]
+)
 
 _schema = new Schema(
 
@@ -45,48 +43,14 @@ _schema = new Schema(
 		required : 	true
 		unique : 	true
 
-	imgs:
-		type: [ new Schema(
-			src: String
-			ori:
-				type: String
-				enum: ['landscape', 'portrait', 'quadratic']
-			colors: [Schema.Types.ObjectId]
-			sizes: [Schema.Types.ObjectId]
-		)]
-
-	colors:
-		type: [ colorsSchema ]
-
-	sizes: [new Schema(
-		width:
-			type: Number
-			required: true
-		height:
-			type: Number
-			required: true
-	)]
-
-	prices: [ new Schema(
-		price:
-			type: Number
-			required: true
-		ref:
-			type: {}
-			# validate: [(val) ->	TODO: validate price object?
-			# 	return true
-			# , 'Invalid price object']
-	)]
-	# imgs : []					# images
+	imgs : []					# images
 	cats : []					# categories TODO: format?
 	tags : []					# tags
 	rats : []					# ratings
-
-	# vars : [variantsSchema]		# variants
-	# orie :
-	# 	type: String 				# orientation - landscape | portrait | quadratic
-	# 	enum: ['landscape', 'portrait', 'quadratic']
-
+	vars : [variantsSchema]		# variants
+	orie :
+		type: String 				# orientation - landscape | portrait | quadratic
+		enum: ['landscape', 'portrait', 'quadratic']
 	cdate :		# create date
 		type : 		Date
 		default : 	Date.now
