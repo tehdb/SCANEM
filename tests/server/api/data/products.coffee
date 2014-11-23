@@ -195,7 +195,95 @@ p3 = ->
 	]
 	return c
 
+# red 80x60 100x80
+p4 = ->
+	c = {
+		title: 'test product 4 red 80x60 100x80'
+		ean: 	'2'
 
+		colors: [
+			{
+				_id: new ObjectID()
+				key: 'red'
+				val: {	r: 255, g: 0, b: 0 }
+			}
+		]
+
+		sizes: [
+			{
+				_id: new ObjectID()
+				width: 80
+				height: 60
+			}, {
+				_id: new ObjectID()
+				width: 100
+				height: 80
+			}
+		]
+	}
+
+	c.imgs = [{
+		src: '4-1.jpg'
+		ori: 'landscape'
+		colors: [ c.colors[0]._id ]
+		sizes: [ c.sizes[0]._id, c.sizes[1]._id ]
+	}]
+
+	c.prices = [
+		{
+			price: 80.60
+			ref: { size: c.sizes[0]._id }
+		},{
+			price: 100.80
+			ref: { size: c.sizes[1]._id }
+		}
+	]
+	return c
+
+# green 80x60 100x80
+p5 = ->
+	c = {
+		title: 'test product 5 green 80x60 100x80'
+		ean: 	'2'
+
+		colors: [
+			{
+				_id: new ObjectID()
+				key: 'green'
+				val: {	r: 0, g: 255, b: 0 }
+			}
+		]
+
+		sizes: [
+			{
+				_id: new ObjectID()
+				width: 80
+				height: 60
+			}, {
+				_id: new ObjectID()
+				width: 100
+				height: 80
+			}
+		]
+	}
+
+	c.imgs = [{
+		src: '4-1.jpg'
+		ori: 'landscape'
+		colors: [ c.colors[0]._id ]
+		sizes: [ c.sizes[0]._id, c.sizes[1]._id ]
+	}]
+
+	c.prices = [
+		{
+			price: 80.60
+			ref: { size: c.sizes[0]._id }
+		},{
+			price: 100.80
+			ref: { size: c.sizes[1]._id }
+		}
+	]
+	return c
 
 
 module.exports =

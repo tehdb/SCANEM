@@ -9,6 +9,8 @@ path = require('path')
 module.exports = (pubsub) ->
 
 	pathToModules = "#{PWD}/server"
+
+	# TODO: use readdir!!!
 	# init routes
 	fs.readdirSync( pathToModules ).forEach ( file ) ->
 		modulePath = "#{pathToModules}/#{file}"

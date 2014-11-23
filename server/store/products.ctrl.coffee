@@ -1,35 +1,27 @@
 _ = require('lodash')
-Product = require( "#{__dirname}/product.mdl" )
+# Product = require( "#{__dirname}/product.mdl" )
 
+Product = require('mongoose').model('Product')
+
+# console.log ProductModel
+# console.log Product.findByColorKey
 
 module.exports = () ->
 	return x =
-		selectById: (req, res, next) ->
-			pid = req.params.pid
 
-			res.send( pid )
-
-
-		# TODO: store multiple products
+		# insert one or array of products, returns array
 		insert: (req, res, next) ->
-			# p = req.body
-
-
-			# p = new Product(req.body)
-			# p.save ( err, p) ->
-			# 	return res.status(400).json({ 'reason' : err }) if err
-			# 	res.json( p )
-			Product.create req.body, (err, p...) ->
-				return res.status(400).json({ 'reason' : err }) if err
+			Product.create req.body, (err, p...) -> # p... because create returns a list of params
+				return next(err) if err
 				res.json( p )
 
 		update: (req, res, next) ->
 			productData = req.body
 			Product.findOne {_id:productData._id}, (err, p ) ->
-				return res.status(400).json({ 'reason' : err }) if err
+				return next(err) if err
 				updatedProduct = _.extend( p, productData )
 				updatedProduct.save (err,p) ->
-					return res.status(400).json({ 'reason' : err }) if err
+					return next(err) if err
 					res.json(p)
 
 		# get params
@@ -45,33 +37,34 @@ module.exports = () ->
 
 			if id?
 				Product.findOne {_id:id}, (err, p) ->
-					return res.status(400).json({ 'reason' : err }) if err
-					console.log p
+					return next(err) if err
 					res.json(p)
 
 			else
-				if req.query.size?
-					sizes = []
-					vars = req.query.size.split(';')
-					for v in vars
-						s = v.split('x')
-						sizes.push({ w: s[0], h: s[1] })
-
-					console.log sizes
-
-					res.send("ok")
+				query = {}
 
 				if req.query.color?
-					# Product.find { vars: { colors: { $in: [req.query.color] }}}, (err, pArr) ->
+					colorsArr = []
+					colorsKeys = req.query.color.split(';')
+					colorsArr.push({ key: key}) for key in colorsKeys
+					query.colors = { $elemMatch: { $or: colorsArr } }
 
-					# 	return res.status(400).json({ 'reason' : err }) if err
-					# 	res.send(pArr)
-					# Product.find {vars: $in: {width: 80}}, (err, p) ->
-					# 	return res.status(400).json({ 'reason' : err }) if err
-					# 	console.log p
-					# 	res.json(p)
-					Product.find {vars: {$elemMatch: { width: 80} }}, (err,p) ->
-						console.log p
 
-					res.send("ok")
+				if req.query.size?
+					sizesArr = []
+					sizesVals = req.query.size.split(';')
+					for v in sizesVals
+						s = v.split('x')
+						sizesArr.push({ width: s[0], height: s[1] })
+
+					query.sizes = { $elemMatch: { $or: sizesArr } }
+					# console.log sizes
+
+					# res.send("ok")
+
+				Product.find query, (err, pArr) ->
+					return next(err) if err
+					res.json(pArr)
+
+
 

@@ -2,28 +2,24 @@
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
 
-# express
-app = require( './config/express')
+conf = require('./config/config')
 
+# express
+app = require( './config/express' )(conf)
 
 # mongo
-require( './config/mongoose')()
-
+require( './config/mongoose')(conf)
 
 # passport
 require( './config/passport')()
 
-
 # i18n
 i18n = require( './config/i18next')( app )
-
 
 # mailer
 require( './mailer' )( pubsub, i18n )
 
-
 # api routes
-# app.use 	'/api', require('./modules')( pubsub )
 app.use 	'/api', require('./config/routes')( pubsub )
 
 # main view

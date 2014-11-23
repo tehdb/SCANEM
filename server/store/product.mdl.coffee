@@ -96,6 +96,24 @@ _schema = new Schema(
 		default : 	Date.now
 )
 
+# CUSTOM STATIC METHODS
+_schema.statics =
+	findByColorKey: (colorKey, cb) ->
+		query =
+			colors:
+				$elemMatch:
+					key: colorKey
+
+		@find query, cb
+
+	# findBySize: (sizes, cb) ->
+
+
+
+
+
+
+# CUSTOM INSTANCE METHODS
 _schema.methods =
 	findByColor: (color, cb) ->
 		# this.model(_schemaName).find
@@ -110,23 +128,3 @@ _schema.methods =
 
 module.exports = mongoose.model(_schemaName, _schema)
 
-
-###
-vars = [
-	{
-		width: Number
-		height: Number
-		price: Number
-		imgs: []
-		colors: [
-			{
-				key: 'blue'
-				val:
-					r:	0
-					g:	0
-					b: 255
-			}
-		]
-	}
-]
-###
