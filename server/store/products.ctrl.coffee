@@ -64,6 +64,9 @@ module.exports = () ->
 						sizesArr.push({ width: s[0], height: s[1] })
 
 					query.sizes = { $elemMatch: { $or: sizesArr } }
+
+				if req.query.q?
+					query.title = new RegExp(req.query.q, "i")
 					# console.log sizes
 
 					# res.send("ok")

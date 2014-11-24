@@ -5,8 +5,8 @@ sinon 	= require('sinon')
 
 conf = require("#{PWD}/server/config/config")
 
-db = require('monk')(conf.db)
-collProducts = db.get('products')
+# db = require('monk')(conf.db)
+# collProducts = db.get('products')
 
 URL = "#{conf.apiUrl}/store/products"
 
@@ -19,25 +19,47 @@ dataGenerator = require('../data/productsGenerator')
 _products = null
 
 
+MongoClient = require('mongodb').MongoClient
+dbConn = null
+collProducts = null
+
 
 describe.only 'api products manager', ->
 
 	# insert multiple prdocuts
 	before (done) ->
-		pDataArr = dataGenerator.getProducts(0,1000)
-		collProducts.insert pDataArr, (err, pArr...) ->
+		MongoClient.connect conf.db, (err, db) ->
 			expect( err ).to.be.null
-			done()
+
+			dbConn = db
+			collProducts = db.collection('products')
+
+			pDataArr = dataGenerator.getProducts(0,100)
+
+			bulk = collProducts.initializeUnorderedBulkOp()
+			bulk.insert(pData) for pData in pDataArr
+			bulk.execute ->
+				done()
+
+
+			# collProducts.insert pDataArr, (err, pArr...) ->
+			# 	expect( err ).to.be.null
+			# 	# console.log pArr
+			# 	done()
 
 	# clean up - remove products from db
-	after (done) ->
-		collProducts.remove {cats: {$elemMatch: { $eq: 'testcat'} } }, (err ) ->
-			expect( err ).to.be.null
-			done()
+	# after (done) ->
+	# 	bulk = collProducts.initializeUnorderedBulkOp()
+	# 	bulk.find( {cats: {$elemMatch: { $eq: 'testcat'}}} ).remove()
+	# 	console.log bulk.execute( ->
+	# 		dbConn.close()
+	# 		done()
+	# 	).getOperations()
+
 
 
 	it 'should insert a single product', (done) ->
-		pData = dataGenerator.getProducts(1001,1001)[0]
+		pData = dataGenerator.getProducts(101,101)[0]
 		agent
 			.post( URL )
 			.send( pData )
@@ -217,6 +239,18 @@ describe.only 'api products manager', ->
 						expect(_.where(page2, p)).to.have.length(0) for p in page1
 
 						done()
+
+	it 'should select products by query', (done) ->
+		agent
+			.get ("#{URL}")
+			.query( {q: "Product 1"})
+			.end (err,res)->
+				expect(res.status).to.equal(200)
+
+				# TODO:
+				# console.log res.body
+				done()
+
 
 
 

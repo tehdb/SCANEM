@@ -39,6 +39,7 @@ _schema = new Schema(
 	title :
 		type : 		String
 		required : 	true
+		index: 		true
 
 	ean :
 		type : 		String
@@ -56,11 +57,11 @@ _schema = new Schema(
 		)]
 
 	colors:
-		index: true
+		# index: true
 		type: [ colorsSchema ]
 
 	sizes:
-		index: true
+		# index: true
 		type: [new Schema(
 			width:
 				type: Number

@@ -50,6 +50,8 @@ module.exports =
 			}
 		]
 
+		tags = ['tag1', 'tag2', 'tag2']
+
 		for pIdx in [start..end]
 			p =
 				title: "Product #{pIdx} -"
