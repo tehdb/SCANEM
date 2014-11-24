@@ -11,6 +11,7 @@ config =
 		prot: 	'http'
 		url: 	'localhost'
 
+
 config.development.apiUrl =
 	"
 		#{config.development.prot}://\

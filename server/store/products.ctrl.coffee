@@ -41,7 +41,13 @@ module.exports = () ->
 					res.json(p)
 
 			else
+				# TODO: cache the query
 				query = {}
+				limit = req.query.limit or 10
+				page = req.query.page or 0
+				# opts = {
+				# 	limit: req.query.limit or 10
+				# }
 
 				if req.query.color?
 					colorsArr = []
@@ -62,9 +68,13 @@ module.exports = () ->
 
 					# res.send("ok")
 
-				Product.find query, (err, pArr) ->
-					return next(err) if err
-					res.json(pArr)
+				Product
+					.find( query )
+					.limit( limit )
+					.skip( page*limit )
+					.exec (err, pArr) ->
+						return next(err) if err
+						res.json(pArr)
 
 
 

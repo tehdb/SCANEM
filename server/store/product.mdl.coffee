@@ -9,7 +9,7 @@ colorsSchema = new Schema(
 	key:
 		type: String
 		required: true
-	val:
+	rgb:
 		type: {}
 		validate: [
 			(val) ->
@@ -56,16 +56,19 @@ _schema = new Schema(
 		)]
 
 	colors:
+		index: true
 		type: [ colorsSchema ]
 
-	sizes: [new Schema(
-		width:
-			type: Number
-			required: true
-		height:
-			type: Number
-			required: true
-	)]
+	sizes:
+		index: true
+		type: [new Schema(
+			width:
+				type: Number
+				required: true
+			height:
+				type: Number
+				required: true
+		)]
 
 	prices: [ new Schema(
 		price:
