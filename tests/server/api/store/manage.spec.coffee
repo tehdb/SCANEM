@@ -38,8 +38,7 @@ describe.only 'api products manager', ->
 
 			bulk = collProducts.initializeUnorderedBulkOp()
 			bulk.insert(pData) for pData in pDataArr
-			bulk.execute ->
-				done()
+			bulk.execute( done )
 
 
 			# collProducts.insert pDataArr, (err, pArr...) ->
@@ -48,13 +47,13 @@ describe.only 'api products manager', ->
 			# 	done()
 
 	# clean up - remove products from db
-	# after (done) ->
-	# 	bulk = collProducts.initializeUnorderedBulkOp()
-	# 	bulk.find( {cats: {$elemMatch: { $eq: 'testcat'}}} ).remove()
-	# 	console.log bulk.execute( ->
-	# 		dbConn.close()
-	# 		done()
-	# 	).getOperations()
+	after (done) ->
+		bulk = collProducts.initializeUnorderedBulkOp()
+		bulk.find( {cats: {$elemMatch: { $eq: 'testcat'}}} ).remove()
+		bulk.execute( ->
+			dbConn.close()
+			done()
+		)
 
 
 

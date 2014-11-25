@@ -111,9 +111,47 @@ module.exports = (grunt) ->
 			server:
 				command: 'nodemon server/serverApp.coffee'
 
+
 			installDeps:
 				command: 'bower install && npm install'
 
+
+		nodemon:
+			test:
+				script: 'test.js'
+				options:
+					nodeArgs: ['--debug']
+					ext: 'js'
+					watch: ['test.js']
+
+
+			dev:
+				script: 'server/serverApp.coffee'
+				options:
+					ext: 'coffee,jade,json'
+					watch: ['server/**/*']
+			debug:
+				script: 'server/serverApp.coffee'
+				options:
+					nodeArgs: ['--nodejs', '--debug']
+					ext: 'coffee,jade,json'
+					watch: ['server/**/*']
+
+
+		'node-inspector':
+			debug: {}
+
+
+		concurrent:
+			dev:
+				tasks: ['nodemon:dev']
+				options:
+					logConcurrentOutput: true
+
+			debug:
+				tasks: ['nodemon:debug', 'node-inspector']
+				options:
+					logConcurrentOutput: true
 
 		watch:
 			options:
@@ -159,6 +197,8 @@ module.exports = (grunt) ->
 		.registerTask( 'client-test', 		[ 'karma' ])
 
 		.registerTask( 'server-start', 		[ 'exec:server'] )
+		.registerTask( 'start', 			[ 'concurrent:dev'] )
+		.registerTask( 'debug', 			[ 'concurrent:debug'] )
 		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
 		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )
 
