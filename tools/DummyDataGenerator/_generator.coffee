@@ -96,62 +96,46 @@ class Cleaner
 		c.db = null
 		c.cats = null
 
-		# c.initListeners()
-
 		c.openConnection ->
 			c.removeCats (err, cats) ->
 				return c.exit(err) if err
 
-				console.log cats
-				c.exit(null, "no errors")
+				c.removePords cats, (err, report) ->
+					return c.exit(err) if err
 
+					report = "
+						#{cats.length} categories deleted \n\
+						#{report} products deleted
+					"
 
+					c.exit(null, report)
 
-	initListeners: ->
-		c = @
-		pubsub.on 'DatabaseConnectedEvent', ->
-			c.removeCats()
-
-		pubsub.on 'CatsRemovedEvent', (cats) ->
-			c.cats = cats
-			# console.log cats
-			# c.insertPords()
-			c.closeConnection()
-
-		pubsub.on 'ProdsRemovedEvent', (prods) ->
-			c.closeConnection()
-
-		pubsub.on 'ErrorOccurredEvent', (err) ->
-			console.log err
-			c.closeConnection()
-			process.exit(1)
 
 	removeCats: (cb) ->
 		c = @
 
-		c.db.collection('categories').find {name: {$in: _.pluck(CATS, 'name')}}, (err, cats) ->
-			# return pubsub.emit('ErrorOccurredEvent', err) if err
+		c.db.collection('categories').find({name: {$in: _.pluck(CATS, 'name')}}).toArray (err, cats) ->
 			return cb?(err) if err
-
-			console.log cats
 
 			c.db.collection('categories').remove {name: {$in: _.pluck(CATS, 'name')}}, (err) ->
 				return cb?(err) if err
-				# return pubsub.emit('ErrorOccurredEvent', err) if err
-				# pubsub.emit('CatsRemovedEvent', cats)
 				cb?(null, cats)
 
 
-	# removePords: (cb) ->
-	# 	c = @
+	removePords: (cats, cb) ->
+		c = @
 
+		catsIds = _.pluck( cats, '_id')
+
+		c.db.collection('products').remove { cats: $elemMatch: { $in:catsIds } }, (err, rep) ->
+			return cb?(err) if err
+			cb?(null, rep)
 
 	openConnection: (cb) ->
 		c = @
 		MongoClient.connect CONF.db, (err, db) ->
-			return pubsub.emit('ErrorOccurredEvent', err) if err
+			return cb?(err) if err
 			c.db = db
-			pubsub.emit('DatabaseConnectedEvent')
 			cb?()
 
 	exit: (err, msg) ->
