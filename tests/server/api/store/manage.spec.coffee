@@ -250,6 +250,12 @@ describe.only 'api products manager', ->
 				# console.log res.body
 				done()
 
+	# it 'should select products for category', (done) ->
+	# 	collProducts.findOne {}, (err, p) ->
+	# 		expect( err ).to.be.null
+
+
+
 
 
 

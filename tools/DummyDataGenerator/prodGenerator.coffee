@@ -2,6 +2,8 @@ _ = require('lodash')
 ObjectID = require('mongodb').ObjectID
 hat = require('hat')
 
+catGen = require('./catGenerator')
+
 module.exports =
 	getProducts: (start = 0, end = 10)->
 		products = []
@@ -55,13 +57,13 @@ module.exports =
 
 		for pIdx in [start..end]
 			p =
-				title: "Product #{pIdx} -"
+				title: "Test Product -"
 				ean: hat()
 				colors: null
 				sizes: null
 				prices: []
 				imgs: []
-				cats: ['testcat'].concat( _.shuffle( _.cloneDeep(cats)).slice(0, _.random(1,cats.length) ) )
+				cats: ['testcat'].concat( catsGen.getRandomCats(2) )
 				tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 
 			# generate colors

@@ -5,34 +5,6 @@ Schema = mongoose.Schema
 _schemaName = 'Product'
 
 
-colorsSchema = new Schema(
-	key:
-		type: String
-		required: true
-	rgb:
-		type: {}
-		validate: [
-			(val) ->
-				valid = true
-				for k, v of val
-					return false if !_.isNumber(v) or v < 0 or v > 255
-
-				val.r = val.r || 0
-				val.g = val.g || 0
-				val.b = val.b || 0
-
-				return true
-			, 'Invalid RGB Object'
-		]
-)
-
-# variantsSchema = new Schema(
-# 	width: Number
-# 	height: Number
-# 	price: Number
-# 	imgs: [String]
-# 	colors: [colorsSchema]
-# )
 
 _schema = new Schema(
 
@@ -57,8 +29,26 @@ _schema = new Schema(
 		)]
 
 	colors:
-		# index: true
-		type: [ colorsSchema ]
+		type: [ new Schema(
+			key:
+				type: String
+				required: true
+			rgb:
+				type: {}
+				validate: [
+					(val) ->
+						valid = true
+						for k, v of val
+							return false if !_.isNumber(v) or v < 0 or v > 255
+
+						val.r = val.r || 0
+						val.g = val.g || 0
+						val.b = val.b || 0
+
+						return true
+					, 'Invalid RGB Object'
+				]
+		)]
 
 	sizes:
 		# index: true
@@ -81,9 +71,11 @@ _schema = new Schema(
 			# 	return true
 			# , 'Invalid price object']
 	)]
-	# imgs : []					# images
-	cats : []					# categories TODO: format?
-	tags : []					# tags
+
+	cats : [Schema.Types.ObjectId]					# categories TODO: format?
+
+	tags : [String]					# tags
+
 	rats : []					# ratings
 
 	# vars : [variantsSchema]		# variants
@@ -110,25 +102,21 @@ _schema.statics =
 
 		@find query, cb
 
-	# findBySize: (sizes, cb) ->
+# 	findByCategoryName: (catName, cb) ->
+# 		catMdl =
+
+# 	# findBySize: (sizes, cb) ->
 
 
 
 
 
 
-# CUSTOM INSTANCE METHODS
-_schema.methods =
-	findByColor: (color, cb) ->
-		# this.model(_schemaName).find
-		#
-		console.log "find by color"
-		cb(null, [])
-
-	# create: (postData, callback) ->
-	# 	this.model('Post').create postData, (err, post) ->
-	# 		return callback( err ) if err
-	# 		callback( null, post )
+# # CUSTOM INSTANCE METHODS
+# # _schema.methods =
+# # 	findByColor: (color, cb) ->
+# # 		console.log "find by color"
+# # 		cb(null, [])
 
 module.exports = mongoose.model(_schemaName, _schema)
 

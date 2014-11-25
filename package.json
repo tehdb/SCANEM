@@ -75,6 +75,7 @@
     "proxyquire": "^1.0.1",
     "requirejs": "^2.1.15",
     "sinon": "^1.10.3",
+    "stdio": "^0.2.3",
     "superagent": "^0.20.0",
     "supertest": "^0.14.0"
   }

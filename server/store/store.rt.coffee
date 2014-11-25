@@ -19,6 +19,9 @@ module.exports = (router, eventEmmiter) ->
 		.put( ctrl.update ) 			# update product
 		.get( ctrl.select ) 		# select a product
 
+	# router
+	# 	.routes('/store/categories/:id?')
+
 	###
   	update a product
   	put - /store/products/:id

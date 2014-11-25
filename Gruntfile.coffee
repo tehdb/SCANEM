@@ -115,6 +115,11 @@ module.exports = (grunt) ->
 			installDeps:
 				command: 'bower install && npm install'
 
+			DummySupply:
+				command: 'coffee tools/DummyDataGenerator/_generator.coffee -s'
+
+			DummyClear:
+				command: 'coffee tools/DummyDataGenerator/_generator.coffee -c'
 
 		nodemon:
 			test:
