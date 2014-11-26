@@ -1,8 +1,8 @@
 # PWD = process.env.PWD
 
 module.exports = (router, eventEmmiter) ->
-	ctrl = require("#{__dirname}/products.ctrl")()
-
+	prodsCtrl = require("#{__dirname}/products.ctrl")()
+	catsCtrl = require("#{__dirname}/categories.ctrl")()
 	# console.log ctrl.create
 
 
@@ -15,12 +15,15 @@ module.exports = (router, eventEmmiter) ->
   ###
 	router
 		.route('/store/products/:id?') 		# multiple route handler allowed here
-		.post( ctrl.insert ) 			# insert product
-		.put( ctrl.update ) 			# update product
-		.get( ctrl.select ) 		# select a product
+			.post( prodsCtrl.insert ) 			# insert product
+			.put( prodsCtrl.update ) 			# update product
+			.get( prodsCtrl.select ) 		# select a product
 
-	# router
-	# 	.routes('/store/categories/:id?')
+	router
+		.route('/store/categories/:id?')
+			.post( catsCtrl.insert )
+			.put( catsCtrl.update )
+			.get( catsCtrl.select )
 
 	###
   	update a product

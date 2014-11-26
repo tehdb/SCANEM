@@ -72,7 +72,10 @@ _schema = new Schema(
 			# , 'Invalid price object']
 	)]
 
-	cats : [Schema.Types.ObjectId]					# categories TODO: format?
+	cats : [{
+		type: Schema.Types.ObjectId
+		ref: 'Category'
+	}]					# categories TODO: format?
 
 	tags : [String]					# tags
 
@@ -94,6 +97,33 @@ _schema = new Schema(
 
 # CUSTOM STATIC METHODS
 _schema.statics =
+	insertToCat: (pArr, cb) ->
+		c = @
+		Category = require('mongoose').model('Category')
+
+		# get default cat
+		# every prod has a cat, if not set defaul
+		# save every product
+		# push ever prod id to cats
+		Category.getDefault (err,defCat) ->
+			return cb?(err) if err
+			pArr = _.each pArr, (p) -> p.cats = [defCat._id] if not _.isArray(p.cats) or p.cats.length is 0
+
+			c.create pArr, (err, pArr...) -> # p... because create returns a list of params
+				return cb?(err) if err
+
+
+				bulk = Category.collection.initializeUnorderedBulkOp()
+				_.each pArr, (p) ->
+					_.each p.cats, (catId) ->
+						bulk.find({_id:catId}).updateOne( {$push: {items: p._id} } )
+
+				bulk.execute (err, rep) ->
+					return cb?(err) if err
+
+					prodIds = _.pluck( pArr, '_id' )
+					cb?( null, prodIds )
+
 	findByColorKey: (colorKey, cb) ->
 		query =
 			colors:

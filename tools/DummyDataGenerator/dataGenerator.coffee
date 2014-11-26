@@ -65,7 +65,7 @@ module.exports =
 	getRandomSizes: ->
 		return _.sortBy( _.shuffle( _.cloneDeep(SIZES)).slice(0, _.random(1,SIZES.length) ), 'width' )
 
-	getProducts: ( amount)->
+	getProducts: ( amount )->
 		c = this
 		products = []
 
@@ -78,7 +78,7 @@ module.exports =
 				sizes: c.getRandomSizes()
 				prices: []
 				imgs: []
-				cats: null
+				cats: []
 				# cats: ['testcat'].concat( c.getRandomCats(2) )
 				# tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 

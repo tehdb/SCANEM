@@ -4,6 +4,7 @@ pubsub 			= new EventEmitter()
 
 conf = require('./config/config')
 
+global.conf = conf
 # express
 app = require( './config/express' )(conf)
 

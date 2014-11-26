@@ -23,7 +23,15 @@
 	$ npm start		# start server
 ```
 
+## Testing
 
+### supply dummy data
+```bash
+	$ grunt dummy-supply
 
-# Log In
-# Sign Up
+```
+
+### clear dummy data
+```bash
+	$ grunt dummy-clear
+```

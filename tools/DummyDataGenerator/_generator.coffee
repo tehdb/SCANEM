@@ -1,15 +1,14 @@
 PWD 	= process.env.PWD
 _ = require('lodash')
 
-MongoClient = require('mongodb').MongoClient
+
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
 stdio = require('stdio')
 
 
-CONF = require("#{PWD}/server/config/config")
-
-CATS =[
+conf = require("#{PWD}/server/config/config")
+conf.cats =[
 	{ name: 'Testcat' },
 	{ name: 'Philander' },
 	{ name: 'Antipater' },
@@ -20,137 +19,6 @@ CATS =[
 	{ name: 'Branislava' }
 ]
 
-class Supplier
-	constructor: (@conf) ->
-		c = @
-
-		c.gen = require('./dataGenerator')
-		c.db = null
-		c.cats = null
-		c.prods = null
-		# c.openConnection ->
-		# 	c.insertCats ->
-		# 		c.closeConnection()
-		c.initListeners()
-		c.openConnection()
-
-	initListeners: ->
-		c = @
-		pubsub.on 'DatabaseConnectedEvent', ->
-			c.insertCats()
-
-		pubsub.on 'CatsCreatedEvent', (cats) ->
-			c.cats = cats
-			c.insertPords()
-
-		pubsub.on 'ProdsCreatedEvent', (prods) ->
-			c.closeConnection()
-
-		pubsub.on 'ErrorOccurredEvent', (err) ->
-			console.log err
-			c.closeConnection()
-			process.exit(1)
-
-
-	insertCats: (cb) ->
-		c = @
-
-		c.db.collection('categories').insert CATS, (err, cats) ->
-			return pubsub.emit('ErrorOccurredEvent', err) if err
-
-			pubsub.emit('CatsCreatedEvent', cats)
-
-	insertPords: (cb) ->
-		c = @
-
-		prodsDataArr = c.gen.getProducts(3)
-
-
-		prods = _.each prodsDataArr, (p) ->
-			pCatIds = _.shuffle( _.pluck( c.cats, '_id' ) ).slice(0, _.random(1, 3))#c.cats.length))
-			p.cats = pCatIds
-
-
-		c.db.collection('products').insert prods, (err, prods) ->
-			return pubsub.emit('ErrorOccurredEvent', err) if err
-			c.prods = prods
-			pubsub.emit('ProdsCreatedEvent')
-
-
-	openConnection: (cb) ->
-		c = @
-
-		MongoClient.connect CONF.db, (err, db) ->
-			return pubsub.emit('ErrorOccurredEvent', err) if err
-			c.db = db
-			pubsub.emit('DatabaseConnectedEvent')
-			cb?()
-
-	closeConnection: ->
-		@db.close()
-
-class Cleaner
-	constructor: ->
-		c = @
-
-		c.db = null
-		c.cats = null
-
-		c.openConnection ->
-			c.removeCats (err, cats) ->
-				return c.exit(err) if err
-
-				c.removePords cats, (err, report) ->
-					return c.exit(err) if err
-
-					report = "
-						#{cats.length} categories deleted \n\
-						#{report} products deleted
-					"
-
-					c.exit(null, report)
-
-
-	removeCats: (cb) ->
-		c = @
-
-		c.db.collection('categories').find({name: {$in: _.pluck(CATS, 'name')}}).toArray (err, cats) ->
-			return cb?(err) if err
-
-			c.db.collection('categories').remove {name: {$in: _.pluck(CATS, 'name')}}, (err) ->
-				return cb?(err) if err
-				cb?(null, cats)
-
-
-	removePords: (cats, cb) ->
-		c = @
-
-		catsIds = _.pluck( cats, '_id')
-
-		c.db.collection('products').remove { cats: $elemMatch: { $in:catsIds } }, (err, rep) ->
-			return cb?(err) if err
-			cb?(null, rep)
-
-	openConnection: (cb) ->
-		c = @
-		MongoClient.connect CONF.db, (err, db) ->
-			return cb?(err) if err
-			c.db = db
-			cb?()
-
-	exit: (err, msg) ->
-		c = @
-
-		c.db.close()
-
-		if err
-			console.log err
-			process.exit(1)
-
-		if msg
-			console.log msg
-
-		process.exit(0)
 
 
 ops = stdio.getopt({
@@ -158,42 +26,14 @@ ops = stdio.getopt({
 	'clear' : { key: 'c', description: 'remove test data from db'}
 })
 
-# console.log ops
 
 if ops.supply
-	new Supplier()
+	conf.pCount = 1000
+	Supplier = require('./Supplier')
+	s = new Supplier(conf)
+	s.supply()
 
 else if ops.clear
-	new Cleaner()
-
-#
-	# collCats = db.collection('categories')
-	# collProds = db.collection('products')
-
-
-
-
-
-
-	#for c in cats
-
-
-# prodsGen = 	require('./prodGenerator')
-# gen = 	require('./dataGenerator')
-
-
-
-# gen.getRandomCats(), (item) -> console.log item["_id"]
-
-# catIds =  _.pluck( gen.getRandomCats(), '_id' )
-
-
-# console.log catIds
-
-# console.log JSON.stringify( gen.getProducts(1), null, '\t' )
-# for i in [0..10]
-# 	console.log catsGen.getRandomCats(1)
-	# console.log "***"
-	# console.log catsGen.getRandomCats().length + " " + catsGen.getRandomCats(1).length
-	# console.log "***"
-# console.log prodsGen.getProducts(0,0)
+	Cleaner = require('./Cleaner')
+	c = new Cleaner(conf)
+	c.clean()

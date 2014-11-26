@@ -10,6 +10,9 @@ config =
 		db: 	'mongodb://localhost/SCANEM_dev'
 		prot: 	'http'
 		url: 	'localhost'
+		defaults:
+			category:
+				name: 'Testcat'
 
 
 config.development.apiUrl =

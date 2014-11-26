@@ -187,6 +187,10 @@ module.exports = (grunt) ->
 			'client-build-scripts'
 			'clean:build'
 		])
+
+		.registerTask( 'dummy-supply', ['exec:DummySupply'])
+		.registerTask( 'dummy-clear', ['exec:DummyClear'])
+
 		.registerTask( 'client-build-styles', [
 			'concat:styles'
 			'compass:styles'
