@@ -50,6 +50,14 @@ schema.statics =
 
 			cb?(null, cat)
 
+	setDefault: (cat, cb) ->
+		c = @
+
+		c.create cat, (err, doc) ->
+			if err and err.code isnt 11000
+				console.log err.code
+
+
 	addProdsToCats: ( pArr, cb ) ->
 		c = @
 
@@ -61,6 +69,7 @@ schema.statics =
 
 		bulk.execute ->
 			cb?(null)
+
 
 		# _.each pArr, (p) ->
 		# 	_.each p.cats, (catId) ->

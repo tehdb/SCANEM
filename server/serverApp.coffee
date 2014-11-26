@@ -1,10 +1,11 @@
-
+_ = require('lodash')
 EventEmitter 	= require('events').EventEmitter
 pubsub 			= new EventEmitter()
 
 conf = require('./config/config')
 
 global.conf = conf
+global.CONF = _.constant( conf )
 # express
 app = require( './config/express' )(conf)
 

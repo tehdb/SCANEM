@@ -49,8 +49,8 @@ describe.only 'api categories select functionality', ->
 			expect(res.status).to.equal(200)
 			done()
 
-	it 'should not create a category if data is invalid', ->
-		agent.post(catsUrl).send(catData).end (err, res) ->
-			expect( err ).to.be.null
-			# expect(res.status).to.equal(200)
-			done()
+	# it 'should not create a category if data is invalid', ->
+	# 	agent.post(catsUrl).send(catData).end (err, res) ->
+	# 		expect( err ).to.be.null
+	# 		# expect(res.status).to.equal(200)
+	# 		done()
