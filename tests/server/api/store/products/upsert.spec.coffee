@@ -52,9 +52,12 @@ describe 'api products upsert functionality', ->
 				expect( err ).to.be.null
 				expect(res.status).to.equal(200)
 				expect(res.body).to.have.length( 1 )
-				pid = res.body[0]
+				p = res.body[0]
 
-				agent.get( "#{prodsUrl}/#{pid}").end ( err, res) ->
+				agent.get( "#{prodsUrl}/#{p._id}").end ( err, res) ->
 					expect( err ).to.be.null
 					console.log res.body.cats
 					done()
+
+
+	#it 'should insert a single product to category', (done) ->

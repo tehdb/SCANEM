@@ -18,7 +18,7 @@ agent = superagent.agent()
 CatData = { name: 'Testcategory 1' }
 cat = null
 
-describe.only 'api categories select functionality', ->
+describe 'api categories select functionality', ->
 
 	# before (done) ->
 	# 	agent.post(catsUrl).send(catData).end (err, res) ->

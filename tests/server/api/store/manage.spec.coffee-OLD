@@ -24,7 +24,7 @@ dbConn = null
 collProducts = null
 
 
-describe.only 'api products manager', ->
+describe 'api products manager', ->
 
 	# insert multiple prdocuts
 	before (done) ->

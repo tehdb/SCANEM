@@ -4,7 +4,7 @@ Schema = mongoose.Schema
 
 _schemaName = 'Product'
 
-
+errLog = require('winston').loggers.get( 'error' )
 
 _schema = new Schema(
 
@@ -95,6 +95,9 @@ _schema = new Schema(
 		default : 	Date.now
 )
 
+# _schema.post 'save', (doc) ->
+
+
 # CUSTOM STATIC METHODS
 _schema.statics =
 	insertToCat: (pArr, cb) ->
@@ -137,6 +140,52 @@ _schema.statics =
 
 # 	# findBySize: (sizes, cb) ->
 
+_schema.pre 'save', (next) ->
+	c = @
+
+
+	# add product to default categories
+	if not _.isArray(c.cats) or c.cats.length is 0
+		Category = require('mongoose').model('Category')
+		Category.find {type:'default'}, (err, cats) ->
+			return errLog.error( err ) if err
+
+			bulk = Category.collection.initializeUnorderedBulkOp()
+			_.each cats, (cat) ->
+				bulk.find({_id:cat._id}).updateOne( {$addToSet: {items: c._id} } )
+				c.cats.push( cat._id)
+			bulk.execute (err, rep) ->
+				errLog.error( err ) if err
+				next()
+
+	# push product to categories
+	else
+		bulk = Category.collection.initializeUnorderedBulkOp()
+		_.each c.cats, (catId) -> bulk.find({_id:catId}).updateOne( {$addToSet: {items: c._id} } )
+		bulk.execute (err, rep) ->
+			errLog.error( err ) if err
+			next()
+
+		# Category.find {type:'default'}, (err, defCats) ->
+		# 	return errLog.error( err ) if err
+
+		# 	bulk = Category.collection.initializeUnorderedBulkOp()
+		# 	_.each defCats, (defCat) ->
+		# 		c.cats.push( defCat._id )
+
+		# 		defCat.items.push( c._id )
+		# 		defCat.save (err) -> errLog.error( err ) if err
+
+
+
+
+	# else
+
+			# c.save (err) -> errLog.error( err ) if err
+
+
+		# bulk = Category.collection.initializeUnorderedBulkOp()
+		# _.each
 
 
 

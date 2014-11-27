@@ -11,13 +11,13 @@ module.exports = () ->
 
 		# insert one or array of products, returns array
 		insert: (req, res, next) ->
-			# Product.create req.body, (err, p...) -> # p... because create returns a list of params
-			# 	return next(err) if err
-			# 	res.json( p )
+			Product.create req.body, (err, p...) -> # p... because create returns a list of params
+				return next(err) if err
+				res.json( p )
 
-			Product.insertToCat req.body, (err, pArr) ->
-				return next({reason: err}) if err
-				res.json( pArr )
+			# Product.insertToCat req.body, (err, pArr) ->
+			# 	return next({reason: err}) if err
+			# 	res.json( pArr )
 
 		update: (req, res, next) ->
 			productData = req.body

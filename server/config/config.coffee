@@ -8,11 +8,13 @@ config =
 		root: 	root
 		port: 	process.env.PORT || 3030
 		db: 	'mongodb://localhost/SCANEM_dev'
+		logPath: "#{root}/logs"
 		prot: 	'http'
 		url: 	'localhost'
 		defaults:
 			category:
-				name: 'Testcat'
+				name: 'default'
+				type: 'default'
 
 
 config.development.apiUrl =

@@ -4,6 +4,8 @@ Schema = mongoose.Schema
 
 schemaName = 'Category'
 
+errLog = require('winston').loggers.get( 'error' )
+
 schema = new Schema(
 	name:
 		type: 		String
@@ -34,6 +36,7 @@ schema = new Schema(
 		type: [{
 			type: Schema.Types.ObjectId
 			ref: 'Product'
+			unique: true
 		}]
 		default: []
 )
@@ -50,12 +53,14 @@ schema.statics =
 
 			cb?(null, cat)
 
-	setDefault: (cat, cb) ->
+	ensureDefaults: (cat, cb) ->
 		c = @
 
-		c.create cat, (err, doc) ->
-			if err and err.code isnt 11000
-				console.log err.code
+		defCatRaw = global.CONF().defaults.category
+		c.create defCatRaw, (err, doc) ->
+			errLog.error( err ) if err and err.code isnt 11000
+
+
 
 
 	addProdsToCats: ( pArr, cb ) ->

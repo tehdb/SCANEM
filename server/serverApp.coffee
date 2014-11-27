@@ -4,13 +4,16 @@ pubsub 			= new EventEmitter()
 
 conf = require('./config/config')
 
-global.conf = conf
+
+global.conf = conf 		# TODO: delete
 global.CONF = _.constant( conf )
+
+require('./config/winston') 		# init logger
 # express
 app = require( './config/express' )(conf)
 
 # mongo
-require( './config/mongoose')(conf)
+require( './config/mongoose')
 
 # passport
 require( './config/passport')()
