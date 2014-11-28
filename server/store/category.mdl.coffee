@@ -41,6 +41,59 @@ schema = new Schema(
 		default: []
 )
 
+schema.pre 'save', (next, done) ->
+	c = @
+
+	# err = new Error('something went wrong');
+	# next(err);
+	# console.log "pre save"
+
+	next()
+
+schema.pre 'remove', (next) ->
+	c = @
+
+	catMdl = c.model( schemaName )
+
+	moveItemsToDefault = ->
+
+		catMdl.find {type: 'default'}, (err, cats) ->
+			return next(err) if err
+
+			bulk = 	catMdl.collection.initializeUnorderedBulkOp()
+			_.each cats, (cat) ->
+				_.each c.items, (itemId) ->
+					bulk.find({_id:cat._id}).updateOne( {$addToSet: {items: itemId} } )
+
+			try
+				bulk.execute (err, rep) ->
+					return next(err) if err
+					next()
+
+			catch err
+				next(err)
+
+
+	if c.type is 'default'
+		catMdl.find {type: 'default'}, (err, docs) ->
+			return next(err) if err
+
+			if docs.length <= 1 and String(c._id) is String(docs[0]._id)
+				err = new Error()
+				err.reason = 'Can not remove last default category'
+				err.status = 409
+				next( err )
+			else
+				moveItemsToDefault()
+	else
+		moveItemsToDefault()
+		# next()
+
+
+	# console.log "pre remove"
+
+	# next()
+
 
 # CUSTOM STATIC METHODS
 schema.statics =

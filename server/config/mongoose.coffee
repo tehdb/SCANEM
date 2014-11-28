@@ -16,8 +16,8 @@ o =
 		c = @
 		mongoose.connect( global.CONF().db )
 		db = mongoose.connection
-		db.on( 'error', console.error.bind( console, 'connection error...') )
-		db.once 'open', -> console.log('db connection opened...')
+		db.on 'error', -> errLog.error( 'db connection error...' )
+		db.once 'open', -> infoLog.info( 'db connection opened...' )
 
 
 

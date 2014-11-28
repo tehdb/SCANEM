@@ -7,28 +7,27 @@ Category = require('mongoose').model('Category')
 # console.log Product.findByColorKey
 
 module.exports = () ->
-	return x =
-
-		# get params
-			# count - amount of products
-			# page - page number for pagination
-			# q - filter by query
-			# cat - filter by category (multiple comma separated)
-			# color - filter by color (multiple comma separated)
-			# size - filter by size ([width]x[height] (multiple comma separated)
+	return o =
 		select: (req, res, next) ->
 
 			id = req.params.id
 
 			if id?
-				Category.findOne {_id:id}, (err, doc) ->
+				Category.findOne {_id:id}, (err, cat) ->
 					return next(err) if err
-					res.json(doc)
+					res.json(cat)
 			else
-				next({reason: "nothing to select"})
+
+				if req.query.q?
+					regex = new RegExp(req.query.q, "i")
+					Category.find {name: regex}, (err, cats) ->
+						return next(err) if err
+						res.json(cats)
+
+				else
+					next({reason: "nothing to select"})
 
 		insert: (req, res, next ) ->
-
 			Category.create req.body, (err, catsArr...) ->
 				return next(err) if err
 				res.json(catsArr)
@@ -43,6 +42,17 @@ module.exports = () ->
 				updatedCat.save (err, cat) ->
 					return next(err) if err
 					res.json(cat)
+
+		remove: (req, res, next) ->
+			catData = req.body
+
+			cat = Category.findOne {_id: catData._id}, (err, cat ) ->
+				return next(err) if err
+
+				cat.remove (err, rep) ->
+					return next(err) if err
+					res.json(rep)
+
 
 
 

@@ -95,8 +95,14 @@ module.exports = (grunt) ->
 			unit:
 				src: ['tests/server/unit/**/*.spec.coffee']
 
+			# order is important!
 			api:
-				src: ['tests/server/api/**/*.spec.coffee']
+				src: [
+					'tests/server/api/store/_before.coffee'
+					'tests/server/api/store/**/*.spec.coffee'
+					'tests/server/api/store/_after.coffee'
+				]
+
 
 
 		karma:
@@ -175,9 +181,10 @@ module.exports = (grunt) ->
 				tasks: ['mochaTest:unit']
 
 			api_tests:
-				options: { debounceDelay: 500 }
-				files: ['tests/server/api/**/*.spec.coffee']
-				tasks: ['mochaTest:api']
+				# options: { debounceDelay: 500 }
+				# files: ['tests/server/api/**/*.spec.coffee']
+				files: '<%=  mochaTest.api.src %>'
+				tasks: ['server-test']
 
 
 	grunt
@@ -208,7 +215,7 @@ module.exports = (grunt) ->
 		.registerTask( 'server-start', 		[ 'exec:server'] )
 		.registerTask( 'start', 			[ 'concurrent:dev'] )
 		.registerTask( 'debug', 			[ 'concurrent:debug'] )
-		.registerTask( 'server-test-e2e', 	[ 'mochaTest:api' ] )
+		.registerTask( 'server-test', 		[ 'mochaTest:api' ] )
 		.registerTask( 'server-test-unit',  [ 'mochaTest:unit'] )
 
 		.registerTask( 'prerender-start', 	[ 'exec:prerender' ])

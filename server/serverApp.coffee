@@ -8,15 +8,17 @@ conf = require('./config/config')
 global.conf = conf 		# TODO: delete
 global.CONF = _.constant( conf )
 
-require('./config/winston') 		# init logger
+loggers = require('./config/winston') 		# init logger
+
+# infoLog = winston.loggers.get( 'info' )
 # express
-app = require( './config/express' )(conf)
+app = require( './config/express' )
 
 # mongo
 require( './config/mongoose')
 
 # passport
-require( './config/passport')()
+require( './config/passport')
 
 # i18n
 i18n = require( './config/i18next')( app )
@@ -28,8 +30,7 @@ require( './mailer' )( pubsub, i18n )
 app.use 	'/api', require('./config/routes')( pubsub )
 
 # main view
-app.get 	'*', (req, res) ->
-	res.render 'index', { user: req.user?.getPublicFields?()}
+app.get '*', (req, res) -> res.render 'index', { user: req.user?.getPublicFields?()}
 
 
 # error handler
@@ -40,5 +41,4 @@ app.use 	(err, req, res, next) ->
 
 
 # start server
-app.listen app.get('port'), ->
-	console.log "Listening on port #{app.get('port')}..."
+app.listen app.get('port'), -> loggers.info.log( "Listening on port #{app.get('port')}..." )

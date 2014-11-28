@@ -1,37 +1,26 @@
-{"level":"info","message":"*** app start ***","timestamp":"2014-11-27T10:51:05.985Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T10:51:07.104Z"}
-{"level":"info","message":"*** app start ***","timestamp":"2014-11-27T10:51:21.847Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T10:51:22.723Z"}
-{"level":"info","message":"*** app start ***","timestamp":"2014-11-27T13:41:03.949Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T13:41:09.378Z"}
-{"level":"info","message":"*** app start ***","timestamp":"2014-11-27T13:41:19.052Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T13:41:20.041Z"}
-{"level":"info","message":"------------ app start ------------","timestamp":"2014-11-27T13:41:55.616Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T13:41:56.427Z"}
-{"level":"info","message":"------------ app start ------------","timestamp":"2014-11-27T13:42:10.370Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T13:42:12.291Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:42:34.672Z"}
-{"level":"info","message":"info message","timestamp":"2014-11-27T13:42:35.614Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:43:03.053Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:52:41.877Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:52:57.006Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:53:24.364Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:53:39.579Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:53:41.628Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T13:53:54.200Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:08:04.694Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:09:13.565Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:09:52.907Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:13:27.001Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:19:46.017Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:28:20.919Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:28:48.315Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:42:30.341Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:43:01.947Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:43:14.970Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:44:03.506Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T14:48:11.242Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T15:18:26.351Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T15:22:58.208Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T15:25:58.048Z"}
-{"level":"info","message":"------- app start -------","timestamp":"2014-11-27T15:26:35.454Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:26.049Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:32.093Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:40.566Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:47.300Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:52.302Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:53:58.255Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:54:17.117Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T15:54:37.965Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:07:34.311Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:08:07.784Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:08:24.658Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:08:29.437Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:09:26.798Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:09:55.888Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:10:17.726Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:10:48.828Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:11:11.449Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:11:35.780Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:12:01.851Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:12:24.703Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:17:07.826Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:44:47.781Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:46:36.610Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:47:05.492Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:47:26.969Z"}
+{"level":"info","message":"db connection opened...","timestamp":"2014-11-28T16:47:56.234Z"}

@@ -1,11 +1,12 @@
 PWD 	= process.env.PWD
 _ 		= require('lodash')
 expect 	= require('chai').expect
-sinon 	= require('sinon')
+# sinon 	= require('sinon')
 
-conf = require("#{PWD}/server/config/config")
-URL = "#{conf.apiUrl}/store/products"
+# conf = require("#{PWD}/server/config/config")
+# URL = "#{conf.apiUrl}/store/products"
 
+prodsUrl = "#{conf.apiUrl}/store/products"
 # db = require('monk')(conf.db)
 # collProducts = db.get('products')
 

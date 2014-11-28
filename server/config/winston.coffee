@@ -9,30 +9,37 @@ if !fs.existsSync( global.CONF().logPath )
 
 winston.remove(winston.transports.Console)
 
-winston.loggers.add 'error', {
-	console:
-		silent: true
-	file:
-		filename: 'logs/error'
-		maxsize: 2097152
-		maxFiles: 5
-		silent: false
-		colorize: true
-}
+module.exports =
+	error: winston.loggers.add 'error', {
+		console:
+			silent: true
+		file:
+			filename: 'logs/error'
+			maxsize: 2097152
+			maxFiles: 5
+			silent: false
+			colorize: true
+	}
 
-winston.loggers.add 'info', {
-	console:
-		silent: true
-	file:
-		filename: 'logs/info'
-		maxsize: 2097152
-		maxFiles: 5
-		silent: false
-		colorize: true
-}
+	info: winston.loggers.add 'info', {
+		console:
+			silent: true
+		file:
+			filename: 'logs/info'
+			maxsize: 2097152
+			maxFiles: 5
+			silent: false
+			colorize: true
+	}
 
-winston.loggers.get('error').info('------- app start -------')
-winston.loggers.get('info').info('------- app start -------')
+
+# winston.loggers.get('error').info('------- app start -------')
+# winston.loggers.get('info').info('------- app start -------')
+
+# module.exports = {
+# 	error: winston.loggers.get('error')
+# 	info: winston.loggers.get('info')
+# }
 
 
 

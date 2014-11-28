@@ -24,6 +24,7 @@ module.exports = (router, eventEmmiter) ->
 			.post( catsCtrl.insert )
 			.put( catsCtrl.update )
 			.get( catsCtrl.select )
+			.delete( catsCtrl.remove )
 
 	###
   	update a product
