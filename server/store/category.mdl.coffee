@@ -1,7 +1,8 @@
 _ = require('lodash')
+q = require('q')
 mongoose = require('mongoose')
 Schema = mongoose.Schema
-
+ObjectId = mongoose.Types.ObjectId
 schemaName = 'Category'
 
 errLog = require('winston').loggers.get( 'error' )
@@ -13,13 +14,6 @@ schema = new Schema(
 		unique: 	true
 		index: 		true
 
-	#
-	# default
-	#
-	# cat
-	# subcat
-	#
-	#
 	type:
 		type: String
 		enum: [ 'default', 'cat', 'subcat' ]
@@ -41,14 +35,6 @@ schema = new Schema(
 		default: []
 )
 
-schema.pre 'save', (next, done) ->
-	c = @
-
-	# err = new Error('something went wrong');
-	# next(err);
-	# console.log "pre save"
-
-	next()
 
 schema.pre 'remove', (next) ->
 	c = @
@@ -97,14 +83,6 @@ schema.pre 'remove', (next) ->
 
 # CUSTOM STATIC METHODS
 schema.statics =
-	getDefault: (cb) ->
-		c = @
-
-		c.findOne {name: global.conf.defaults.category.name}, (err, cat) ->
-			return cb?(err) if err
-			return cb?('no default categiry set') if !cat?
-
-			cb?(null, cat)
 
 	ensureDefaults: (cat, cb) ->
 		c = @
@@ -114,40 +92,46 @@ schema.statics =
 			errLog.error( err ) if err and err.code isnt 11000
 
 
-
-
-	addProdsToCats: ( pArr, cb ) ->
+	cleanUpAll: (cb) ->
 		c = @
+		CategoryModel = c.model( schemaName )
 
-		bulk = c.initializeUnorderedBulkOp()
+		CategoryModel.find {}, (err, cats) ->
+			return errLog.error( err ) if err
 
+			promises = []
+			_.each cats, (cat) -> promises.push( cat.cleanUp() ) if cat.items.length > 0
 
-		_.each pArr, (p) ->
-			bulk.find({_id:catId}).updateOne( {$push: {items: p._id} } )
-
-		bulk.execute ->
-			cb?(null)
-
-
-		# _.each pArr, (p) ->
-		# 	_.each p.cats, (catId) ->
-		# 		c.findOne {_id: catId}, (err, cat) ->
-		# 			return cb?(err) if err
-
-		# c.findOne {_id: catId}, (err, cat) ->
-		# 	return cb?(err) if err
-		# 	return cb?("no categiry found for id #{catId}") if !cat?
-
-		# 	cat.items.push(prodIt)
-
-		# 	cat.save (err, cat) ->
-		# 		return cb?(err) if err
-
-		# 		cb?(cat)
-
+			q.all(promises).spread (rep...) -> cb?()
 
 
 # CUSTOM INSTANCE METHODS
-# schema.methods =
+schema.methods =
+	cleanUp: ->
+		c = @
+		# resolve null if items array is empty
+		if c.items.length <= 0
+			return q.fcall -> return null
+
+		def = q.defer()
+
+		ProductModel = require('mongoose').model('Product')
+
+		promises = []
+		_.each c.items, (item) -> promises.push(ProductModel.isPresent(item))
+
+		q.allSettled(promises).then (zombies...) ->
+			zombies = _.pluck( _.filter(zombies[0], (z) -> return z.state is 'rejected'), 'reason')
+
+			zombiesSize = zombies.length - 1
+			_.each zombies, (z, idx) ->
+				c.update { $pull: { items: z }}, (err, count) ->
+					errLog.error( err ) if err
+					if idx is zombiesSize
+						c.model( schemaName ).findOne { _id:c._id}, (err, doc) ->
+							if err then def.reject(err) else def.resolve( doc )
+
+		return def.promise
+
 
 module.exports = mongoose.model(schemaName, schema)

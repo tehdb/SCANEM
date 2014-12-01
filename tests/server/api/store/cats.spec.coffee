@@ -46,6 +46,16 @@ describe 'api categories', ->
 			catsArr.push( cat )
 			done()
 
+	it 'should create another category', (done) ->
+		agent.post(catsUrl).send( catsRaw[1] ).end (err, res) ->
+			expect( err ).to.be.null
+			expect(res.status).to.equal(200)
+			cat = res.body[0]
+
+			expect( cat._id ).to.exist
+			catsArr.push( cat )
+			done()
+
 
 	it 'should update a category', (done) ->
 		c = catsArr[0]

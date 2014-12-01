@@ -47,6 +47,7 @@
     "passport-local": "^1.0.0",
     "prerender": "^3.7.1",
     "prerender-node": "^1.1.0",
+    "q": "^1.1.2",
     "readdir": "0.0.13",
     "supertest": "^0.15.0",
     "winston": "^0.8.3"

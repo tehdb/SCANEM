@@ -1,8 +1,10 @@
 _ = require('lodash')
+q = require('q')
 mongoose = require('mongoose')
 Schema = mongoose.Schema
+ObjectId = mongoose.Types.ObjectId
 
-_schemaName = 'Product'
+schemaName = 'Product'
 
 errLog = require('winston').loggers.get( 'error' )
 
@@ -81,11 +83,6 @@ _schema = new Schema(
 
 	rats : []					# ratings
 
-	# vars : [variantsSchema]		# variants
-	# orie :
-	# 	type: String 				# orientation - landscape | portrait | quadratic
-	# 	enum: ['landscape', 'portrait', 'quadratic']
-
 	cdate :		# create date
 		type : 		Date
 		default : 	Date.now
@@ -95,37 +92,9 @@ _schema = new Schema(
 		default : 	Date.now
 )
 
-# _schema.post 'save', (doc) ->
-
 
 # CUSTOM STATIC METHODS
 _schema.statics =
-	insertToCat: (pArr, cb) ->
-		c = @
-		Category = require('mongoose').model('Category')
-
-		# get default cat
-		# every prod has a cat, if not set defaul
-		# save every product
-		# push ever prod id to cats
-		Category.getDefault (err,defCat) ->
-			return cb?(err) if err
-			pArr = _.each pArr, (p) -> p.cats = [defCat._id] if not _.isArray(p.cats) or p.cats.length is 0
-
-			c.create pArr, (err, pArr...) -> # p... because create returns a list of params
-				return cb?(err) if err
-
-
-				bulk = Category.collection.initializeUnorderedBulkOp()
-				_.each pArr, (p) ->
-					_.each p.cats, (catId) ->
-						bulk.find({_id:catId}).updateOne( {$push: {items: p._id} } )
-
-				bulk.execute (err, rep) ->
-					return cb?(err) if err
-
-					prodIds = _.pluck( pArr, '_id' )
-					cb?( null, prodIds )
 
 	findByColorKey: (colorKey, cb) ->
 		query =
@@ -135,14 +104,29 @@ _schema.statics =
 
 		@find query, cb
 
-# 	findByCategoryName: (catName, cb) ->
-# 		catMdl =
 
-# 	# findBySize: (sizes, cb) ->
+	isPresent: ( p ) ->
+		c = @
+
+		def = q.defer()
+		Model = c.model( schemaName )
+
+		if p instanceof ObjectId
+
+			Model.findOne {_id: p}, (err, prod) ->
+				if err
+					return def.reject( err )
+
+				if prod is null
+					def.reject( p )
+				else
+					def.resolve( prod )
+
+		return def.promise
+
 
 _schema.pre 'save', (next) ->
 	c = @
-
 
 	# add product to default categories
 	if not _.isArray(c.cats) or c.cats.length is 0
@@ -166,36 +150,10 @@ _schema.pre 'save', (next) ->
 			errLog.error( err ) if err
 			next()
 
-		# Category.find {type:'default'}, (err, defCats) ->
-		# 	return errLog.error( err ) if err
 
-		# 	bulk = Category.collection.initializeUnorderedBulkOp()
-		# 	_.each defCats, (defCat) ->
-		# 		c.cats.push( defCat._id )
-
-		# 		defCat.items.push( c._id )
-		# 		defCat.save (err) -> errLog.error( err ) if err
+# CUSTOM INSTANCE METHODS
+# _schema.methods =
 
 
-
-
-	# else
-
-			# c.save (err) -> errLog.error( err ) if err
-
-
-		# bulk = Category.collection.initializeUnorderedBulkOp()
-		# _.each
-
-
-
-
-
-# # CUSTOM INSTANCE METHODS
-# # _schema.methods =
-# # 	findByColor: (color, cb) ->
-# # 		console.log "find by color"
-# # 		cb(null, [])
-
-module.exports = mongoose.model(_schemaName, _schema)
+module.exports = mongoose.model(schemaName, _schema)
 

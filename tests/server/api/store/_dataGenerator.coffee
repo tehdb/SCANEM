@@ -62,6 +62,10 @@ CATS = ->
 
 
 module.exports =
+
+	getCats: ->
+		return CATS()
+
 	getRandomCats: (max) ->
 
 		cats = CATS()
