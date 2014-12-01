@@ -152,7 +152,6 @@ module.exports = (grunt) ->
 		'node-inspector':
 			debug: {}
 
-
 		concurrent:
 			dev:
 				tasks: ['nodemon:dev']
@@ -160,7 +159,7 @@ module.exports = (grunt) ->
 					logConcurrentOutput: true
 
 			debug:
-				tasks: ['nodemon:debug', 'node-inspector']
+				tasks: ['nodemon:debug', 'node-inspector:debug']
 				options:
 					logConcurrentOutput: true
 
