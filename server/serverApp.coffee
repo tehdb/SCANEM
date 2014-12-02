@@ -40,5 +40,7 @@ app.use 	(err, req, res, next) ->
 	res.status( status ).json( {reason : reason } )
 
 
+process.on 'uncaughtException', (err) -> console.log 'App_Error: ', err.message
+
 # start server
 app.listen app.get('port'), -> loggers.info.log( "Listening on port #{app.get('port')}..." )

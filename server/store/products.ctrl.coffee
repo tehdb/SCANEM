@@ -49,9 +49,6 @@ module.exports = () ->
 				query = {}
 				limit = req.query.limit or 10
 				page = req.query.page or 0
-				# opts = {
-				# 	limit: req.query.limit or 10
-				# }
 
 				if req.query.color?
 					colorsArr = []
@@ -71,9 +68,7 @@ module.exports = () ->
 
 				if req.query.q?
 					query.title = new RegExp(req.query.q, "i")
-					# console.log sizes
 
-					# res.send("ok")
 
 				Product
 					.find( query )

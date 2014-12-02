@@ -85,7 +85,7 @@ module.exports =
 		return _.sortBy( _.shuffle( sizes ).slice(0, _.random(1,sizes.length) ), 'width' )
 
 
-	getProducts: ( amount )->
+	getProds: ( amount = 10 )->
 		c = this
 		products = []
 

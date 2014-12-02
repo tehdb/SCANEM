@@ -5,7 +5,7 @@ expect 	= require('chai').expect
 describe 'stop server', ->
 
 	catsRaw = global.CONF().dataGenerator.getCats()
-	# dbModels = {}
+
 	CategoryModel = null
 	ProductModel = null
 
@@ -16,8 +16,14 @@ describe 'stop server', ->
 		done()
 
 
-	it 'should remove no more existed products from categories items arrays', (done) ->
-		CategoryModel.cleanUpAll done
+	it 'should remove test products', (done) ->
+		query = new RegExp('Test Product.*', 'i')
+
+		bulk = ProductModel.collection.initializeUnorderedBulkOp()
+		bulk.find({ title: query}).remove()
+		bulk.execute (err, rep) ->
+			expect(err).to.be.null
+			done()
 
 
 	it 'should remove test categories', (done) ->
@@ -27,11 +33,7 @@ describe 'stop server', ->
 			expect(err).to.be.null
 			done()
 
-		# done()
-		# ProductModel.findOne {_id: '547c37e5b9c1811309ddfc96'}, (err, prod) ->
-		# 	console.log err
-		# 	console.log prod
-		# 	done()
 
-	# it 'should clean up', (done) ->
-		# done()
+	it 'should remove no more existed products from categories items arrays', (done) ->
+		CategoryModel.cleanUpAll( done )
+

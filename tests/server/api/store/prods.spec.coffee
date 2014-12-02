@@ -1,80 +1,62 @@
 PWD 	= process.env.PWD
 _ 		= require('lodash')
 expect 	= require('chai').expect
-sinon 	= require('sinon')
+# sinon 	= require('sinon')
 
-conf = require("#{PWD}/server/config/config")
 
-# db = require('monk')(conf.db)
-# collProducts = db.get('products')
-
-URL = "#{conf.apiUrl}/store/products"
+mongodb = require('mongodb')
+ObjectID = mongodb.ObjectID
+mongoose = require('mongoose')
 
 superagent = require('superagent')
 agent = superagent.agent()
 
 
-dataGenerator = require('../data/productsGenerator')
-# _data = dataGenerator.getProducts(0,10)
-_products = null
+describe 'api products', ->
+
+	prodsUrl = "#{global.CONF().apiUrl}/store/products"
+	dataGenerator = global.CONF().dataGenerator
+	models = {}		# database models
 
 
-MongoClient = require('mongodb').MongoClient
-dbConn = null
-collProducts = null
-
-
-describe 'api products manager', ->
-
-	# insert multiple prdocuts
 	before (done) ->
-		MongoClient.connect conf.db, (err, db) ->
-			expect( err ).to.be.null
-
-			dbConn = db
-			collProducts = db.collection('products')
-
-			pDataArr = dataGenerator.getProducts(0,100)
-
-			bulk = collProducts.initializeUnorderedBulkOp()
-			bulk.insert(pData) for pData in pDataArr
-			bulk.execute( done )
+		models.prod = mongoose.model('Product')
+		done()
 
 
-			# collProducts.insert pDataArr, (err, pArr...) ->
-			# 	expect( err ).to.be.null
-			# 	# console.log pArr
-			# 	done()
-
-	# clean up - remove products from db
-	after (done) ->
-		bulk = collProducts.initializeUnorderedBulkOp()
-		bulk.find( {cats: {$elemMatch: { $eq: 'testcat'}}} ).remove()
-		bulk.execute( ->
-			dbConn.close()
-			done()
-		)
-
-
-
-	it 'should insert a single product', (done) ->
-		pData = dataGenerator.getProducts(101,101)[0]
+	it 'should insert a single product to default category', (done) ->
+		pData = dataGenerator.getProds(1)
 		agent
-			.post( URL )
+			.post( prodsUrl )
 			.send( pData )
 			.end (err, res) ->
 				expect(res.status).to.equal(200)
-				expect(res.body).to.have.length( 1 )
+
+				prod = res.body[0]
+
+				expect( prod._id).to.exist
+
+				done()
+
+
+	it 'should inser mutliple products', (done) ->
+		psData = dataGenerator.getProds(6)
+		agent
+			.post( prodsUrl )
+			.send( psData )
+			.end (err, res) ->
+				expect(res.status).to.equal(200)
+				expect( res.body ).to.have.length( psData.length )
 				done()
 
 
 	it 'should update a product', (done) ->
-		collProducts.findOne {}, (err, p) ->
+		models.prod.findOne {}, (err, p) ->
 			expect( err ).to.be.null
-			p.title += " - UPDATED"
+			p.title += ' UPDATED'
 
 			agent
-				.put( URL )
+				.put( prodsUrl )
 				.send( p )
 				.end (err, res) ->
 					expect(res.status).to.equal 200
@@ -83,24 +65,28 @@ describe 'api products manager', ->
 
 
 	it 'should select one product by id', (done) ->
-		collProducts.findOne {}, (err, p) ->
+		models.prod.findOne {}, (err, p) ->
 			expect( err ).to.be.null
+
+			pid = String(p._id)
 
 			agent
-				.get( "#{URL}/#{p._id}")
+				.get( "#{prodsUrl}/#{pid}")
 				.end (err, res) ->
 					expect(res.status).to.equal(200)
-					expect(res.body._id).to.equal String(p._id)
+					expect(res.body._id).to.equal pid
 					done()
 
+
 	it 'should select products by single color', (done) ->
-		collProducts.findOne {}, (err, p) ->
+		models.prod.findOne {}, (err, p) ->
 			expect( err ).to.be.null
 
+			# p = prodsArr[0]
 			c = p.colors[0].key
 
 			agent
-				.get( "#{URL}")
+				.get( "#{prodsUrl}")
 				.query( { color: c } )	# get params
 				.end (err,res)->
 					expect(res.status).to.equal(200)
@@ -111,10 +97,11 @@ describe 'api products manager', ->
 
 					done()
 
+
 	it 'should select products by multiple colors', (done) ->
 		# p = _.find _products, (p) -> p.colors.length > 1
 		# p = _products[0]
-		collProducts.findOne { $where: 'this.colors.length>1' }, (err, p) ->
+		models.prod.findOne { $where: 'this.colors.length>1' }, (err, p) ->
 			expect( err ).to.be.null
 
 			c1 = p.colors[0].key
@@ -122,7 +109,7 @@ describe 'api products manager', ->
 			colors = "#{c1};#{c2}"
 
 			agent
-				.get( "#{URL}")
+				.get( "#{prodsUrl}")
 				.query( { color: colors } )	# get params
 				.end (err,res)->
 					expect(res.status).to.equal(200)
@@ -134,15 +121,15 @@ describe 'api products manager', ->
 					done()
 
 	it 'should select products by single size', (done) ->
-		collProducts.findOne {}, (err, p) ->
+		models.prod.findOne {}, (err, p) ->
 			expect( err ).to.be.null
 
 			s = p.sizes[0]
 			size = "#{s.width}x#{s.height}"
 
 			agent
-				.get( "#{URL}")
-				.query( { size: size } )	# get params
+				.get( "#{prodsUrl}")
+				.query( { size: size } )
 				.end (err,res)->
 					expect(res.status).to.equal(200)
 
@@ -153,7 +140,7 @@ describe 'api products manager', ->
 					done()
 
 	it 'should select products by multiple sizes', (done) ->
-		collProducts.findOne { $where: 'this.sizes.length>1' }, (err, p) ->
+		models.prod.findOne { $where: 'this.sizes.length>1' }, (err, p) ->
 			expect( err ).to.be.null
 
 			s1 = p.sizes[0]
@@ -161,7 +148,7 @@ describe 'api products manager', ->
 			sizes = "#{s1.width}x#{s1.height};#{s2.width}x#{s2.height}"
 
 			agent
-				.get( "#{URL}")
+				.get( "#{prodsUrl}")
 				.query( { size: sizes } )	# get params
 				.end (err,res)->
 					expect(res.status).to.equal(200)
@@ -176,8 +163,7 @@ describe 'api products manager', ->
 
 
 	it 'should select products by size and color', (done) ->
-		# p = _.find _products, (p) -> p.sizes.length > 1 and p.colors.length > 1
-		collProducts.findOne { $where: "this.sizes.length > 1 && this.colors.length > 1"}, (err, p) ->
+		models.prod.findOne { $where: "this.sizes.length > 1 && this.colors.length > 1"}, (err, p) ->
 			expect( err ).to.be.null
 
 			s1 = p.sizes[0]
@@ -189,7 +175,7 @@ describe 'api products manager', ->
 			colors = "#{c1};#{c2}"
 
 			agent
-				.get( "#{URL}")
+				.get( "#{prodsUrl}")
 				.query( { size: sizes, color: colors } )	# get params
 				.end (err,res)->
 					expect(res.status).to.equal(200)
@@ -208,19 +194,20 @@ describe 'api products manager', ->
 
 	it 'should limit the products result list', (done) ->
 		agent
-			.get( "#{URL}")
+			.get( "#{prodsUrl}")
 			.query( { limit: 3 } )
 			.end (err,res)->
 				expect(res.status).to.equal(200)
 				expect(res.body).to.have.length( 3 )
 				done()
 
+	# TODO: add more then
 	it 'should paginate', (done) ->
 		page1 = null
 		page2 = null
 
 		agent
-			.get( "#{URL}")
+			.get( "#{prodsUrl}")
 			.query( { limit: 3, page: 0 } )
 			.end (err,res)->
 				expect(res.status).to.equal(200)
@@ -228,31 +215,35 @@ describe 'api products manager', ->
 				expect(page1).to.have.length( 3 )
 
 				agent
-					.get( "#{URL}")
-					.query( { limit: 3, page: 0 } )
+					.get( "#{prodsUrl}")
+					.query( { limit: 3, page: 1 } )
 					.end (err,res)->
 						expect(res.status).to.equal(200)
 						page2 = res.body
 						expect(page2).to.have.length( 3 )
 
+						# page1 should no contain the same products as page2
 						expect(_.where(page2, p)).to.have.length(0) for p in page1
 
 						done()
 
+
 	it 'should select products by query', (done) ->
 		agent
-			.get ("#{URL}")
-			.query( {q: "Product 1"})
+			.get ("#{prodsUrl}")
+			.query( {q: "Test Product"})
 			.end (err,res)->
 				expect(res.status).to.equal(200)
-
-				# TODO:
-				# console.log res.body
+				expect( res.body ).to.have.length.above(6)
 				done()
 
-	# it 'should select products for category', (done) ->
-	# 	collProducts.findOne {}, (err, p) ->
-	# 		expect( err ).to.be.null
+
+	# TODO:
+	xit 'should select products for category', (done) ->
+
+		done()
+
+
 
 
 

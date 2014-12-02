@@ -24,7 +24,7 @@ describe 'api categories', ->
 	# 		name: 'Testcategory 2'
 	# 	}
 	# ]
-	catsRaw = global.CONF().dataGenerator.getRandomCats()
+	catsRaw = global.CONF().dataGenerator.getCats()
 	catsArr = []
 	dbModels = {}
 
@@ -37,7 +37,6 @@ describe 'api categories', ->
 
 	it 'should create a new category', (done) ->
 		agent.post(catsUrl).send( catsRaw[0] ).end (err, res) ->
-			expect( err ).to.be.null
 			expect(res.status).to.equal(200)
 			cat = res.body[0]
 
@@ -46,14 +45,20 @@ describe 'api categories', ->
 			catsArr.push( cat )
 			done()
 
+
 	it 'should create another category', (done) ->
 		agent.post(catsUrl).send( catsRaw[1] ).end (err, res) ->
-			expect( err ).to.be.null
 			expect(res.status).to.equal(200)
 			cat = res.body[0]
 
 			expect( cat._id ).to.exist
 			catsArr.push( cat )
+			done()
+
+
+	it 'should not create category if parameters are invalid', (done) ->
+		agent.post(catsUrl).send({}).end (err, res) ->
+			expect(res.status).to.equal(400)
 			done()
 
 
@@ -85,6 +90,13 @@ describe 'api categories', ->
 		agent.get( "#{catsUrl}").query( {q:q} ).end (err, res) ->
 			expect(res.status).to.equal(200)
 			expect(res.body).to.have.length.above(0)
+			done()
+
+
+	it 'should select the list of all categories', (done) ->
+		agent.get(catsUrl).end (err, res) ->
+			expect(res.status).to.equal(200)
+			expect(res.body).to.have.length.above(2)
 			done()
 
 

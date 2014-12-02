@@ -8,7 +8,7 @@ schemaName = 'Product'
 
 errLog = require('winston').loggers.get( 'error' )
 
-_schema = new Schema(
+schema = new Schema(
 
 	title :
 		type : 		String
@@ -94,7 +94,7 @@ _schema = new Schema(
 
 
 # CUSTOM STATIC METHODS
-_schema.statics =
+schema.statics =
 
 	findByColorKey: (colorKey, cb) ->
 		query =
@@ -125,12 +125,14 @@ _schema.statics =
 		return def.promise
 
 
-_schema.pre 'save', (next) ->
+schema.pre 'save', (next) ->
 	c = @
+
+	Category = mongoose.model('Category')
 
 	# add product to default categories
 	if not _.isArray(c.cats) or c.cats.length is 0
-		Category = require('mongoose').model('Category')
+
 		Category.find {type:'default'}, (err, cats) ->
 			return errLog.error( err ) if err
 
@@ -151,9 +153,22 @@ _schema.pre 'save', (next) ->
 			next()
 
 
-# CUSTOM INSTANCE METHODS
-# _schema.methods =
+# TODO: on remove product remove its id from categories items lists
+# schema.statics =
+
+# 	safeFindByIdAndRemove: (id, cb) ->
+# 		c = @
+# 		model = c.model(schemaName)
+
+# 		model.findOne {_id:id}, (err, p) ->
+# 			return cb?(err) if err
 
 
-module.exports = mongoose.model(schemaName, _schema)
+
+
+
+
+
+
+module.exports = mongoose.model(schemaName, schema)
 
