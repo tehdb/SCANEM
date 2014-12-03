@@ -95,14 +95,17 @@ module.exports = (grunt) ->
 			unit:
 				src: ['tests/server/unit/**/*.spec.coffee']
 
-			# order is important!
 			api:
+				options:
+					# slow: true
+					timeout: 5000
 				src: [
-					'tests/server/api/store/_before.coffee'
+					# order is important!
+					'tests/server/api/before.coffee'
+					'tests/server/api/user/**/*.spec.coffee'
 					'tests/server/api/store/**/*.spec.coffee'
-					'tests/server/api/store/_after.coffee'
+					'tests/server/api/after.coffee'
 				]
-
 
 
 		karma:

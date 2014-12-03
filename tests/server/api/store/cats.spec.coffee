@@ -1,4 +1,3 @@
-PWD 	= process.env.PWD
 _ 		= require('lodash')
 expect 	= require('chai').expect
 # sinon 	= require('sinon')
@@ -65,12 +64,10 @@ describe 'api categories', ->
 	it 'should update a category', (done) ->
 		c = catsArr[0]
 		c.name += " UPDATED"
-		c.items = [new ObjectID(), new ObjectID()]
 
 		agent.put( catsUrl ).send( c ).end (err, res) ->
 			cat = res.body.name
 			expect( c.name ).to.equal( c.name )
-			expect( c.items ).to.have.length( c.items.length )
 			done()
 
 

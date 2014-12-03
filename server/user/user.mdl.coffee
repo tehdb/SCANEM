@@ -11,6 +11,7 @@ encrypt = require("#{__dirname}/encrypt")
 _publicFields = '_id username email role'
 _schemaName = 'User'
 
+
 _schema = new mongoose.Schema(
 
 	username:

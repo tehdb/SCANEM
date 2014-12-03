@@ -1,8 +1,14 @@
 _ = require('lodash')
 # Product = require( "#{__dirname}/product.mdl" )
 
-Product = require('mongoose').model('Product')
+mongoose = require('mongoose')
+ObjectId = mongoose.Types.ObjectId
 
+ProductMdl = mongoose.model('Product')
+CategoryMdl = mongoose.model('Category')
+
+util = require('util')
+# console.log ObjectId
 # console.log ProductModel
 # console.log Product.findByColorKey
 
@@ -11,17 +17,13 @@ module.exports = () ->
 
 		# insert one or array of products, returns array
 		insert: (req, res, next) ->
-			Product.create req.body, (err, p...) -> # p... because create returns a list of params
+			ProductMdl.create req.body, (err, p...) -> # p... because create returns a list of params
 				return next(err) if err
 				res.json( p )
 
-			# Product.insertToCat req.body, (err, pArr) ->
-			# 	return next({reason: err}) if err
-			# 	res.json( pArr )
-
 		update: (req, res, next) ->
 			productData = req.body
-			Product.findOne {_id:productData._id}, (err, p ) ->
+			ProductMdl.findOne {_id:productData._id}, (err, p ) ->
 				return next(err) if err
 				updatedProduct = _.extend( p, productData )
 				updatedProduct.save (err,p) ->
@@ -40,7 +42,7 @@ module.exports = () ->
 			id = req.params.id
 
 			if id?
-				Product.findOne {_id:id}, (err, p) ->
+				ProductMdl.findOne {_id:id}, (err, p) ->
 					return next(err) if err
 					res.json(p)
 
@@ -70,13 +72,36 @@ module.exports = () ->
 					query.title = new RegExp(req.query.q, "i")
 
 
-				Product
-					.find( query )
-					.limit( limit )
-					.skip( page*limit )
-					.exec (err, pArr) ->
+				if req.query.cat?
+					# console.log req.query.cat
+					# catObjId = ObjectId(req.query.cat)
+					# console.log catObjId
+
+					# CategoryMdl.findOne {_id: catObjId}, (err, cat) ->
+					CategoryMdl.findOne {_id: req.query.cat}, (err, cat) ->
 						return next(err) if err
-						res.json(pArr)
+
+						query._id = { $in: cat.items }
+
+
+						ProductMdl
+							.find( query )
+							.limit( limit )
+							.skip( page*limit )
+							.exec (err, pArr) ->
+								return next(err) if err
+								res.json(pArr)
+
+
+				else
+
+					ProductMdl
+						.find( query )
+						.limit( limit )
+						.skip( page*limit )
+						.exec (err, pArr) ->
+							return next(err) if err
+							res.json(pArr)
 
 
 

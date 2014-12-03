@@ -28,7 +28,7 @@ module.exports = () ->
 					Category.find {}, (err, cats) ->
 						return next(err) if err
 						res.json(cats)
-					# next({reason: "nothing to select"})
+
 
 		insert: (req, res, next ) ->
 			Category.create req.body, (err, catsArr...) ->

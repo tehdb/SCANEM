@@ -26,7 +26,7 @@ _sendVerifyEmail = (userData, i18n, logger) ->
 
 		html = jade.compile( template )(vm)
 
-		console.log "send email"
+		# console.log "send email"
 		# console.log html
 		# _smtpTransport.sendMail
 		# 	from: 		'sender@address'

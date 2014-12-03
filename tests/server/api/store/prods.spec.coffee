@@ -1,11 +1,10 @@
-PWD 	= process.env.PWD
 _ 		= require('lodash')
 expect 	= require('chai').expect
 # sinon 	= require('sinon')
 
 
-mongodb = require('mongodb')
-ObjectID = mongodb.ObjectID
+# mongodb = require('mongodb')
+# ObjectID = mongodb.ObjectID
 mongoose = require('mongoose')
 
 superagent = require('superagent')
@@ -21,11 +20,13 @@ describe 'api products', ->
 
 	before (done) ->
 		models.prod = mongoose.model('Product')
+		models.cat = mongoose.model('Category')
 		done()
 
 
 	it 'should insert a single product to default category', (done) ->
 		pData = dataGenerator.getProds(1)
+
 		agent
 			.post( prodsUrl )
 			.send( pData )
@@ -120,6 +121,7 @@ describe 'api products', ->
 
 					done()
 
+
 	it 'should select products by single size', (done) ->
 		models.prod.findOne {}, (err, p) ->
 			expect( err ).to.be.null
@@ -138,6 +140,7 @@ describe 'api products', ->
 						expect(idx).to.be.above(-1)
 
 					done()
+
 
 	it 'should select products by multiple sizes', (done) ->
 		models.prod.findOne { $where: 'this.sizes.length>1' }, (err, p) ->
@@ -192,6 +195,7 @@ describe 'api products', ->
 
 				done()
 
+
 	it 'should limit the products result list', (done) ->
 		agent
 			.get( "#{prodsUrl}")
@@ -201,7 +205,7 @@ describe 'api products', ->
 				expect(res.body).to.have.length( 3 )
 				done()
 
-	# TODO: add more then
+
 	it 'should paginate', (done) ->
 		page1 = null
 		page2 = null
@@ -230,18 +234,26 @@ describe 'api products', ->
 
 	it 'should select products by query', (done) ->
 		agent
-			.get ("#{prodsUrl}")
+			.get("#{prodsUrl}")
 			.query( {q: "Test Product"})
 			.end (err,res)->
 				expect(res.status).to.equal(200)
+				# there must be above 6 products in the db from upper tests
 				expect( res.body ).to.have.length.above(6)
 				done()
 
 
-	# TODO:
-	xit 'should select products for category', (done) ->
+	it 'should select products for category', (done) ->
+		models.cat.findOne { $where: 'this.items.length>1' }, (err, cat) ->
+			agent
+				.get(prodsUrl)
+				.query( {cat: String(cat._id)} )
+				.end (err,res)->
 
-		done()
+					# console.log res.body.length + " " + cat.items.length
+					expect(res.status).to.equal(200)
+					expect( res.body ).to.have.length( cat.items.length )
+					done()
 
 
 

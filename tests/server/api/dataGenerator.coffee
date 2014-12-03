@@ -1,6 +1,9 @@
 _ = require('lodash')
+
+
 ObjectID = require('mongodb').ObjectID
 hat = require('hat')
+
 
 COLORS = ->
 	[
@@ -28,6 +31,7 @@ COLORS = ->
 		}
 	]
 
+
 SIZES = ->
 	[
 		{
@@ -49,6 +53,7 @@ SIZES = ->
 		}
 	]
 
+
 CATS = ->
 	[
 		{ name: 'Testcategory 1' }
@@ -65,6 +70,24 @@ module.exports =
 
 	getCats: ->
 		return CATS()
+
+	getUsers: (count) ->
+		users = [
+			{
+				email: 'test1@user.com'
+				username: 'testuser1'
+				password: '123123123123'
+
+			}, {
+				email: 'test2@user.com'
+				username: 'testuser2'
+				password: '123123123123'
+			}
+		]
+
+		count = count or users.length
+
+		return users.splice(0, count)
 
 	getRandomCats: (max) ->
 
@@ -98,7 +121,6 @@ module.exports =
 				prices: []
 				imgs: []
 				cats: []
-				# cats: ['testcat'].concat( c.getRandomCats(2) )
 				# tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 
 			# generate colors

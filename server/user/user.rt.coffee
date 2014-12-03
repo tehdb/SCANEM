@@ -23,6 +23,7 @@ module.exports = (router, eventEmmiter) ->
 		.route('/user/login')
 		.post( auth.login )
 
+
 	router
 		.route('/user/logout')
 		.post( auth.logout )

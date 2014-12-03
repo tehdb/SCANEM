@@ -2,7 +2,7 @@ _ = require('lodash')
 q = require('q')
 mongoose = require('mongoose')
 Schema = mongoose.Schema
-ObjectId = mongoose.Types.ObjectId
+ObjectId = Schema.Types.ObjectId
 schemaName = 'Category'
 
 errLog = require('winston').loggers.get( 'error' )
@@ -28,7 +28,7 @@ schema = new Schema(
 
 	items:
 		type: [{
-			type: Schema.Types.ObjectId
+			type: ObjectId
 			ref: 'Product'
 			unique: true
 		}]
@@ -38,6 +38,7 @@ schema = new Schema(
 
 schema.pre 'remove', (next) ->
 	c = @
+
 
 	catMdl = c.model( schemaName )
 
@@ -57,7 +58,9 @@ schema.pre 'remove', (next) ->
 					next()
 
 			catch err
-				next(err)
+				# suspect: 'Invalid Operation, No operations in bulk'
+				# TODO: other bulk errors? Better whay to detect that bulk has no operations?
+				next()
 
 
 	if c.type is 'default'
@@ -73,15 +76,8 @@ schema.pre 'remove', (next) ->
 				moveItemsToDefault()
 	else
 		moveItemsToDefault()
-		# next()
 
 
-	# console.log "pre remove"
-
-	# next()
-
-
-# CUSTOM STATIC METHODS
 schema.statics =
 
 	ensureDefaults: (cat, cb) ->
@@ -100,7 +96,7 @@ schema.statics =
 			return errLog.error( err ) if err
 
 			promises = []
-			_.each cats, (cat) -> promises.push( cat.cleanUp() ) if cat.items.length > 0
+			_.each cats, (cat) -> promises.push( cat.cleanUp() ) # if cat.items.length > 0
 
 			q.all(promises).spread (rep...) -> cb?()
 
@@ -109,8 +105,9 @@ schema.statics =
 schema.methods =
 	cleanUp: ->
 		c = @
+
 		# resolve null if items array is empty
-		if c.items.length <= 0
+		if c.items.length is 0
 			return q.fcall -> return null
 
 		def = q.defer()

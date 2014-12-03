@@ -2,7 +2,10 @@ _ = require('lodash')
 q = require('q')
 mongoose = require('mongoose')
 Schema = mongoose.Schema
-ObjectId = mongoose.Types.ObjectId
+ObjectId = Schema.Types.ObjectId
+
+# mongodb = require('mongodb')
+# ObjectID = mongodb.ObjectID
 
 schemaName = 'Product'
 
@@ -26,8 +29,8 @@ schema = new Schema(
 			ori:
 				type: String
 				enum: ['landscape', 'portrait', 'quadratic']
-			colors: [Schema.Types.ObjectId]
-			sizes: [Schema.Types.ObjectId]
+			colors: [ObjectId]
+			sizes: [ObjectId]
 		)]
 
 	colors:
@@ -69,13 +72,20 @@ schema = new Schema(
 			required: true
 		ref:
 			type: {}
-			# validate: [(val) ->	TODO: validate price object?
-			# 	return true
+
+			# validate: [ (val) ->
+			# 	# TODO: move this block to type!?
+			# 	# {
+			# 	# 	propName: ['size', 'color']
+			# 	# 	propId: ObjectId
+			# 	# }
+			# 	return _.find ['size', 'color'], val.propName and val.propId instanceof ObjectId
+
 			# , 'Invalid price object']
 	)]
 
 	cats : [{
-		type: Schema.Types.ObjectId
+		type: ObjectId
 		ref: 'Category'
 	}]					# categories TODO: format?
 
@@ -105,22 +115,21 @@ schema.statics =
 		@find query, cb
 
 
-	isPresent: ( p ) ->
+	isPresent: ( pid ) ->
 		c = @
 
+		# if !(pid instanceof ObjectID)
+		# 	q.fcall -> throw new Error("pid is not ObjectID")
+
 		def = q.defer()
-		Model = c.model( schemaName )
+		c.model( schemaName ).findOne {_id: pid}, (err, prod) ->
+			if err
+				return def.reject( err )
 
-		if p instanceof ObjectId
-
-			Model.findOne {_id: p}, (err, prod) ->
-				if err
-					return def.reject( err )
-
-				if prod is null
-					def.reject( p )
-				else
-					def.resolve( prod )
+			if prod is null
+				def.reject( pid )
+			else
+				def.resolve( prod )
 
 		return def.promise
 
@@ -132,14 +141,13 @@ schema.pre 'save', (next) ->
 
 	# add product to default categories
 	if not _.isArray(c.cats) or c.cats.length is 0
-
 		Category.find {type:'default'}, (err, cats) ->
 			return errLog.error( err ) if err
 
 			bulk = Category.collection.initializeUnorderedBulkOp()
 			_.each cats, (cat) ->
 				bulk.find({_id:cat._id}).updateOne( {$addToSet: {items: c._id} } )
-				c.cats.push( cat._id)
+				c.cats.push( cat._id )
 			bulk.execute (err, rep) ->
 				errLog.error( err ) if err
 				next()
