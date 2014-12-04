@@ -115,7 +115,6 @@ describe 'api user', ->
 		models.user.findOne {email: userRaw.email}, (err, user) ->
 			expect( err ).to.be.null
 			expect( user.token ).to.exist
-
 			agent
 				.post( "#{USERS_URL}/verify" )
 				.send({ token: user.token })

@@ -5,7 +5,7 @@ PWD = process.env.PWD
 
 module.exports = (router, eventEmmiter) ->
 	ctrl = require("#{__dirname}/user.ctrl")(eventEmmiter)
-	auth = require("#{PWD}/server/config/auth")
+	auth = require("#{global.CONF().root}/server/config/auth")
 
 	router
 		.route('/user/signup')

@@ -35,9 +35,12 @@ app.get '*', (req, res) -> res.render 'index', { user: req.user?.getPublicFields
 
 # error handler
 app.use 	(err, req, res, next) ->
+
+	# console.log err
+
 	status = err.status or 400
-	reason = err.reason?.message or err.reason?.toString() or 'unknown error'
-	res.status( status ).json( {reason : reason } )
+	# reason = err.reason?.message or err.reason?.toString() or 'unknown error'
+	res.status( status ).json( err )
 
 
 process.on 'uncaughtException', (err) -> console.log 'App_Error: ', err.message

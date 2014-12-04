@@ -74,11 +74,15 @@ module.exports =
 			p =
 				title: "Test Product -"
 				ean: hat()
-				colors: c.getRandomColors()
-				sizes: c.getRandomSizes()
-				prices: []
+				# colors: c.getRandomColors()
+				# sizes: c.getRandomSizes()
+				# prices: []
+				# price:
+				# 	amount: 100
+				# 	currency: 'EUR'
 				imgs: []
 				cats: []
+				tags: []
 				# cats: ['testcat'].concat( c.getRandomCats(2) )
 				# tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 

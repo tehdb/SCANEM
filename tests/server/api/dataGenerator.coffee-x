@@ -5,10 +5,53 @@ ObjectID = require('mongodb').ObjectID
 hat = require('hat')
 
 
+COLORS = ->
+	[
+		{
+			key: 'white'
+			rgb: {	r: 255, g: 255, b: 255 }
+		},{
+			key: 'red'
+			rgb: {	r: 255, g: 0, b: 0 }
+		},{
+			key: 'green'
+			rgb: {	r: 0, g: 255, b: 0 }
+		},{
+			key: 'blue'
+			rgb: {	r: 0, g: 0, b: 255 }
+		}, {
+			key: 'gray',
+			rgb: {	r: 190, g: 190, b: 190 }
+		}, {
+			key: 'magenta',
+			rgb: {	r: 255, g: 0, b: 255 }
+		}, {
+			key: 'black',
+			rgb: {	r: 0, g: 0, b: 0 }
+		}
+	]
 
 
-
-
+SIZES = ->
+	[
+		{
+			width: 80
+			height: 60
+			price: 80.60
+		}, {
+			width: 100
+			height: 70
+			price: 100.70
+		}, {
+			width: 120
+			height: 80
+			price: 120.80
+		}, {
+			width: 150
+			height: 100
+			price: 150.10
+		}
+	]
 
 
 CATS = ->
@@ -55,40 +98,14 @@ module.exports =
 		return _.shuffle( cats ).slice(0, _.random(1, max) )
 
 
-	getRandomColors: (max) ->
-
-		colors = ['white','red','green','blue','gray','magenta','black']
-
-		max = max or colors.length
-		max = if max > colors.length then colors.length else max
-
-		return _.shuffle( colors ).slice(0, _.random(1,max) )
+	getRandomColors: ->
+		colors = COLORS()
+		return _.sortBy( _.shuffle( colors ).slice(0, _.random(1,colors.length) ), 'key' )
 
 
-	getRandomSizes: (max) ->
-		sizes = [
-			{
-				width: 80
-				height: 60
-				price: 80.60
-			}, {
-				width: 100
-				height: 70
-				price: 100.70
-			}, {
-				width: 120
-				height: 80
-				price: 120.80
-			}, {
-				width: 150
-				height: 100
-				price: 150.10
-			}
-		]
-
-		max = max or sizes.length
-		max = if max > sizes.length then sizes.length else max
-		return _.sortBy( _.shuffle( sizes ).slice(0, _.random(1,max) ), 'width' )
+	getRandomSizes: ->
+		sizes = SIZES()
+		return _.sortBy( _.shuffle( sizes ).slice(0, _.random(1,sizes.length) ), 'width' )
 
 
 	getProds: ( amount = 10 )->
@@ -96,23 +113,25 @@ module.exports =
 		products = []
 
 
-
+		colors = ['red', 'green', 'blue', 'yellow', 'black', 'white']
+		pColor = colors[_.random(0,colors.length-1)]
 
 		for pIdx in [1..amount]
-
-			pSize = c.getRandomSizes(1)[0]
 			p =
 				title: "Test Product - #{pIdx}"
 				ean: hat()
+				# colors: c.getRandomColors()
+				# sizes: c.getRandomSizes()
+				# prices: []
 				price:
-					amount: pSize.price
+					amount: 111
 					currency: 'EUR'
 				imgs: []
 				cats: []
 				attrs: [
-					{ key: 'width', val: pSize.width }
-					{ key: 'height', val: pSize.height }
-					{ key: 'color', val: c.getRandomColors(1)[0] }
+					{ key: 'width', val: 100 }
+					{ key: 'height', val: 80 }
+					{ key: 'color', val: pColor }
 				]
 				# tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 

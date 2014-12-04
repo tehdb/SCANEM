@@ -10,8 +10,6 @@ ObjectId = Schema.Types.ObjectId
 schemaName = 'Product'
 
 errLog = require('winston').loggers.get( 'error' )
-vals = require('./validators')
-
 
 schema = new Schema(
 
@@ -25,34 +23,71 @@ schema = new Schema(
 		required : 	true
 		unique : 	true
 
-	rel:
-		type: String
-		enum: ['parent', 'child']
-		# required: true
-		# default: 'parent'
-
-	vars: [ObjectId] # variants
-
 	imgs:
-		type: [ require('./schemas/image.schm') ]
+		type: [ new Schema(
+			src: String
+			ori:
+				type: String
+				enum: ['landscape', 'portrait', 'quadratic']
+			colors: [ObjectId]
+			sizes: [ObjectId]
+		)]
 
-	# todo: validate attrs
-	attrs:
-		type: {} #[require('./schemas/attr.schm')]
-		default: []
+	colors:
+		type: [ new Schema(
+			key:
+				type: String
+				required: true
+			rgb:
+				type: {}
+				validate: [
+					(val) ->
+						valid = true
+						for k, v of val
+							return false if !_.isNumber(v) or v < 0 or v > 255
 
-	price:
-		type: {}
-		validate: [ vals.price, 'Invalid price object' ]
-		required: true
+						val.r = val.r || 0
+						val.g = val.g || 0
+						val.b = val.b || 0
 
-	cats:
-		default: []
-		type: [{
-			type: ObjectId
-			ref: 'Category'
-		}]
-							# categories TODO: format?
+						return true
+					, 'Invalid RGB Object'
+				]
+		)]
+
+	sizes:
+		# index: true
+		type: [new Schema(
+			width:
+				type: Number
+				required: true
+			height:
+				type: Number
+				required: true
+		)]
+
+	prices: [ new Schema(
+		price:
+			type: Number
+			required: true
+		ref:
+			type: {}
+
+			# validate: [ (val) ->
+			# 	# TODO: move this block to type!?
+			# 	# {
+			# 	# 	propName: ['size', 'color']
+			# 	# 	propId: ObjectId
+			# 	# }
+			# 	return _.find ['size', 'color'], val.propName and val.propId instanceof ObjectId
+
+			# , 'Invalid price object']
+	)]
+
+	cats : [{
+		type: ObjectId
+		ref: 'Category'
+	}]					# categories TODO: format?
 
 	tags : [String]					# tags
 

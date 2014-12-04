@@ -1,5 +1,6 @@
 
-PWD = process.env.PWD
+# root = process.env.root
+root = global.CONF().root
 
 nodemailer = require("nodemailer")
 jade = require('jade')
@@ -14,7 +15,7 @@ _sendVerifyEmail = (userData, i18n, logger) ->
 	# console.log "*******"
 
 	# console.log userData
-	tpl = "#{PWD}/server/mailer/verify.tpl.jade"
+	tpl = "#{root}/server/mailer/verify.tpl.jade"
 	vm =
 		title: 		i18n.__('verify_email_title')
 		linklabel: 	i18n.__('verify_link_label')

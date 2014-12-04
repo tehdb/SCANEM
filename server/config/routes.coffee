@@ -8,7 +8,7 @@ path = require('path')
 
 module.exports = (pubsub) ->
 
-	pathToModules = "#{PWD}/server"
+	pathToModules = "#{global.CONF().root}/server"
 
 	# TODO: use readdir!!!
 	# init routes

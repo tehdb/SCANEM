@@ -14,8 +14,6 @@ module.exports = (grunt) ->
 					cssDir: "public/styles"
 
 
-
-
 		coffee:
 			options:
 				bare: true
@@ -130,6 +128,7 @@ module.exports = (grunt) ->
 			DummyClear:
 				command: 'coffee tools/DummyDataGenerator/_generator.coffee -c'
 
+
 		nodemon:
 			test:
 				script: 'test.js'
@@ -155,6 +154,7 @@ module.exports = (grunt) ->
 		'node-inspector':
 			debug: {}
 
+
 		concurrent:
 			dev:
 				tasks: ['nodemon:dev']
@@ -165,6 +165,7 @@ module.exports = (grunt) ->
 				tasks: ['nodemon:debug', 'node-inspector:debug']
 				options:
 					logConcurrentOutput: true
+
 
 		watch:
 			options:

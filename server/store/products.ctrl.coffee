@@ -17,6 +17,9 @@ module.exports = () ->
 
 		# insert one or array of products, returns array
 		insert: (req, res, next) ->
+
+			# console.log req.body
+
 			ProductMdl.create req.body, (err, p...) -> # p... because create returns a list of params
 				return next(err) if err
 				res.json( p )
@@ -53,55 +56,77 @@ module.exports = () ->
 				page = req.query.page or 0
 
 				if req.query.color?
-					colorsArr = []
-					colorsKeys = req.query.color.split(';')
-					colorsArr.push({ key: key}) for key in colorsKeys
-					query.colors = { $elemMatch: { $or: colorsArr } }
+					# colorsArr = []
+					colors = req.query.color.split(';')
 
+					# colorsArr.push({ key: key}) for key in colorsKeys
+					# query.colors = { $elemMatch: { $or: colorsArr } }
+					# console.log colorsKeys
+					query.attrs = { $elemMatch: { key : 'color', val : { $in: colors } }}
+					# query.attrs = { $elemMatch: { key : 'color'} }
 
+					# console.log query.attrs
+					#
 				if req.query.size?
 					sizesArr = []
 					sizesVals = req.query.size.split(';')
 					for v in sizesVals
 						s = v.split('x')
-						sizesArr.push({ width: s[0], height: s[1] })
+						sizesArr.push({ w: Number(s[0]), h: Number(s[1]) })
 
-					query.sizes = { $elemMatch: { $or: sizesArr } }
+					query =
+						$and: [
+							{ attrs: { $elemMatch: { key: 'width', val: sizesArr[0].w  }}},
+							{ attrs: { $elemMatch: { key: 'height', val: sizesArr[0].h }}}
+						]
 
-				if req.query.q?
-					query.title = new RegExp(req.query.q, "i")
+					# console.log JSON.stringify(query)
+					ProductMdl
+						.find( query )
+						.limit( limit )
+						.skip( page*limit )
+						.exec (err, ps) ->
+							return next(err) if err
+							res.json(ps)
+
+				else
+
+					if req.query.q?
+						query.title = new RegExp(req.query.q, "i")
 
 
-				if req.query.cat?
-					# console.log req.query.cat
-					# catObjId = ObjectId(req.query.cat)
-					# console.log catObjId
+					if req.query.cat?
+						# console.log req.query.cat
+						# catObjId = ObjectId(req.query.cat)
+						# console.log catObjId
 
-					# CategoryMdl.findOne {_id: catObjId}, (err, cat) ->
-					CategoryMdl.findOne {_id: req.query.cat}, (err, cat) ->
-						return next(err) if err
+						# CategoryMdl.findOne {_id: catObjId}, (err, cat) ->
+						CategoryMdl.findOne {_id: req.query.cat}, (err, cat) ->
+							return next(err) if err
 
-						query._id = { $in: cat.items }
+							query._id = { $in: cat.items }
 
+
+							ProductMdl
+								.find( query )
+								.limit( limit )
+								.skip( page*limit )
+								.exec (err, pArr) ->
+									return next(err) if err
+									res.json(pArr)
+
+
+					else
 
 						ProductMdl
 							.find( query )
 							.limit( limit )
 							.skip( page*limit )
 							.exec (err, pArr) ->
+								# console.log err
+
 								return next(err) if err
 								res.json(pArr)
-
-
-				else
-
-					ProductMdl
-						.find( query )
-						.limit( limit )
-						.skip( page*limit )
-						.exec (err, pArr) ->
-							return next(err) if err
-							res.json(pArr)
 
 
 
