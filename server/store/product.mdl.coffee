@@ -38,8 +38,24 @@ schema = new Schema(
 
 	# todo: validate attrs
 	attrs:
-		type: {} #[require('./schemas/attr.schm')]
+		type: []
 		default: []
+		validate: [(val) ->
+			# ensure unique values
+			{
+				type: 'Color'
+				ref: ObjectId
+			}
+
+
+			return true
+		, 'attribute should be unique' ]
+		# type: {} #[require('./schemas/attr.schm')]
+		# default: []
+
+		# type: {
+		# 	ref: 'Dimension'
+		# }
 
 	price:
 		type: {}

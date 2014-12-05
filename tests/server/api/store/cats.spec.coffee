@@ -14,7 +14,7 @@ agent = superagent.agent()
 catsUrl = "#{global.CONF().apiUrl}/store/categories"
 
 
-describe 'api categories', ->
+describe.skip 'api categories', ->
 
 	# catsRaw = [
 	# 	{

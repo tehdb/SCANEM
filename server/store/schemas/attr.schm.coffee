@@ -8,7 +8,6 @@ schema = new Schema(
 	val:
 		type: {}
 		required: true
-		# validate:
 )
 
 module.exports = schema

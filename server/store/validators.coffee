@@ -29,3 +29,8 @@ module.exports =
 
 		return true
 
+
+	number_gt_zero: [ (val) ->
+		return _.isNumber(val) and val > 0
+	, 'value must be greater zero']
+

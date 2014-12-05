@@ -1,4 +1,6 @@
 _ = require('lodash')
+q = require('q')
+
 # Product = require( "#{__dirname}/product.mdl" )
 
 mongoose = require('mongoose')
@@ -11,6 +13,65 @@ util = require('util')
 # console.log ObjectId
 # console.log ProductModel
 # console.log Product.findByColorKey
+
+queryGen =
+	# ?colors=c1;c2;c3
+	# OR selector
+	# TODO: AND selector?
+	color: (colorStr) ->
+		q.fcall ->
+			colors = colorStr.split(';')
+
+			# colorsArr.push({ key: key}) for key in colorsKeys
+			# query.colors = { $elemMatch: { $or: colorsArr } }
+			# console.log colorsKeys
+			o=
+				attrs:
+					$elemMatch:
+						key : 'color'
+						val : { $in: colors }
+
+
+	# TODO: greater/smaller then; multiple AND and OR
+	size: (sizeStr) ->
+		q.fcall ->
+			out = {}
+			sizes = []
+			for v in sizeStr.split(';')
+				s = v.split('x')
+				sizes.push({ w: Number(s[0]), h: Number(s[1]) })
+
+
+			if sizes.length > 0
+				out.$or = []
+				for s in sizes
+					out.$or.push({
+						$and: [
+								{ attrs: { $elemMatch: { key: 'width', val: sizes[0].w  }}},
+								{ attrs: { $elemMatch: { key: 'height', val: sizes[0].h }}}
+						]
+					})
+			else
+				out.$and = [
+						{ attrs: { $elemMatch: { key: 'width', val: sizes[0].w  }}},
+						{ attrs: { $elemMatch: { key: 'height', val: sizes[0].h }}}
+				]
+			return out
+
+	cat: ( catId ) ->
+		def = q.defer()
+
+		CategoryMdl.findOne {_id: catId}, (err, cat) ->
+			return def.reject(err) if err
+			def.resolve( { _id: { $in: cat.items } } )
+
+
+		return def.promise
+
+	query: (query) ->
+		q.fcall ->
+			o=
+				title: new RegExp(query, "i")
 
 module.exports = () ->
 	return x =
@@ -44,16 +105,53 @@ module.exports = () ->
 
 			id = req.params.id
 
+			# select product by id
 			if id?
 				ProductMdl.findOne {_id:id}, (err, p) ->
 					return next(err) if err
 					res.json(p)
 
+			# filter products by attributes
 			else
+
+
+
 				# TODO: cache the query
-				query = {}
-				limit = req.query.limit or 10
-				page = req.query.page or 0
+				limit 	= req.query.limit or 10
+				page 	= req.query.page or 0
+				query 	= {}
+
+				proms = []
+
+				proms.push queryGen.color 	req.query.color 	if req.query.color?
+				proms.push queryGen.size 	req.query.size 		if req.query.size?
+				proms.push queryGen.cat 	req.query.cat 		if req.query.cat?
+				proms.push queryGen.query 	req.query.query 	if req.query.query?
+
+
+
+				q.all(proms).spread (queries...) ->
+
+					if queries.length > 0
+						query.$and = []
+						_.every queries, (q) -> query.$and.push(q)
+
+					ProductMdl
+							.find( query )
+							.limit( limit )
+							.skip( page*limit )
+							.exec (err, ps) ->
+								return next(err) if err
+								res.json(ps)
+						# console.log q
+
+
+
+					# console.log query
+
+					# res.json('ok')
+
+				return
 
 				if req.query.color?
 					# colorsArr = []

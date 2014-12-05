@@ -101,6 +101,7 @@ module.exports =
 		for pIdx in [1..amount]
 
 			pSize = c.getRandomSizes(1)[0]
+
 			p =
 				title: "Test Product - #{pIdx}"
 				ean: hat()
@@ -112,8 +113,17 @@ module.exports =
 				attrs: [
 					{ key: 'width', val: pSize.width }
 					{ key: 'height', val: pSize.height }
-					{ key: 'color', val: c.getRandomColors(1)[0] }
+					# { key: 'color', val: c.getRandomColors(1)[0] }
 				]
+
+
+			# add random colors to attributes
+			for color in c.getRandomColors()
+				p.attrs.push({
+					key: 'color'
+					val: color
+				})
+
 				# tags: _.shuffle( _.cloneDeep(tags)).slice(0, _.random(1,tags.length) )
 
 			# generate colors
